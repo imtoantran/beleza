@@ -1,0 +1,178 @@
+/*Luu Van Hoa custom css*/
+/*-----------------------------------*/
+
+/*[Menu] - Shadowmenu */
+#navigation{
+	border: none!important;
+	-webkit-box-shadow: none!important;
+	box-shadow: none!important;: 
+}
+/*[End Menu] - Shadowmenu */
+
+/*[Border-Bottom] - menu*/
+button.btn-cart-shop{border: 1px solid #cfcfcf; border-radius: 100px; padding: 2px 10px!important;}
+button.btn-block, button.create-location-btn{border-bottom: 1px solid #cfcdca!important;}
+button.btn-orange{border-bottom: 1px solid #e2a60d!important;}
+button.btn-orange:hover,button.btn-block:hover, button.create-location-btn:hover{border-bottom: 1px solid #000!important;}
+button.btn-brown{border-bottom: 1px solid #b5b3b3!important; background-color: #cfcfcf;}
+button.btn-brown:hover{border-bottom: 1px solid #e2a60d!important;}
+
+button.login-face-btn{border-bottom: 1px solid #5a6f96!important;}
+button.login-face-btn:hover{border-bottom: 1px solid #000!important; background-color: #373538!important; }
+div#search button.btn-submit:hover{border: 1px solid #ffcc00!important; background-color: #373538!important; color:#fff;}
+/*[End Border-Bottom] - menu*/
+
+/*[Hover - tag a]*/
+a.service-similar:hover{color:#efc107!important;}
+/*[End Hover - tag a]*/
+
+
+/*Nav-service - task 20*/
+nav#service_nav{min-height: 0!important; }
+nav#service_nav ul li a{font-size: 15px!important; text-transform: uppercase; padding: 8px 15px!important;}
+nav#service_nav ul li a strong{font-weight: 600!important; font-size: 15px!important;}
+/*End Nav-service - task 20*/
+
+/*Service - item - hover -task 15*/
+#service-list .item, #service-new .item{ background-color: #f8f8f8!important; border-color: #ddd!important; }
+#service-list .item:hover, #service-new .item:hover{
+	border-color: #ccc!important; 
+	box-shadow: 0 1px 2px rgba(0, 0, 0, 0.27)!important; 
+	background-color: #fcfcfc !important;
+}
+
+/*End Service - item - hover -task 15*/
+
+/*footer*/
+#footer-last ul li i.fa-inverse:hover{color:#fff!important;}
+
+#footer-last ul li.twitter:hover i.fa-circle{color:#55acee;}
+#footer-last ul li.facebook:hover i.fa-circle{color:#3b5999;}
+#footer-last ul li.tencent-weibo:hover i.fa-circle{color:#3cc8fb;}
+#footer-last ul li.google-plus:hover i.fa-circle{color:#da4835;}
+#footer-last ul li.youtube:hover i.fa-circle{color:#cf3427;}
+#footer-last ul li.linkedin:hover i.fa-circle{color:#2b5b83;}
+#footer-last ul li.instagram:hover i.fa-circle{color:#0072b1;}
+
+
+
+
+/*--Search----*/
+/*#side-bar{border: 1px solid #ccc!important; box-shadow: 0 2px 1px #444}*/
+#side-bar{border: 1px solid #ddd!important;}
+#side-bar .title{color:#fdbd0e!important; padding: 10px!important; margin: 0px 0px -10px 0px!important; background-color: #f6f6f6;}
+#side-bar .filter-name{color:#666!important;}
+div#side-bar label{font-weight: 400!important;}
+#date_to_appointment:hover, #district_id_advance:hover{border-color: #ffcc00!important;}
+
+
+#side-bar span.badge{
+	color:#666!important; 
+	background-color: #e8e8e8;
+	font-size: 0.8em!important;
+	font: 100%/1.125em BrandonGrotesque-Regular, Arial, Helvetica, sans-serif;
+}
+
+
+div.divider{border-bottom: 1px solid #cfcfcf!important;}
+div#service a{color:#fdbd0e;}
+div#service a:hover{color:#666;}
+/*div#service input[checked = 'checked'] + label{border:1px solid #000;}*/
+div[class^="item-filter"]:hover label, #service_type div:hover label, #service div:hover label{cursor:pointer; color: #fdbd0e; transition: 0.3 ;}
+div[class^="item-filter"]:hover span.badge, #service_type div:hover span.badge, #service div:hover span.badge{background-color: #fdbd0e!important;}
+
+div#division-head{
+	margin-top: -10px;
+	background: linear-gradient(to bottom,#E8E7E7 0,rgba(228, 225, 225, 0.85) 13%,rgba(255, 255, 255, 0.01) 100%);
+	background: -webkit-linear-gradient(to bottom,#E8E7E7 0,rgba(228, 225, 225, 0.85) 13%,rgba(255, 255, 255, 0.01) 100%);
+	background: -moz-linear-gradient(to bottom,#E8E7E7 0,rgba(228, 225, 225, 0.85) 13%,rgba(255, 255, 255, 0.01) 100%);
+	background: -ms-linear-gradient(to bottom,#E8E7E7 0,rgba(228, 225, 225, 0.85) 13%,rgba(255, 255, 255, 0.01) 100%);
+	height: 5px;
+}
+
+ul.mn-lv1 a.ul-a-lv1{font-weight: 500px; margin-top: 10px;}
+ul.mn-lv1 li a.ul-a-lv1 i{margin-bottom: 3px!important; margin-right: 2px!important;}
+ul.mn-lv1 li a.ul-a-lv1{padding-top: 10px!important; padding-bottom: 10px!important;}
+ul.mn-lv3 li a.ul-a-lv3{padding: 2px 5px!important; font-size: 13px!important;}
+div.container .col-md-4 .sidebar-image{
+	padding: 3px;
+	min-height: 350px;
+	border: 1px solid #e1e1e1;
+}
+
+div#service-new span.fa-stack i.fa-circle{
+	vertical-align: middle!important;
+	margin-top: -4px!important;
+	margin-left: 0px!important;
+	font-size: 2.5em!important;
+}
+div#service-list span.fa-stack i.fa-circle{
+	vertical-align: middle!important;
+	margin-top: -3px!important;
+	margin-left: -1px!important;
+	font-size: 2.5em!important;
+}
+
+
+/*icon associa bottom*/
+div#footer-last span.fa-stack span.mytooltip{
+	position: Absolute;
+top: -10px;
+left: -100%;
+white-space: nowrap;
+font-size: 12px;
+font-family: arial,sans-serif;
+padding: 5px 10px;
+border-radius: 3px;
+color: white;
+line-height: 1em;
+background-color: #101010;
+text-shadow: 0 1px 0 rgba(0,0,0,0.7);
+box-shadow: 0 1px 1px rgba(0,0,0,1);
+}
+
+
+div#footer-last li.twitter span.fa-stack span.mytooltip{left: -37%!important;}
+div#footer-last li.facebook span.fa-stack span.mytooltip{left: -53%!important;}
+div#footer-last li.tencent-weibo span.fa-stack span.mytooltip{left: -84%!important;}
+div#footer-last li.google-plus span.fa-stack span.mytooltip{left: -70%!important;}
+div#footer-last li.youtube span.fa-stack span.mytooltip{left: -45%!important;}
+div#footer-last li.linkedin span.fa-stack span.mytooltip{left: -45%!important;}
+div#footer-last li.instagram span.fa-stack span.mytooltip{left: -55%!important;}
+
+div#footer-last span.fa-stack span.mytooltip{visibility:hidden; opacity:0;}
+div#footer-last span.fa-stack span.mytooltip:after{
+    content:""; width:0; height:0; position:absolute; bottom:-12px; left:40%;
+    border:6px solid transparent; border-top:7px solid #101010;
+}
+
+div#footer-last span.fa-stack span.mytooltip{
+    /*---code trước---*/
+    -moz-transition:top 0.4s,opacity 0.4s ease;
+    -webkit-transition:top 0.4s,opacity 0.4s ease;
+    -o-transition:top 0.4s,opacity 0.4s ease;
+    transition:top 0.4s,opacity 0.4s ease;
+}
+
+div#footer-last span.fa-stack:hover span.mytooltip{
+    visibility:visible;
+    top:-35px;
+    opacity:1;
+}
+
+/*end icon associa bottom*/
+
+/*logo bottom center*/
+div#footer-2{text-align: center; margin-top: 17px;}
+/*end logo bottom center*/
+
+
+div.shadow-head-bottom{
+	height: 2px;
+	margin-top: -10px;
+	z-index: 900000!important;
+	margin-bottom: -1px;
+	box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.1);
+	position: relative;	
+}
+

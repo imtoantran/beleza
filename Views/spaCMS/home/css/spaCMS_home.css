@@ -1,0 +1,10 @@
+.tooltip{
+	font-size: 11.5px;
+}
+
+.datepicker-days{z-index: 1000!important;}
+div.datepicker{z-index: 10000!important;}
+input.appointment_date{width: 152px!important;}
+.voucher-start, .voucher-searching, .voucher-not-found {
+	padding-top: 70px !important;
+}

@@ -1,0 +1,47 @@
+#faq-1 {
+    background-color: #000;
+    padding: 15px 0px;
+    
+}
+
+#faq-1 .faq-1-title a {
+    color: #FFCC00;
+    font-size: 22px;
+}
+
+#faq-1 .faq-1-description {
+    color: #E0DEDE;
+}
+
+#content_news {
+	/*padding: 0 127px;*/
+}
+
+.faq_title {
+	/*font-weight: 700;*/
+}
+
+.faq-info {
+	margin-bottom: 20px;
+}
+
+.faq_content {
+	margin-bottom: 20px;
+}
+
+.fb-comments {
+	width: 100%;
+}
+
+.faq_related li {
+	margin-bottom: 20px;
+}
+
+.fbFeedbackContent .composerHider {
+	border-top: medium none !important;
+	border-bottom: medium none !important;
+}
+
+.stat_elem {
+	display: none;
+}

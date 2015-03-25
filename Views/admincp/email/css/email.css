@@ -1,0 +1,21 @@
+body{
+    overflow: visible;
+}
+b, strong{
+    font-weight: bold;
+}
+
+h3{
+    font-size: 24px;
+}
+.title-admincp{
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+tbody tr td{
+    cursor: pointer;
+    vertical-align: middle !important;
+}
+.email{
+    margin-top: 30px;
+}

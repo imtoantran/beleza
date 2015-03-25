@@ -1,0 +1,347 @@
+<div id="header-2" class="clearfix">
+	<!--	############### imtoantran - add revslider #######################	-->
+	<div id="rev_slider_slider" class="revslider tp-banner-container"></div>
+	<!--	############### imtoantran - add revslider #######################	-->
+</div>
+
+<div id="content-wrap">
+	<div class="container">
+
+		<div class="col-md-8">
+			<div id="result-total" class="clearfix">
+				<div class="col-md-4">
+					<div class="form-horizontal">
+						<label class="control-label" style="color: #FFFFFF"><span id="count_result">0</span> Địa điểm được tìm thấy</label>
+					</div>
+				</div>
+
+				<div class="col-md-8">
+					<div class="form-horizontal">
+						<label style="color: #A09E9E;" class="control-label col-md-4">Tìm theo</label>
+						<div class="col-md-8">
+							<select id="sort_by" class="form-control">
+								<option value="5" selected="">Địa điểm gần bạn nhất</option>
+								<option value="1">Dịch vụ mới nhất</option>
+								<option value="2">Được đánh giá nhiều nhất</option>
+								<option value="3">Giá rẻ nhất</option>
+								<option value="4">Giá mắc nhất</option>
+							</select>
+						</div>
+					</div>
+				</div>
+			</div>
+			<div id="result_container">
+				<div class="processing_loading">
+				</div>
+				<div id="waiting_for_result_list">
+					<i id="waiting_for_result_list" style="color: #FDBD0E" class="fa fa-3x fa-gear fa-spin"></i>
+				</div>
+				<div id="result-list" class="clearfix">
+					
+					<!-- <div class="item clearfix">
+						<div class="col-md-6 clearfix">
+							<p style="white-space: normal" class="name">LADIVA NAIL SPA | CHĂM SÓC MÓNG CHUYÊN NGHIỆP</p>
+							<div class="rating clearfix">
+								<i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star"></i><i class="fa fa-star-o"></i>
+							</div>
+							<div class="address clearfix">
+								<span class="pull-left">68 Lý Tự Trọng - P.Bến Nghé - Q.1 -TP.HCM</span>
+								<a class="pull-right" href="#">Show map </a>
+							</div>
+							<div class="description clearfix">
+								Tại salon Ladive nail các hiệu trình chăm sóc thiết kế nail được thực hiện theo một quy trình hiện đại, bằng tất cả sự khéo léo và cẩn thận. Ladivi Nail chăm sóc từng ngón tay, ngón chân của khách hàng...
+							</div>
+							<div class="services">
+								Hair	NAIL 	Face
+							</div>
+						</div>
+						<div class="col-md-6 clearfix image">
+							<span class="fa-stack fa-lg new-item">
+							  	<i class="fa fa-circle fa-stack-2x text-orange"></i>
+							  	<i class="fa fa-stack-1x fa-inverse"><b>new</b></i>
+							</span>
+							<img width="100%" height="auto" class="img-responsive img-rounded" src="http://webdesignledger.com/wp-content/uploads/2014/08/1-ipad-apps-for-web-designers.jpg">
+						</div>
+						<div class="col-md-12 clearfix">
+							<div class="price clearfix">
+								<div class="col-sm-5 text-orange price-info-1">
+									<strong>Móng gắn đá kim tuyến Hàn Quốc</strong>
+								</div>
+								<div class="col-sm-3 price-info-2">
+									<i class="fa fa-clock-o text-orange"></i> 30 phút - 1 giờ
+								</div>
+								<div class="col-sm-2 price-info-3">
+									<i class="fa fa-arrow-down text-orange"></i> Giảm 20%
+								</div>
+								<div class="col-sm-2 price-info-4" >
+									<button type="button" class="btn btn-sm btn-orange pull-right">
+										<i class="fa fa-dollar text-white"></i> 250.000 đ
+									</button>
+								</div>
+							</div>
+						</div>
+					</div> -->
+				</div>
+				
+			</div>
+			<div id="result-pagination" align="center">
+				<ul class="pagination pagination-sm">
+				  	<!-- <li><a href="#">&laquo;</a></li>
+				  	<li><a href="#">1</a></li>
+				  	<li><a href="#">2</a></li>
+				  	<li><a href="#">3</a></li>
+				  	<li><a href="#">4</a></li>
+				  	<li><a href="#">5</a></li>
+				  	<li><a href="#">&raquo;</a></li> -->
+				  </ul>
+				</div>
+				<div class="row">
+					<div class="col-md-12">
+						<i class="fa fa-lg fa-map-marker text-orange"></i><small style="color: #a09e9e"><b> Vị trí hiện tại của bạn: </b></small><small style="color: #a09e9e" id="user_physical_location"><i>Bạn đã tắt chức năng chia sẽ vị trí của mình trên trình duyệt.</i></small>
+					</div>
+				</div>
+				<div style="border-bottom: 2px solid #ccc;" class="divider"></div>
+			</div>
+
+			<div class="col-md-4">
+				<div id="side-bar">
+					<div id="not_allow_advance_search"></div>
+					<p class="title">TÌM KIẾM KẾT QUẢ THEO BỘ LỌC</p>
+					<div class="divider"></div>
+
+					<div class="filter-1">
+						<p class="filter-name">SẴN SÀNG CHO BẠN</p>
+						<div style="position: relative;">
+							<i style="position: absolute;z-index: 1000; top: 30%;left: 12px;color: #777;" class="fa fa-calendar"></i>
+							<input onkeypress="inputNothing(event)" style="padding-left: 30px" maxlength="10" type="text" id="date_to_appointment" class="form-control date" placeHolder="Theo ngày">
+						</div>
+					<!-- <p></p>
+					<select class="form-control">
+						<option selected="" value="" disabled>Theo giờ</option>
+					</select> -->
+				</div>
+				<div class="divider"></div>
+
+				<div class="filter-2">
+					<p class="filter-name">TÔI MUỐN ĐẶT THEO</p>
+					<div class="item-filter2">
+						<input type="radio" value="0" id="appointment_type_booking" name="buying_type"> 
+						<label for="appointment_type_booking">Lựa chọn theo ngày giờ</label>
+						<span class="pull-right badge">0</span>
+					</div>
+					<div class="item-filter2">
+						<input type="radio" value="1" id="voucher_type_booking" name="buying_type"> 
+						<label for="voucher_type_booking">Voucher</label>
+						<span class="pull-right badge">0</span>
+					</div>
+					<div class="item-filter2">
+						<input type="radio" value="2" id="all_type_booking" name="buying_type" checked="checked"> 
+						<label for="all_type_booking">Tất cả</label>
+					</div>
+				</div>
+				<div class="divider"></div>
+				
+				<div id="city_id_advance_field">
+					<div class="filter-3">
+						<p class="filter-name">ĐỊA ĐIỂM</p>
+						<select id="city_id_advance" class="form-control">
+							<option selected="selected" value="">Thành Phố...</option>
+						</select>
+						<select id="district_id_advance" class="form-control">
+							<option selected="selected" value="">Quận...</option>
+						</select>
+					</div>
+					<div class="divider"></div>
+				</div>
+				
+
+				<div class="filter-4">
+					<p class="filter-name">LOẠI DỊCH VỤ</p>
+					<div id="service_type">
+						<!-- <div>
+							<input id="filter-4-1" type="radio" name="service_type"> 
+							<label for="filter-4-1">Vệ sinh móng</label>
+							<span class="pull-right badge">24</span>
+						</div>
+						<a href="#">>>> Xem thêm loại dịch vụ khác (7)</a> -->
+					</div>
+				</div>
+				<div class="divider"></div>
+				
+				<div class="filter-4">
+					<p class="filter-name">DỊCH VỤ</p>
+					<div id="service">
+						<!-- <div>
+							<input id="filter-4-1" type="checkbox" name="service"> 
+							<label for="filter-4-1">Vệ sinh móng</label>
+							<span class="pull-right badge">24</span>
+						</div>
+						<a href="#">>>>Xem thêm dịch vụ khác (7)</a> -->
+					</div>
+				</div>
+				<div class="divider"></div>
+				
+				<!-- <div class="filter-5">
+					<p class="filter-name">SẢN PHẨM</p>
+					<div>
+						<input id="filter-5-1" type="checkbox" name=""> 
+						<label for="filter-5-1">Đính đá</label>
+						<span class="pull-right badge">24</span>
+					</div>
+					<div>
+						<input id="filter-5-2" type="checkbox" name=""> 
+						<label for="filter-5-2">Móng giả</label>
+						<span class="pull-right badge">24</span>
+					</div>
+					<a href="#">>>> Thêm sản phẩm khác (7)</a>
+				</div>
+				<div class="divider"></div> -->
+
+				<div class="filter-6">
+					<p class="filter-name">KHOẢNG GIÁ</p>
+					<div class="row">
+						<!-- div class="col-md-12 text-center"><span class="sv_loc_text"><span id="price_change">0</span> - 5,000,000 vnđ<span></div -->
+						<!-- div class="col-md-12"><input type="range" value="0" name="price_range" id="price_range" /></div -->
+						<!-- imtoantran add max price filter -->
+						<!-- div class="col-md-12">
+							<!-- input class="range-slider" type="text" value="0, <?php print $this->MAX_PRICE; ?> " name="price_ranges" id="price_range" / -->
+						<!-- /div -->
+						<div class="col-xs-12">
+							<div class="row" data-toggle='tooltip' title="Nhập giá và nhấn enter để lọc theo giá">
+								<div class="col-xs-6">
+									<div class="col-xs-4 remove-padding"><button class="btn btn-brown">Từ</button></div>
+									<div class="input-group spinner col-xs-8 remove-padding">									
+										<input type="text" id="price-from" class="form-control" value="0">
+									</div>									
+								</div>
+								<div class="col-xs-6 remove-padding">
+									<div class="col-xs-4 remove-padding"><button class="btn btn-brown">Đến</button></div>
+									<div class="input-group col-xs-7 remove-padding">										
+										<input type="text" id="price-to" class="form-control" value="<?php print $this->MAX_PRICE; ?>">
+									</div>
+									
+								</div>
+							</div>
+						</div>
+						<!-- imtoantran add max price filter -->
+					</div>
+				</div>
+				<br />
+				<br />
+			</div>
+			
+			<div class="sidebar-image" align="center" class="clearfix">
+				<img width="100%" style="min-height: 350px" class="img-responsive" alt="Responsive image" src="<?php echo ASSETS; ?>img/Trang cac dia diem cho 1 dv_banner doc 1.jpg">
+			</div>
+			<div class="sidebar-image" align="center">
+				<img width="100%" style="min-height: 350px" class="img-responsive" alt="Responsive image" src="<?php echo ASSETS; ?>img/Trang cac dia diem cho 1 dv_banner doc 2.jpg">
+			</div>
+		</div>
+
+	</div>
+
+	<div id="public" class="clearfix">
+		<p class="title">- CỘNG ĐỒNG -</p>
+		<div class="col-md-2"></div>
+		<div class="col-sm-4 col-md-2 public-item-1" style="position: relative">
+			<img width="100%" class="image img-responsive" src="<?php echo ASSETS; ?>img/Trang cac dia diem cho 1 dv_bai viet.jpg">
+			<h4 style="position: absolute; right: 15%;bottom: 32%" class="text-orange"><b>BÀI VIẾT</b></h4>
+			<div class="description">
+				Công nghệ hại điện tại salon Mỹ Nhệ và các dịch vụ tâm điểm...
+			</div>
+			<div class="clearfix">
+				<a class="pull-right read-more" href="#">XEM THÊM </a>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-sm-4 col-md-2 public-item-3" style="position: relative">
+			<img width="100%" class="img-responsive" src="<?php echo ASSETS; ?>img/Trang cac dia diem cho 1 dv_cau hoi.jpg">
+			<h4 style="position: absolute; right: 15%;bottom: 32%" class=""><b>CÂU HỎI</b></h4>
+			<div class="description">
+				Công nghệ hại điện tại salon Mỹ Nhệ và các dịch vụ tâm điểm...
+			</div>
+			<div class="clearfix">
+				<a class="pull-right read-more" href="#">XEM THÊM </a>
+			</div>
+		</div>
+		<div class="col-md-1"></div>
+		<div class="col-sm-4 col-md-2 public-item-3 text-center" style="position: relative">
+			<img width="100%" class="img-responsive" src="<?php echo ASSETS; ?>img/Trang cac dia diem cho 1 dv_danh gia.jpg">
+			<h4 style="position: absolute; right: 15%;bottom: 20%" class="text-white"><b>ĐÁNH GIÁ</b></h4>
+			<div class="description">
+				<i class="fa fa-lg fa-star text-white"></i>
+				<i class="fa fa-lg fa-star text-white"></i>
+				<i class="fa fa-lg fa-star text-white"></i>
+				<i class="fa fa-lg fa-star text-white"></i>
+				<i class="fa fa-lg fa-star text-white"></i>
+			</div>
+			<div class="clearfix">
+				<a class="pull-right read-more" href="#">XEM ĐÁNH GIÁ </a>
+			</div>
+		</div>
+		<div class="col-md-2"></div>
+	</div>
+	<!-- Modal show map -->
+	<div id="location_map_info" class="modal fade" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog modal-lg">
+			<div class="modal-content" style="border-radius:0;">
+				<div class="modal-header" style="background-color: #FDBD0E; padding: 6px 10px;">
+					<button type="button" class="close" data-dismiss="modal"><span aria-hidden="true">&times;</span><span class="sr-only">Close</span></button>
+					<h4 class="modal-title" id="myModalLabel">
+						<strong><i class="fa fa-map-marker" style="font-size:16px;"></i> BẢN ĐỒ ĐỊA ĐIỂM</strong> 
+					</h4>
+				</div>
+				<div class="modal-body">
+					<div id="location_map" style="height: 400px; width: 100%;">
+					</div>
+					<br />
+					<div class="row">
+						<div class="col-md-3"><small><b>Khoảng cách: </b></small><small id="distance_map"></small></div>
+						<div class="col-md-9"><small><b id="user_business_name_map"></b></small><small id="user_address"></small></div>
+					</div>
+					<div class="row">
+						<div class="col-md-3"><small><b>Thời gian đi: </b></small><small id="duration_map"></small></div>
+						<div class="col-md-9"><small><b>Vị trí hiện tại của bạn: </b></small><small id="current_address"></small></div>
+					</div>
+					<div class="divider" style="border-bottom: 1px solid #ccc;"></div>
+					<div class="row">
+						<div class="col-md-12 pull-right"><button type="button" class="btn btn-orange-black pull-right" data-dismiss="modal">Đóng</button></div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<!-- End modal show map -->
+</div>
+<script>
+	var SERVICE_NAME = "<?php echo $this -> service; ?>";
+	var DISTRICT_ID = "<?php if(isset($this -> location)){echo $this -> location;}else{echo "";} ?>";
+	var CITY_ID = "<?php echo $this -> city; ?>";
+	var PARAM_FROM_MENU_HOME = "<?php echo $this -> param_from_m_h; ?>";
+	var TOTAL_PAGE = 0;
+	var CURRENT_PAGE = 1;
+	var REVIEW_RESULT = 0;
+	var RESULT_PER_SHOW_MORE = "<?php echo RESULT_PER_SHOW_MORE; ?>";
+	var XCURR = 0;
+	var YCURR = 0;
+	var XLOC = '';
+	var YLOC = '';
+	var USER_ADDRESS_1 = '';
+	var USER_ADDRESS_2 = '';
+	var SERVICE_TYPE_SEARCH = '';
+	var SERVICE_SEARCH = '';
+	var PRICE_SEARCH = 1000000;
+	var PRICE_SEARCH_LOW = 0;
+	var USE_EVOUCHER = 2;
+	var BOOKING_DATE = '';
+	var USER_LIMIT_BEFORE_BOOKING = '';
+	var CHOOSEN_DATE_ACTIVE = '';
+	var USER_BUSINESS_NAME = '';
+	var USER_ADDRESS = '';
+	var USER_ADDRESS_2_TEMP = '';
+	var INITLOAD = 1;
+	var MAX_PRICE = <?php print $this->MAX_PRICE; ?>;
+	// var DISTANCE = '';
+	// var DURATION = '';
+	// var DISTRICT_ID_SEARCH = '';
+</script>

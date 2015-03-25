@@ -1,0 +1,21 @@
+#error{
+  margin: 50px;
+
+}
+#error .title{font-size: 1.4em; background-color: #ffcc00;
+font-weight: bold;
+padding: 5px;}
+#error a{
+  margin-left: 25px;
+  font-weight: bold;
+  font-size: 1.5em;
+}
+#error .error-content{
+  margin: auto;
+width: 800px;
+text-align: center;
+  shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  box-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+  webkit-shadow: 0px 2px 5px 0px rgba(0, 0, 0, 0.3);
+}
+

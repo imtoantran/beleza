@@ -1,0 +1,26 @@
+b, strong{
+	font-weight: bold;
+}
+
+h3{
+	font-size: 24px;
+	margin-bottom: 5px;
+}
+
+.pointer{
+	cursor: pointer;
+}
+
+tbody tr td{
+	cursor: pointer;
+}
+.gift-voucher-detail .form-group label{
+	font-weight: 600;
+
+}
+.gift-voucher-detail .form-group div>span{
+	color: #888;
+	line-height: 30px;
+
+}
+.greenText{ background-color:green; }

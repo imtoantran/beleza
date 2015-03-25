@@ -1,0 +1,54 @@
+table {
+	width: 100% !important;
+}
+table td{
+	white-space: nowrap;
+	overflow: hidden;
+}
+table thead td,table tfoot td{
+	font-weight: bold;
+}
+
+/**************************/
+ul.dropdown-menu-fix {
+	font-size: inherit !important;
+	border-radius: 0 !important;
+	margin: 0 !important;
+}
+
+#evouchers .reports-evouchers {
+     bottom: 0px;
+     left: 0px;
+     min-height: 80px;
+     position: absolute;
+     right: 0px;
+     top: 0px;
+     z-index: 10;
+}
+
+#evouchers .home-filters {
+     background: none repeat scroll 0% 0% #eaebe4;
+     border-bottom: 1px solid #c3c4bc;
+     border-top-left-radius: 6px;
+     border-top-right-radius: 6px;
+     height: 32px;
+}
+
+
+#evouchers .home-data {
+     background: none repeat scroll 0 0 #ffffff;
+    bottom: 0;
+    left: 0;
+    overflow: auto;
+    padding: 20px;
+    position: absolute;
+    right: 0;
+    top: 31px;
+}
+
+#evouchers .home-data table th {
+     font-size: 13px;
+     line-height: 14px;
+     padding: 6px 8px 2px;
+     vertical-align: middle;
+}

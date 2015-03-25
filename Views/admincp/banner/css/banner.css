@@ -1,0 +1,93 @@
+body{
+	overflow: visible;
+}
+b, strong{
+	font-weight: bold;
+}
+
+h3{
+	font-size: 24px;
+}
+.add-place{
+	font-size: 24px;
+}
+.title-admincp{
+	font-size: 24px;
+	margin-bottom: 5px;
+}
+tbody tr td{
+	cursor: pointer;
+}
+.wrap{
+	position: absolute;
+	display: block;
+	padding: 20px;
+	width: 100%;
+	min-height: 100%;
+	overflow: auto !important;
+}
+.slider-container{
+	margin: 50px 0 0 0;
+	padding:0;
+	width: 100%;
+}
+.rs-preview{
+	display: block;
+	width: 100%;
+	height: 100%;
+	margin: 0;
+	background-size: 100% !important;
+	background-position: center top;
+	position: relative;
+	overflow: hidden;
+}
+#layer_list{
+	padding: 10px 0 0 10px;
+}
+#layer_list ul{
+	padding: 5px 0;
+}
+#sort_list li{
+	margin: 5px 0;
+	padding: 5px;
+	background: #ccc;	
+	cursor: move;
+}
+.ui-draggable{
+	cursor: move;
+}
+#layer-content{
+	padding: 5px;
+}
+#layer_style{
+	width: 150px;
+}
+.button.btn-close {
+	padding: 2px 6px 2px 6px;
+	cursor: pointer;
+	border: 2px solid #FFFFFF;
+	-webkit-appearance: none;
+	background-color: #FDBD0E;
+	border-radius: 50%;
+	color: #FFFFFF;
+	position: absolute;
+	right: -12px;
+	top: -12px;
+	opacity: 1;
+}
+.layer-selected:before{
+	content: "...";
+	top:-22px;
+	height: 20px;
+	display: block;
+	position: absolute;
+	color: white;
+	font-size: 20px;
+	z-index: 100;
+}
+.layer-selected div{
+	box-shadow:0 0 15px #f00;
+}
+table td{
+	vertical-align: middle !important;
+}

@@ -1,0 +1,39 @@
+small.payment_text{
+	color: #646463;
+    display: block;
+    font-size: 0.6875em;
+    line-height: 1em;
+    margin-bottom: 0.45455em;
+    text-transform: uppercase;
+}
+i.payment_type_choosen{
+	color: #FDBD0E;
+}
+/*  Payment - Hoa   */
+/*
+div.head-payment-online{background-color: #ffcc00; padding: 5px; margin-top: 5px;}
+div.title-payment-online, .icon-payment-plus-minus{font-weight: bold; cursor: pointer; transition: 0.4s;}
+div.title-payment-online:hover , .icon-payment-plus-minus:hover{ color:#fff; transition: 0.3s;}
+.body-payment-online{border: 1px solid #ffcc00; padding: 30px 10px; display: none;}
+.body-payment-online button{ border:1px solid #fff; background:0; padding: 10px; color: #afafaf;}
+.body-payment-online button:hover{border-color: #dfdfdf; color: #4f4f4f;}*/
+
+
+div#payment-wrap{border: 1px solid #eee; background-color: #f5f5f5; padding: 10px; margin-bottom: 10px}
+/*div#payment-wrap .row{margin-bottom: 40px}*/
+div#payment-wrap .payment-item-btn{ 
+	font-size: 4em; height: 60px; line-height: 50px; padding: 0 8px; border-radius: 2px; border: 1px solid #d7d7d7;
+	transition: background-color 0.4s ease; 	
+	-webkit-transition: background-color 0.4s ease; 
+	-moz-transition: background-color 0.4s ease; 
+}
+div#payment-wrap .payment-item-btn:hover{
+	background-color: #ffcc00; border-color: #EFC622; box-shadow: 1px 2px 2px #ddd;
+	
+}
+div#payment-wrap .payment-item-btn img{margin-bottom: 5px;}
+div#payment-wrap .payment-item-wrap .payment-title{padding-top: 5px;}
+
+
+
+/*End Payment - Hoa*/

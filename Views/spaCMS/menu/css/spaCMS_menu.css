@@ -1,0 +1,10 @@
+
+#s2id_select2_addService, #s2id_select2_editService {
+	font-weight: bold;
+	font-size: 18px;
+}
+
+.input_usbl {
+	width: 60px;
+	padding-left: 2px;
+}

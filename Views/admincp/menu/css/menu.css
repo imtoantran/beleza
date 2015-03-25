@@ -1,0 +1,14 @@
+.title-admincp{font-weight: bold; color: #4f4f4f; margin: 5px 5px 10px 5px; font-size: 1.3em;}
+.content-menu-title{font-size: 1.4em;font-weight: bold;color: #ffcc00;text-align: center;}
+td.mn-lv1{background-color: #fbebab!important;}
+td.mn-lv2{background-color: #fbc4ab!important;}
+td.mn-lv3{background-color: #b5eef9!important;}
+td.item-menu-title{color:#4f4f4f; font-weight: bold;}
+#menu_list thead tr th{font-weight: bold; color:#6fb2c0; }
+
+/*LIST IMAGES*/
+div.wrap-list-img{postion:fixed; background-color: #fff; border:5px solid #ffcc00; width: 100%;}
+div#content-list-img{overflow: auto; height: 550px; bottom: 10px!important; top:0;bottom:0;}
+img.img-menu {padding: 5px; margin:30px; width: 200px; height: 200px; border: 1px solid #cfcfcf;}
+img.img-menu:hover{border-color: #ffcc00;}
+/*END LIST IMAGES*/

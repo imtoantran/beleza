@@ -1,0 +1,2712 @@
+/* imtoantran remove html tags */
+var r = /(<([^>]+)>)/ig;
+var UID = '';
+/* imtoantran remove html tags */
+
+$(document).ready(function() {
+	loadMenu();
+	loadCity();
+	// loadMenuHome();
+	$('#user_description_see_more').on('click', function() {
+		$('#user_description').css({
+			'white-space' : 'normal',
+			'overflow' : 'auto'
+		});
+		$(this).hide();
+	});
+	$('#service_detail').on('hide.bs.modal', function() {
+		CHOOSEN_DATE = '';
+		CHOOSEN_DATE_STORE = '';
+		CHOOSEN_TIME = '';
+		CHOOSEN_PRICE = '';
+		WEEK_PAGE = 1;
+		$('#user_description').css({
+			'white-space' : 'nowrap',
+			'overflow' : 'hidden',
+		});
+		$('#user_description_see_more').show();
+		$('.map').animate({
+			height : 140
+		});
+		$('.map #user_latlng').animate({
+			height : 130
+		});
+		$('#show_more_map').text('Xem bản đồ lớn');
+	});
+	$('#service_detail').on('shown.bs.modal', function() {
+		var map;
+		initGoogleMap('user_latlng', USER_LAT, USER_LNG, 0);
+	});
+	/*LINK TO OTHER PAGE*/
+	$('#contact_link').click(function() {
+		jumpToOtherPage(URL + 'contact');
+	});
+	$('#about_us').click(function() {
+		jumpToOtherPage(URL + 'introbusiness');
+	});
+	$('#gift_voucher_link').click(function() {
+		jumpToOtherPage(URL + 'giftvoucher');
+	});
+	$('#newspaper').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	$('#recruit').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	$('#expert').click(function() {
+		jumpToOtherPage(URL + 'faq');
+	});
+	$('#total_care').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	$('#download_application').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	$('#authentication_voucher').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	$('#news').click(function() {
+		jumpToOtherPage(URL + 'pageBuilding');
+	});
+	// $('#create_place_modal').on('shown.bs.modal', function () {
+		// $('#district_field').html('<option value="" selected>Quận...</option>');
+		// $('#create_place_district').html('<option value="" selected>Quận...</option>');
+		// $('#city_field').html('<option value="" selected>Thành Phố...</option>');
+		// $('#create_place_city').html('<option value="" selected>Thành Phố...</option>');
+	// })
+	/*END LINK TO OTHER PAGE*/
+});
+/*LOAD MENU - DATABASE*/
+/*css: public/assets/css/home-page/hom-page.css*/
+function loadMenu() {
+	var mn = $('#bs-example-navbar-collapse-1');
+	var tag = "";
+	$.ajax({
+		url : URL + 'index/loadMenu',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			var level1 = getArrayMenu(response, 1);
+			var level2 = getArrayMenu(response, 2);
+			var level3 = getArrayMenu(response, 3);
+			tag += '<ul class="mn-lv1 nav navbar-nav navbar-left" style="font-weight: 600;">';
+			//level 1
+			$.each(level1, function(key1, value1) {
+				var class_first = (key1 == 0) ? 'first' : '';
+				var link_test1 = (value1.menu_link == "") ? "#" : value1.menu_link;
+				var test1 = hasChildTag(value1.menu_id, level2);
+
+				if (!test1) {
+					tag += '<li ' + class_first + '>';
+					tag += '<a class="ul-a-lv1" href="' + link_test1 + '"><i class="fa fa-dot-circle-o" style="font-size: 0.6em; vertical-align: middle;"></i> ';
+					tag += value1.menu_title;
+					tag += '</a>';
+				} else {
+					// if not background then add white background
+					//fix width background
+					var fix_ul = '';
+					var isbg = '';
+					var bg = '';
+					tag += '<li class="dropdown ' + class_first + '">';
+					tag += '<a  href="' + link_test1 + '" class="ul-a-lv1 dropdown-toggle" data-toggle="dropdown"><i class="fa fa-dot-circle-o" style="font-size: 0.6em; vertical-align: middle;"></i>  ' + value1.menu_title + '<span class="caret"></span></a>';
+
+					if (value1.menu_background == "") {
+						fix_ul = 'min-width: 230px!important;';
+						isbg = 'width: auto!important;';
+						bg = 'background-color: #fff;';
+					} else {
+						fix_ul = 'width: 80%!important;';
+						isbg = ' width: 540px!important;';
+						bg = 'background: url(' + value1.menu_background + ') right bottom no-repeat;';
+					}
+
+					tag += '<div class="dropdown-menu clearfix" role="menu" style="' + bg + ' ' + isbg + '">';
+					tag += '<span class="caret"></span>';
+					tag += '<ul style="' + fix_ul + '"  class="list-unstyled pull-left navbar-left mn-lv2">';
+					//level 2
+					$.each(level2, function(key2, value2) {
+						var link_test2 = (value2.menu_link == "") ? "#" : value2.menu_link;
+						var islink2 = (value2.menu_link == "") ? "nolink" : "";
+						var test2 = hasChildTag(value2.menu_id, level3);
+						if (value2.menu_parent == value1.menu_id) {
+							if (!test2) {
+								tag += '<li class="pull-left li-lv2">';
+								var iconfa = (value2.menu_icon == "") ? "fa fa-chevron-circle-right" : value2.menu_icon;
+								tag += '<i class="' + iconfa + '"></i>';
+								tag += '<a href="' + link_test2 + '" class="' + islink2 + '">';
+								tag += '<span>' + value2.menu_title + '</span>';
+								tag += '</a>';
+							} else {
+								tag += '<li class="group-name pull-left li-lv2">';
+								tag += '<i class="' + value2.menu_icon + '"> </i>';
+								tag += '<a href="' + link_test2 + '" class="' + islink2 + '"><span>' + value2.menu_title + '</span></a>';
+								tag += '<ul class="mn-lv3 list-unstyled">';
+								// level 3
+								$.each(level3, function(key3, value3) {
+									var link_test3 = (value3.menu_link == "") ? "#" : value3.menu_link;
+									if (value3.menu_parent == value2.menu_id) {
+										tag += '<li>';
+										tag += '<span>- </span>';
+										tag += '<a class="ul-a-lv3" href="' + link_test3 + '">';
+										tag += value3.menu_title;
+										tag += '</a>';
+										tag += '</li>';
+									}
+								});
+								//end level 3
+
+								tag += '<li class="divider"></li>';
+								tag += '</ul>';
+							}
+						}
+						tag += '</li>';
+					});
+					// end level2
+
+					tag += '</ul>';
+					tag += '<div>';
+				}
+				tag += '</li>';
+			});
+			tag += '</ul>';
+			mn.append(tag);
+		}
+	});
+	$('a.nolink').on('click', function(e) {
+		e.preventDefault();
+	});
+}
+
+function hasChildTag(parent, level) {
+	var t = false;
+	$.each(level, function(key, value) {
+		if (value.menu_parent == parent) {
+			t = true;
+		}
+	});
+	return t;
+}
+
+function getArrayMenu(response, level) {
+	var arr = [];
+	$.each(response, function($key, $value) {
+		if ($value.menu_level == level) {
+			arr.push(response[$key]);
+		}
+	});
+	return arr;
+}
+
+/*END LOAD MENU - DATABASE*/
+
+/*LOAD MENU HOME*/
+function loadMenuHome() {
+	$.ajax({
+		url : URL + 'index/loadMenuHome',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			if (response[0] != null) {
+				var html = '';
+				$.each(response, function(key, value) {
+					html += '<li class="dropdown">';
+					html += '<a href="#" class="dropdown-toggle" data-toggle="dropdown">&#149; ' + value.service_type_name_short + ' <span class="caret"></span></a>';
+					html += '<div class="dropdown-menu clearfix dropdown-menu-hair-background" role="menu">';
+					html += '<span class="caret"></span>';
+					html += '<ul class="list-unstyled pull-left">';
+					html += '<li class="group-name"><i class="fa-stack"><i class="fa fa-circle fa-stack-2x"></i><i class="fa ' + value.service_type_icon + ' fa-stack-1x text-white"></i></i> <span>' + value.service_type_name + '</span></li>';
+					html += '<li style="width: 50%" class="divider"></li>';
+					$.each(value.service_detail, function(i, item) {
+						html += '<li class="m_h_service_name"><a href="' + URL + 'servicelocation/searchLocation?s=&l=&mh=' + item.service_id + '">' + item.service_name + '</a></li>';
+						// html += '<li style="width: 50%" class="divider"></li>';
+					});
+					html += '</ul>';
+				});
+				$('#menu_home').html(html);
+			}
+		},
+		complete : function() {
+
+		}
+	});
+}
+
+/*END LOAD MENU HOME*/
+
+/*FB LOGIN*/
+function loginFB() {
+	$.ajax({
+		url : URL + 'fblogin/loginFB',
+		type : 'post',
+		success : function(response) {
+			window.location.assign(response);
+		},
+		complete : function(r) {
+
+
+		}
+	});
+}
+
+/*END FB LOGIN*/
+/*-----------------------*/
+
+/*LOAD CITY*/
+function loadCity() {
+	$.ajax({
+		url : URL + 'index/loadCity',
+		type : 'post',
+		dataType : 'json',
+		async: true,
+		success : function(response) {
+			if (response[0] != null) {
+				var html = '';
+				var html_2 = '';
+				$.each(response, function(key, value) {
+					html += '<option value="' + value.city_id + '">' + value.city_name + '</option>';
+				});
+				$('#city_field').append(html);
+				$('#create_place_city').append(html);
+				$.each(response, function(key, value) {
+					html_2 += '<option style="display: none;" value="' + value.city_id + '">' + value.city_name + '</option>';
+				});
+				$('#city_id_advance').append(html_2);
+			}
+		},
+		complete : function() {
+			//console.log($('#city_field option'));
+			$('#city_field, #city_id_advance').on('click', function() {
+				if ($(this).val() != '') {
+					//$('#district_field').attr('disabled', false);
+					loadDistrict($(this).val());
+				} else {
+					//$('#district_field').attr('disabled', false);
+					$('#district_field').html('<option value="" selected>Quận...</option>');
+					// $('#create_place_district').html('<option value="" selected>Quận...</option>');
+				}
+			});
+			$('#create_place_city').on('click', function() {
+				if ($(this).val() != '') {
+					//$('#district_field').attr('disabled', false);
+					loadDistrictPlace($(this).val());
+				} else {
+					//$('#district_field').attr('disabled', false);
+					// $('#district_field').html('<option value="" selected>Quận...</option>');
+					$('#create_place_district').html('<option value="" selected>Quận...</option>');
+				}
+			});
+		}
+	});
+}
+
+/*END LOAD CITY*/
+/*-----------------------*/
+
+/*LOAD DISTRICT*/
+function loadDistrict(city_id) {
+	$.ajax({
+		url : URL + 'index/loadDistrict',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			city_id : city_id,
+		},
+		success : function(response) {
+			if (response[0] != null) {
+				var html = '<option value="" selected>Quận...</option>';
+				var html_2 = '<option value="" selected>Quận...</option>';
+				$.each(response, function(key, value) {
+					html += '<option value="' + value.district_id + '">' + value.district_name + '</option>';
+				});
+				$('#district_field').html(html);
+				// $('#create_place_district').html(html);
+				// $.each(response, function(key, value) {
+				// html_2 += '<option style="display: none;" value="' + value.district_id + '">' + value.district_name + '</option>';
+				// });
+				$('#district_id_advance').html(html);
+			}
+		}
+	});
+}
+
+function loadDistrictPlace(city_id) {
+	$.ajax({
+		url : URL + 'index/loadDistrict',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			city_id : city_id,
+		},
+		success : function(response) {
+			if (response[0] != null) {
+				var html = '<option value="" selected>Quận...</option>';
+				var html_2 = '<option value="" selected>Quận...</option>';
+				$.each(response, function(key, value) {
+					html += '<option value="' + value.district_id + '">' + value.district_name + '</option>';
+				});
+				// $('#district_field').html(html);
+				$('#create_place_district').html(html);
+				// $.each(response, function(key, value) {
+				// html_2 += '<option style="display: none;" value="' + value.district_id + '">' + value.district_name + '</option>';
+				// });
+				// $('#district_id_advance').html(html);
+			}
+		}
+	});
+}
+
+/*END LOAD DISTRICT*/
+/*-----------------------*/
+
+/*LOAD CONCERN SERVICE LIST*/
+function loadConcernServiceList() {
+	if (CLIENT_ID != '') {
+		$.ajax({
+			url : URL + 'index/loadConcernServiceList',
+			type : 'post',
+			dataType : 'json',
+			data : {
+				client_id : CLIENT_ID
+			},
+			success : function(response) {
+				if (response[0] != null) {
+					$('#concern_service').show();
+					$('#concern_service_separate').show();
+					var html = '';
+					var index = 0;
+					$.each(response, function(key, value) {
+						var rating_value = parseFloat(value.star_review);
+						var head = parseInt(rating_value);
+						var tail = rating_value - head;
+						tail = Math.round(tail * 100) / 100;
+						var image_detail = value.user_service_image.split(',');
+						html += '<div class="col-sm-6 col-md-3 col-padding-5px concern_service_items" style="display : none;">';
+						html += '<div class="item">';
+						html += '<input class="user_service_id" name="user_service_id" type="hidden" value="' + value.user_service_id + '"/>';
+						html += '<div class="image" class="clearfix">';
+						html += '<img style="width: 100%; min-height: 180px; max-height: 180px" class="img-responsive" alt="Responsive image" src="' + image_detail[0] + '" />';
+						html += '</div>';
+						html += '<div class="col-md-4 remove-padding">';
+						html += '<span class="rating">';
+						for (var i = 1; i <= head; i++) {
+							html += '<i class="fa fa-star"></i>';
+						}
+						if (tail != 0) {
+							if (tail == 0.9) {
+								html += '<i class="fa fa-star"></i>';
+							} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+								html += '<i class="fa fa-star-half-empty"></i>';
+							} else if (tail == 0.1) {
+								html += '<i class="fa fa fa-star-o"></i>';
+							}
+							for (var j = head + 2; j <= 5; j++) {
+								html += '<i class="fa fa-star-o"></i>';
+							}
+						} else {
+							for (var j = head + 1; j <= 5; j++) {
+								html += '<i class="fa fa-star-o"></i>';
+							}
+						}
+						html += '</span></br>';
+						html += '<small class="count-rating">' + value.total_client_amount + ' lượt đánh giá</small>';
+						html += '</div>';
+						html += '<div class="price col-md-5">';
+						html += '<span>' + $.number(value.user_service_sale_price) + ' VNĐ</span>';
+						html += '</div>';
+						html += '<div class="sale-percent col-md-3">';
+						html += '<span>GIẢM ' + Math.floor((value.user_service_full_price - value.user_service_sale_price) / value.user_service_full_price * 100) + '%</span>';
+						html += '</div>';
+						html += '<div class="clearfix"></div>';
+						html += '<p align="center" class="name">' + value.user_service_name.toUpperCase() + '</p>';
+						// console.log(value.user_service_description);
+						html += '<p >' + shorten(value.user_service_description, 60) + '</p>';
+						html += '<div class="clearfix">';
+						html += '<button class="btn btn-xs btn-brown pull-right">';
+						html += '<i style="display:none;" class="waiting_booking_detail fa fa-refresh fa-spin"></i> BOOK NOW</button>';
+						html += '<a href="' + URL + 'servicelocation/searchLocation?s=' + value.service_type_name + '&l=&c=" class="service-similar pull-left">DỊCH VỤ TƯƠNG TỰ</a>';
+						html += '</div>';
+						html += '</div>';
+						html += '</div>';
+						index++;
+						if (index == 4) {
+							return false;
+						}
+					});
+					$('#concern_service_list').append(html);
+				} else {
+
+				}
+			},
+			complete : function() {
+				$('#waiting_for_concern_service').fadeOut(function() {
+					$('.concern_service_items').fadeIn();
+				});
+
+				$('.concern_service_items').on('click', function(e) {
+					if (e.target.className != 'service-similar pull-left') {
+						$(this).find('i.waiting_booking_detail').fadeIn();
+						USER_SERVICE_ID = $(this).find('.user_service_id').val();
+						//console.log(USER_SERVICE_ID);
+						loadServiceDetail(USER_SERVICE_ID);
+						//$(this).find('i.waiting_booking_detail').fadeOut();
+					}
+				});
+			}
+		});
+	}
+}
+
+/*END LOAD CONCERN SERVICE LIST*/
+
+/*LOAD TOP SERVICE LIST*/
+function loadTopServiceList() {
+	$.ajax({
+		url : URL + 'index/loadTopServiceList',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			//console.log(response);
+			// console.log(CHOOSEN_DATE);
+			// console.log(CHOOSEN_TIME);
+			// console.log(CHOOSEN_PRICE);
+			// console.log(USER_SERVICE_ID);
+
+			var html = '';
+			$.each(response, function(key, value) {
+				var rating_value = parseFloat(value.star_review);
+				var head = parseInt(rating_value);
+				var tail = rating_value - head;
+				tail = Math.round(tail * 100) / 100;
+				// var round_tail = tail * 10;
+				html += '<div class="col-sm-6 col-md-4 top_service_items" style="display : none;">';
+				html += '<div class="item">';
+				html += '<input class="user_service_id" name="user_service_id" type="hidden" value="' + value.user_service_id + '"/>';
+				html += '<p align="center" class="name">';
+				html += value.user_service_name.toUpperCase();
+				html += '</p>';
+				html += '<div class="clearfix svl-01">';
+				html += '<span class="rating pull-left">';
+				for (var i = 1; i <= head; i++) {
+					html += '<i class="fa fa-star"></i>';
+				}
+				if (tail != 0) {
+					if (tail == 0.9) {
+						html += '<i class="fa fa-star"></i>';
+					} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+						html += '<i class="fa fa-star-half-empty"></i>';
+					} else if (tail == 0.1) {
+						html += '<i class="fa fa fa-star-o"></i>';
+					}
+					for (var j = head + 2; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+					}
+				} else {
+					for (var j = head + 1; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+					}
+				}
+				var image_detail = value.user_service_image.split(',');
+				html += '</span>';
+				html += '<span class="count-rating pull-right">';
+				html += value.total_client_amount + ' lượt đánh giá';
+				html += '</span>';
+				html += '</div>';
+				html += '<div class="image" class="clearfix">';
+				html += '<img style="width: 100%; min-height: 200px; max-height: 200px" class="img-responsive" alt="Responsive image" src="' + image_detail[0] + '" />';
+				html += '</div>';
+				html += '<div class="clearfix">';
+				html += '<span class="price pull-left">' + $.number(value.user_service_sale_price) + ' VNĐ</span>';
+				html += '<span class="sale-percent pull-right"> <i class="fa fa-arrow-down"></i>' + ' GIẢM ' + Math.floor((value.user_service_full_price - value.user_service_sale_price) / value.user_service_full_price * 100) + '%</span>';
+				html += '</div>';
+				html += '<p >' + shorten(value.user_service_description.replace(r, ""), 120);
+				html += '</p>';
+				html += '<div class="clearfix">';
+				html += '<button class="btn btn-sm btn-orange pull-right book-now-btn">';
+				html += '<i style="display:none;" class="waiting_booking_detail fa fa-refresh fa-spin"></i> BOOK NOW';
+				html += '</button>';
+				html += '<a href="' + URL + 'servicelocation/searchLocation?s=' + value.service_type_name + '&l=&c=" class="service-similar pull-left">DỊCH VỤ TƯƠNG TỰ</a>';
+				html += '</div>';
+				html += '</div>';
+				html += '</div>';
+			});
+			if (response[0] != null) {
+				$('#error_top_ser_loading').remove();
+				$('#top_service').append(html);
+			} else {
+				$('#top_service').append('<div id="error_top_ser_loading" style="color : #A1A1A1;display : none" class="text-center"><h4>Xin lỗi quý khách, hiện không có dịch vụ nào cả!</h4></div>');
+				setTimeout(function() {
+					$('#error_top_ser_loading').fadeIn();
+				}, 600);
+			}
+		},
+		complete : function() {
+			$('#waiting_for_top_service').fadeOut(function() {
+				$('.top_service_items').fadeIn();
+			});
+
+			$('.top_service_items').on('click', function(e) {
+				if (e.target.className != 'service-similar pull-left') {
+					$(this).find('i.waiting_booking_detail').fadeIn();
+					USER_SERVICE_ID = $(this).find('.user_service_id').val();
+					//console.log(USER_SERVICE_ID);
+					loadServiceDetail(USER_SERVICE_ID);
+					//$(this).find('i.waiting_booking_detail').fadeOut();
+				}
+			});
+		}
+	});
+}
+
+/*END LOAD TOP SERVICE LIST*/
+/*-----------------------*/
+
+/*LOAD NEW SERVICE LIST*/
+function loadNewServiceList() {
+	$.ajax({
+		url : URL + 'index/loadNewServiceList',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			//console.log(response);
+			// console.log(CHOOSEN_DATE);
+			// console.log(CHOOSEN_TIME);
+			// console.log(CHOOSEN_PRICE);
+			// console.log(USER_SERVICE_ID);
+			var html = '';
+			$.each(response, function(key, value) {
+				var rating_value = parseFloat(value.star_review);
+				var head = parseInt(rating_value);
+				var tail = rating_value - head;
+				tail = Math.round(tail * 100) / 100;
+				var image_detail = value.user_service_image.split(',');
+				html += '<div class="col-sm-6 col-md-3 col-padding-5px new_service_items" style="display : none;">';
+				html += '<div class="item">';
+				html += '<input class="user_service_id" name="user_service_id" type="hidden" value="' + value.user_service_id + '"/>';
+				html += '<div class="image" style="height:140px;overflow:hidden;" class="clearfix">';
+				// html += '<img style="width: 100%; min-height: 180px; max-height: 180px" class="img-responsive" alt="Responsive image" src="' + image_detail[0] + '" />';
+				html += '<img class="img-responsive img" style="min-height:100%" alt="Responsive image" src="' + image_detail[0] + '" />';
+				html += '</div>';
+				html += '<div class="col-md-4 remove-padding">';
+				html += '<span class="rating">';
+				for (var i = 1; i <= head; i++) {
+					html += '<i class="fa fa-star"></i>';
+				}
+				if (tail != 0) {
+					if (tail == 0.9) {
+						html += '<i class="fa fa-star"></i>';
+					} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+						html += '<i class="fa fa-star-half-empty"></i>';
+					} else if (tail == 0.1) {
+						html += '<i class="fa fa fa-star-o"></i>';
+					}
+					for (var j = head + 2; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+					}
+				} else {
+					for (var j = head + 1; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+					}
+				}
+				html += '</span></br>';
+				html += '<small class="count-rating">' + value.total_client_amount + ' lượt đánh giá</small>';
+				html += '</div>';
+				html += '<div class="price col-md-5">';
+				html += '<span>' + $.number(value.user_service_sale_price) + ' VNĐ</span>';
+				html += '</div>';
+				html += '<div class="sale-percent col-md-3">';
+				html += '<span>GIẢM ' + Math.floor((value.user_service_full_price - value.user_service_sale_price) / value.user_service_full_price * 100) + '%</span>';
+				html += '</div>';
+				html += '<div class="clearfix"></div>';
+				html += '<p align="center" class="name">' + value.user_service_name.toUpperCase() + '</p>';
+				html += '<p >' + shorten(value.user_service_description, 60) + '</p>';
+				html += '<div class="clearfix">';
+				html += '<button class="btn btn-xs btn-brown pull-right">';
+				html += '<i style="display:none;" class="waiting_booking_detail fa fa-refresh fa-spin"></i> BOOK NOW</button>';
+				html += '<a href="' + URL + 'servicelocation/searchLocation?s=' + value.service_type_name + '&l=&c=" class="service-similar pull-left">DỊCH VỤ TƯƠNG TỰ</a>';
+				html += '</div>';
+				html += '</div>';
+				html += '</div>';
+			});
+			if (response[0] != null) {
+				$('#error_new_ser_loading').remove();
+				$('#new_service').append(html);
+			} else {
+				$('#new_service').append('<div id="error_new_ser_loading" style="color : #A1A1A1;display : none" class="text-center"><h4>Xin lỗi quý khách, hiện không có dịch vụ nào cả!</h4></div>');
+				setTimeout(function() {
+					$('#error_new_ser_loading').fadeIn();
+				}, 600);
+			}
+		},
+		complete : function() {
+			$('#waiting_for_new_service').fadeOut(function() {
+				$('.new_service_items').fadeIn();
+			});
+
+			$('.new_service_items').on('click', function(e) {
+				if (e.target.className != 'service-similar pull-left') {
+					$(this).find('i.waiting_booking_detail').fadeIn();
+					USER_SERVICE_ID = $(this).find('.user_service_id').val();
+					//console.log(USER_SERVICE_ID);
+					loadServiceDetail(USER_SERVICE_ID);
+					//$(this).find('i.waiting_booking_detail').fadeOut();
+				}
+			});
+		}
+	});
+}
+
+/*END LOAD NEW SERVICE LIST*/
+/*-----------------------*/
+
+/*LOAD LOCATION*/
+function loadLocation() {
+	$.ajax({
+		url : URL + 'index/loadLocation',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			if (response[0] != null) {
+				var html = '';
+				/* imtoanran edit to add css effect on latest location */
+				$.each(response, function(key, value) {
+					html += '<div class="col-sm-6 col-md-3 remove-padding new_location_items" style="display : none;">';
+					html += '<div class="new_location_items">';
+					html += '<img class="image img-responsive" alt="Responsive image" src="' + value.user_logo + '" >';
+					html += '<div class="info">';
+					html += '<div class="info-content clearfix">';
+					html += '<div class="name">';
+					html += value.user_business_name;
+					html += '</div>';
+					html += '<div><p>';
+					/* imtoantran remove html tags */
+					html += shorten(value.user_description.replace(r, ""), 85);
+					/* imtoantran remove html tags */
+					html += '</p></div>';
+					html += '<a class="btn btn-orange btn-xs pull-right" href="' + URL + 'service/servicePlace/' + value.user_id + '">Xem thêm</a>';
+					html += '</div>';
+					html += '</div>';
+					//html += '</img>';
+					html += '</div>';
+					html += '</div>';
+				});
+				$('#error_new_loc_loading').remove();
+				$('#new_location').append(html);
+			} else {
+				$('#new_location').append('<div id="error_new_loc_loading" style="color : #A1A1A1;display : none" class="text-center"><h4>Xin lỗi quý khách, hiện không có dịch vụ nào cả!</h4></div>');
+				setTimeout(function() {
+					$('#error_new_loc_loading').fadeIn();
+				}, 600);
+			}
+		},
+		complete : function() {
+			$('#waiting_for_new_location').fadeOut(function() {
+				$('.new_location_items').fadeIn();
+			});
+		}
+	});
+}
+
+/*END LOAD LOCATION*/
+/*-----------------------*/
+
+/*LOAD SERVICE DETAIL*/
+function loadServiceDetail(user_service_id) {
+	// console.log(CHOOSEN_DATE);
+	// console.log(CHOOSEN_TIME);
+	// console.log(CHOOSEN_PRICE);
+	// console.log(USER_SERVICE_ID);
+	// resetTab('online_booking_zone');
+
+	$.ajax({
+		url : URL + 'index/loadServiceDetail',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			user_service_id : user_service_id
+		},
+		success : function(response) {
+			if (response[0] != null) {
+				$('#service_detail_modal_body').show();
+				$('#error_service_detail_modal_body').hide();
+				//console.log(response);
+				USER_ID_2 = parseInt(response[0].user_id);
+				UID = USER_ID_2;
+				//console.log(USER_ID);
+				var user_open_hour_1 = '';
+				var user_open_hour_2 = '';
+				var separate_count = 0;
+				LIMIT_TIME_BEFORE_SERVICE = parseInt(response[0].user_limit_before_service);
+				var user_limit_before_booking = parseInt(response[0].user_limit_before_booking);
+				var day = '';
+				var date = '';
+				var month_year = '';
+				var this_month_year = '';
+				var day_of_week = parseInt(response[0].day_of_week);
+				TODAY_OF_WEEK = parseInt(response[0].day_of_week);
+				var day_of_month = parseInt(response[0].day_of_month);
+				TODAY_OF_MONTH = parseInt(response[0].day_of_month);
+				var total_days_current_month = '';
+				var year = parseInt(response[0].year);
+				TODAY_YEAR = parseInt(response[0].year);
+				TODAY_HOUR = parseInt(response[0].hour);
+				TODAY_MINUTE = parseInt(response[0].minute);
+				//console.log(TODAY_MINUTE);
+				var this_month;
+				var month = parseInt(response[0].month);
+				TODAY_MONTH = parseInt(response[0].month);
+				var month_in_year = [];
+				month_in_year[1] = 31;
+				month_in_year[2] = 28;
+				month_in_year[3] = 31;
+				month_in_year[4] = 30;
+				month_in_year[5] = 31;
+				month_in_year[6] = 30;
+				month_in_year[7] = 31;
+				month_in_year[8] = 31;
+				month_in_year[9] = 30;
+				month_in_year[10] = 31;
+				month_in_year[11] = 30;
+				month_in_year[12] = 31;
+				var month_in_sp_year = [];
+				month_in_sp_year[1] = 31;
+				month_in_sp_year[2] = 29;
+				month_in_sp_year[3] = 31;
+				month_in_sp_year[4] = 30;
+				month_in_sp_year[5] = 31;
+				month_in_sp_year[6] = 30;
+				month_in_sp_year[7] = 31;
+				month_in_sp_year[8] = 31;
+				month_in_sp_year[9] = 30;
+				month_in_sp_year[10] = 31;
+				month_in_sp_year[11] = 30;
+				month_in_sp_year[12] = 31;
+				var evou_html = '';
+				EVOUCHER_DUE_DATE = (response[0].evoucher_due_date);
+				USER_SERVICE_USE_EVOUCHER = parseInt(response[0].user_service_use_evoucher);
+				//console.log(month_in_sp_year);
+				for ( mon = 1; mon <= 12; mon++) {
+					if (mon == month) {
+						this_month = 'Tháng ' + mon;
+					}
+				}
+				var week = 1;
+				// month_year += '<span style="display:none" class="week_' + week + '"> ' + this_month.toUpperCase() + ', ';
+				// month_year += ' ' + year + ' </span>';
+				TOTAL_WEEK = week;
+				var days_order = 1;
+				for ( i = 1; i <= user_limit_before_booking; i++) {
+					if (day_of_month < 10) {
+						days_of_month = '0' + day_of_month;
+					} else {
+						days_of_month = day_of_month;
+					}
+					if (day_of_week == 8) {
+						day_of_week = 1;
+					}
+					if (days_order > 7) {
+						date += '<span day-data="' + day_of_week + '" value="' + year + '-' + month + '-' + day_of_month + '" class="week_' + week + '" style="display:none">' + days_of_month + '</span>';
+						if (day_of_week == 1) {
+							day += '<span class="week_' + week + '" style="display:none"><b>CN</b></span>';
+
+							month_year += '<span style="display:none" class="week_' + week + '"> ' + this_month.toUpperCase() + ', ';
+							month_year += ' ' + year + ' </span>';
+							week++;
+							TOTAL_WEEK = week;
+						} else if (day_of_week == 2) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T2</b></span>';
+						} else if (day_of_week == 3) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T3</b></span>';
+						} else if (day_of_week == 4) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T4</b></span>';
+						} else if (day_of_week == 5) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T5</b></span>';
+						} else if (day_of_week == 6) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T6</b></span>';
+						} else if (day_of_week == 7) {
+							day += '<span class="week_' + week + '" style="display:none"><b>T7</b></span>';
+						}
+					} else {
+						if (week == 1) {
+							date += '<span day-data="' + day_of_week + '" value="' + year + '-' + month + '-' + day_of_month + '" class="week_' + week + '">' + days_of_month + '</span>';
+							if (day_of_week == 1) {
+								day += '<span class="week_' + week + '"><b>CN</b></span>';
+
+								month_year += '<span class="week_' + week + '"> ' + this_month.toUpperCase() + ', ';
+								month_year += ' ' + year + ' </span>';
+								week++;
+								TOTAL_WEEK = week;
+							} else if (day_of_week == 2) {
+								day += '<span class="week_' + week + '"><b>T2</span>';
+							} else if (day_of_week == 3) {
+								day += '<span class="week_' + week + '"><b>T3</span>';
+							} else if (day_of_week == 4) {
+								day += '<span class="week_' + week + '"><b>T4</span>';
+							} else if (day_of_week == 5) {
+								day += '<span class="week_' + week + '"><b>T5</span>';
+							} else if (day_of_week == 6) {
+								day += '<span class="week_' + week + '"><b>T6</span>';
+							} else if (day_of_week == 7) {
+								day += '<span class="week_' + week + '"><b>T7</span>';
+							}
+						} else if (week == 2) {
+							date += '<span day-data="' + day_of_week + '" value="' + year + '-' + month + '-' + day_of_month + '" class="week_1 week_' + week + '">' + days_of_month + '</span>';
+							if (day_of_week == 1) {
+								day += '<span class="week_1 week_' + week + '"><b>CN</b></span>';
+
+								month_year += '<span style="display:none" class="week_' + week + '"> ' + this_month.toUpperCase() + ', ';
+								month_year += ' ' + year + ' </span>';
+								week++;
+								TOTAL_WEEK = week;
+							} else if (day_of_week == 2) {
+								day += '<span class="week_1 week_' + week + '"><b>T2</b></span>';
+							} else if (day_of_week == 3) {
+								day += '<span class="week_1 week_' + week + '"><b>T3</b></span>';
+							} else if (day_of_week == 4) {
+								day += '<span class="week_1 week_' + week + '"><b>T4</b></span>';
+							} else if (day_of_week == 5) {
+								day += '<span class="week_1 week_' + week + '"><b>T5</b></span>';
+							} else if (day_of_week == 6) {
+								day += '<span class="week_1 week_' + week + '"><b>T6</b></span>';
+							} else if (day_of_week == 7) {
+								day += '<span class="week_1 week_' + week + '"><b>T7</b></span>';
+							}
+						}
+					}
+					day_of_week++;
+					days_order++;
+					day_of_month++;
+					if ((year % 400 == 0) || (year % 4 == 0 && year % 100 != 0)) {
+						if (day_of_month > month_in_sp_year[month]) {
+							day_of_month = 1;
+							month++;
+							if (month > 12) {
+								month = 1;
+								year++;
+							}
+							for ( mon = 1; mon <= 12; mon++) {
+								if (mon == month) {
+									this_month = 'Tháng ' + mon;
+								}
+							}
+						}
+					} else {
+						if (day_of_month > month_in_year[month]) {
+							day_of_month = 1;
+							month++;
+							if (month > 12) {
+								month = 1;
+								year++;
+							}
+							for ( mon = 1; mon <= 12; mon++) {
+								if (mon == month) {
+									this_month = 'Tháng ' + mon;
+								}
+							}
+						}
+					}
+				}
+				month_year += '<span style="display:none" class="week_' + week + '"> ' + this_month.toUpperCase() + ', ';
+				month_year += ' ' + year + ' </span>';
+				$('#days_booking').children().html(day);
+				$('#date_booking').children().html(date);
+				$('#month_and_year').children().html('<span onclick="clickLastWeek()" id="last_week" class="glyphicon glyphicon-chevron-left pull-left dis-arm"></span>' + month_year + '<span onclick="clickNextWeek()" id="next_week" class="glyphicon glyphicon-chevron-right pull-right"></span>');
+				$.each(response[0], function(key, value) {
+					if (key == 'user_service_sale_price') {
+						USER_SERVICE_SALE_PRICE = value;
+						value = $.number(value);
+					}
+					if (key == 'user_service_duration') {
+						USER_SERVICE_DURATION = value;
+					}
+					if (key == 'user_business_name') {
+						USER_BUSINESS_NAME = value;
+					}
+					if (key == 'user_service_name') {
+						USER_SERVICE_NAME = value;
+					}
+					if (key == 'user_logo') {
+						$('img#user_logo').attr('src', value);
+					}
+					if (key == 'service_type_id') {
+						SERVICE_TYPE_ID = value;
+					}
+					if (key == 'user_id') {
+						$('#link_user_id').attr('href', URL + 'service/servicePlace/' + value);
+					}
+					$('#' + key).val(value);
+					if (key == "user_description") {
+						$('#' + key + ', .' + key).html(value);
+					} else {
+						$('#' + key + ', .' + key).text(value);
+					}
+					if (key == 'user_service_description') {
+						value = value.replace(/\r\n/g, '<br /><br /><b><u><i>');
+						value = value.replace(/:/g, '</i></u> : </b>');
+						$('#' + key + ', .' + key).html(value);
+					}
+					if (key == 'user_long') {
+						USER_LNG = value;
+					}
+					if (key == 'user_lat') {
+						USER_LAT = value;
+					}
+					if (key == 'user_notification_email') {
+						USER_EMAIL = value;
+					}
+					if (key == 'user_limit_booking') {
+						USER_BOOKING_LIMIT = value;
+					}
+					if (key == 'user_open_hour') {
+						json_user_open_hour = jQuery.parseJSON(value);
+						//console.log(json_user_open_hour);
+						$.each(json_user_open_hour, function(day, hour) {
+							separate_count++;
+							if (separate_count == '1') {
+								MON_OPEN_CLOSE['status'] = hour[0];
+								MON_OPEN_CLOSE['open'] = hour[1];
+								MON_OPEN_CLOSE['close'] = hour[2];
+								//console.log(MON_OPEN_CLOSE);
+							} else if (separate_count == '2') {
+								TUE_OPEN_CLOSE['status'] = hour[0];
+								TUE_OPEN_CLOSE['open'] = hour[1];
+								TUE_OPEN_CLOSE['close'] = hour[2];
+								//console.log(TUE_OPEN_CLOSE);
+							} else if (separate_count == '3') {
+								WED_OPEN_CLOSE['status'] = hour[0];
+								WED_OPEN_CLOSE['open'] = hour[1];
+								WED_OPEN_CLOSE['close'] = hour[2];
+								//console.log(WED_OPEN_CLOSE);
+							} else if (separate_count == '4') {
+								THU_OPEN_CLOSE['status'] = hour[0];
+								THU_OPEN_CLOSE['open'] = hour[1];
+								THU_OPEN_CLOSE['close'] = hour[2];
+								//console.log(THU_OPEN_CLOSE);
+							} else if (separate_count == '5') {
+								FRI_OPEN_CLOSE['status'] = hour[0];
+								FRI_OPEN_CLOSE['open'] = hour[1];
+								FRI_OPEN_CLOSE['close'] = hour[2];
+								//console.log(FRI_OPEN_CLOSE);
+							} else if (separate_count == '6') {
+								SAT_OPEN_CLOSE['status'] = hour[0];
+								SAT_OPEN_CLOSE['open'] = hour[1];
+								SAT_OPEN_CLOSE['close'] = hour[2];
+								//console.log(SAT_OPEN_CLOSE);
+							} else if (separate_count == '7') {
+								SUN_OPEN_CLOSE['status'] = hour[0];
+								SUN_OPEN_CLOSE['open'] = hour[1];
+								SUN_OPEN_CLOSE['close'] = hour[2];
+								//console.log(SUN_OPEN_CLOSE);
+							}
+							switch(day) {
+							case '2':
+								day = 'Thứ 2';
+								break;
+							case '3':
+								day = 'Thứ 3';
+								break;
+							case '4':
+								day = 'Thứ 4';
+								break;
+							case '5':
+								day = 'Thứ 5';
+								break;
+							case '6':
+								day = 'Thứ 6';
+								break;
+							case '7':
+								day = 'Thứ 7';
+								break;
+							case '8':
+								day = 'Chủ Nhật';
+								break;
+							}
+							if (separate_count > 3) {
+								if (hour[0] == 1) {
+									user_open_hour_2 += '<p><i>' + day + ' : từ ' + hour[1] + ' - ' + hour[2] + ' giờ</i></p>';
+								} else if (hour[0] == 0) {
+									user_open_hour_2 += '<p><i>' + day + ' : Nghỉ</i></p>';
+								}
+							} else {
+								if (hour[0] == 1) {
+									user_open_hour_1 += '<p><i>' + day + ' : từ ' + hour[1] + ' - ' + hour[2] + ' giờ</i></p>';
+								} else if (hour[0] == 0) {
+									user_open_hour_1 += '<p><i>' + day + ' : Nghỉ</i></p>';
+								}
+							}
+							if (hour[0] == 1) {
+								evou_html += '<span class="fa fa-check"></span>';
+
+							} else if (hour[0] == 0) {
+								evou_html += '<span class="fa fa-times"></span>';
+							}
+						});
+					}
+				});
+				//console.log(evou_html);
+				if (USER_SERVICE_USE_EVOUCHER == 0) {
+					jumbToTab('online_booking_zone');
+					$('#btn_online_booking_zone').attr('disabled', false);
+					$('#btn_evoucher_booking_zone').attr('disabled', true);
+				} else if (USER_SERVICE_USE_EVOUCHER == 1) {
+					jumbToTab('evoucher_booking_zone');
+					$('#btn_online_booking_zone').attr('disabled', true);
+					$('#btn_evoucher_booking_zone').attr('disabled', false);
+					$('#evoucher_expire div #evoucher_due_date').html('<strong>Ngày hết hạn eVoucher : </strong>' + formatDate(EVOUCHER_DUE_DATE));
+					var evoucher_quantity = '';
+					for ( i = 1; i <= parseInt(MAX_QUANTITY_EVOUCHER); i++) {
+						evoucher_quantity += '<option value="' + i + '">' + i + '</option>';
+					}
+					$('#e_quantity').html(evoucher_quantity);
+					$('#use_eVoucher').children().html(evou_html);
+				} else if (USER_SERVICE_USE_EVOUCHER == 2) {
+					jumbToTab('online_booking_zone');
+					$('#btn_online_booking_zone').attr('disabled', false);
+					$('#btn_evoucher_booking_zone').attr('disabled', false);
+					// var date = new Date(EVOUCHER_DUE_DATE);
+					// var due_month = date.getMonth();
+					// var due_date = date.getDate();
+					// if (date.getMonth() < 10) {
+					// due_month = '0' + date.getMonth();
+					// }
+					// if (date.getDate() < 10) {
+					// due_date = '0' + date.getDate();
+					// }
+					$('#evoucher_expire div #evoucher_due_date').html('<strong>Ngày hết hạn eVoucher : </strong>' + formatDate(EVOUCHER_DUE_DATE));
+					var evoucher_quantity = '';
+					for ( i = 1; i <= parseInt(MAX_QUANTITY_EVOUCHER); i++) {
+						evoucher_quantity += '<option value="' + i + '">' + i + '</option>';
+					}
+					$('#e_quantity').html(evoucher_quantity);
+					$('#use_eVoucher').children().html(evou_html);
+				}
+				//response[0].user_open_hour;
+				$('#user_open_hour_1').html(user_open_hour_1);
+				$('#user_open_hour_2').html(user_open_hour_2);
+				////////////REVIEW/////////////////
+				loadLocationStarRatingDetail();
+				loadServiceStarRatingDetail();
+				loadReviewDetail();
+				/////////////////////////////////// SLIDE /////////////
+
+				var indicators = $("#us_slide").find(".carousel-indicators");
+				var inner = $("#us_slide").find(".carousel-inner");
+				indicators.html('');
+				inner.html('');
+				var html_indicators = '<li data-target="#carousel-usd-generic" data-slide-to=":index" class=":active"></li>';
+				var html_inner = '<div class="item :active">' + '<img width="100%" style="height: 250px;" src=":img_src" alt=":img_alt">' + '<div class="carousel-caption">' + ':img_caption' + '</div>' + '</div>';
+
+				var slides = response[0]["user_service_image"].split(",");
+				var out_indicators = '';
+				var out_inner = '';
+				$.each(slides, function(index, slide) {
+					out_indicators = html_indicators.replace(':index', index);
+
+					out_inner = html_inner.replace(':img_src', slide);
+					out_inner = out_inner.replace(':img_alt', '');
+					out_inner = out_inner.replace(':img_caption', '');
+
+					if (index == 0) {
+						out_indicators = out_indicators.replace(':active', 'active');
+						out_inner = out_inner.replace(':active', 'active');
+					}
+
+					indicators.append(out_indicators);
+					inner.append(out_inner);
+				});
+			} else {
+				$('#error_service_detail_modal_body').show();
+				$('#service_detail_modal_body').hide();
+			}
+		},
+		complete : function() {
+			$('i.waiting_booking_detail').fadeOut();
+			$('#service_detail').modal('show');
+			$('#user_service_name').text(shorten($('#user_service_name').text(), 22));
+			$('#btn_user_service_price_b').text($.number(USER_SERVICE_SALE_PRICE));
+			$('#btn_user_service_price_e').text($.number(USER_SERVICE_SALE_PRICE));
+			var time_html = '';
+			$('#date_booking span').on('click', function() {
+				$('#not_allow_when_loading_time_booking').show();
+				$('#loading_time_booking').show();
+				var time_html = '';
+				var service_remain = false;
+				$(this).addClass('active');
+				$(this).siblings().removeClass('active');
+				$('#time_booking').children().remove();
+				CHOOSEN_DATE = $(this).attr('value');
+				var temp_1_array = [];
+				switch($(this).attr('day-data')) {
+				case '2' :
+					temp_1_array = MON_OPEN_CLOSE;
+					break;
+				case '3' :
+					temp_1_array = TUE_OPEN_CLOSE;
+					break;
+				case '4' :
+					temp_1_array = WED_OPEN_CLOSE;
+					break;
+				case '5' :
+					temp_1_array = THU_OPEN_CLOSE;
+					break;
+				case '6' :
+					temp_1_array = FRI_OPEN_CLOSE;
+					break;
+				case '7' :
+					temp_1_array = SAT_OPEN_CLOSE;
+					break;
+				case '1' :
+					temp_1_array = SUN_OPEN_CLOSE;
+					break;
+				}
+				//console.log(temp_1_array['status']);
+				if (temp_1_array['status'] == '1') {
+					var current_hour_in_min = (TODAY_HOUR * 60) + TODAY_MINUTE;
+					var open_hour_in_min = parseInt(temp_1_array['open']) * 60;
+					if ($(this).attr('value') == TODAY_YEAR + '-' + TODAY_MONTH + '-' + TODAY_OF_MONTH) {
+						while (current_hour_in_min > open_hour_in_min) {
+							open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+						}
+						open_hour_in_min = open_hour_in_min + LIMIT_TIME_BEFORE_SERVICE;
+					}
+					var close_hour_in_min = parseInt(temp_1_array['close']) * 60;
+					var am_pm = '';
+					var minute;
+					var hour;
+					//console.log(close_hour_in_min);
+					//console.log(LIMIT_TIME_BEFORE_SERVICE);
+					while (close_hour_in_min > open_hour_in_min) {
+						service_remain = true;
+						if (open_hour_in_min <= 720) {
+							am_pm = 'am';
+						} else {
+							am_pm = 'pm';
+						}
+						if (open_hour_in_min % 60 < 10) {
+							minute = '0' + (open_hour_in_min % 60);
+						} else {
+							minute = open_hour_in_min % 60;
+						}
+						if ((open_hour_in_min - open_hour_in_min % 60) / 60 < 10) {
+							hour = '0' + ((open_hour_in_min - open_hour_in_min % 60) / 60);
+						} else {
+							hour = (open_hour_in_min - open_hour_in_min % 60) / 60;
+						}
+						$.ajax({
+							url : URL + 'index/checkBookingLimit',
+							type : 'post',
+							async : false,
+							// dataType : 'json',
+							data : {
+								user_limit_booking : USER_BOOKING_LIMIT,
+								choosen_date : CHOOSEN_DATE,
+								choosen_time : hour + ':' + minute,
+								user_service_id : USER_SERVICE_ID
+							},
+							success : function(response) {
+								if (response == 200) {
+									time_html += '<hr/>';
+									time_html += '<div class="row" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+									time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+									time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+									time_html += '</div>';
+								} else if (response == 0) {
+									time_html += '<hr/>';
+									time_html += '<div class="row can_not_book alert-danger" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+									time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+									time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+									time_html += '</div>';
+								}
+							},
+							complete : function() {
+
+							}
+						});
+
+						open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+						$('#btn_user_service_price').text($.number(USER_SERVICE_SALE_PRICE));
+					}
+				} else if (temp_1_array['status'] == '0') {
+					service_remain = true;
+					time_html += '<hr/>';
+					time_html += '<div class="row can_not_book">';
+					time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Dịch vụ không mở trong ngày này!<strong></div>';
+					time_html += '</div>';
+					time_html += '<hr/>';
+					$('#btn_user_service_price').text('');
+				}
+				if (time_html == '' && service_remain == false) {
+					time_html += '<hr/>';
+					time_html += '<div class="row can_not_book">';
+					time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Hết lịch hẹn trong ngày!<strong></div>';
+					time_html += '</div>';
+					time_html += '<hr/>';
+					$('#btn_user_service_price').text('');
+				}
+				$('#loading_time_booking').fadeOut(function() {
+					$('#not_allow_when_loading_time_booking').fadeOut();
+				});
+				$('#time_booking').html(time_html);
+
+				$('#time_booking div.row:not(.can_not_book)').on('click', function() {
+					CHOOSEN_TIME = $(this).attr('date-time-data');
+					CHOOSEN_PRICE = $(this).attr('price-data');
+					CHOOSEN_DATE_STORE = CHOOSEN_DATE;
+					$(this).addClass('active');
+					$(this).siblings().removeClass('active');
+					$.ajax({
+						url : URL + 'index/checkBookingLimit',
+						type : 'post',
+						// dataType : 'json',
+						data : {
+							user_limit_booking : USER_BOOKING_LIMIT,
+							choosen_date : CHOOSEN_DATE,
+							choosen_time : CHOOSEN_TIME,
+							user_service_id : USER_SERVICE_ID
+						},
+						success : function(response) {
+							if (response == 200) {
+
+							} else {
+								alert('Dịch vụ đã quá số lượng, vui lòng chọn giờ khác!');
+								$('#time_booking div.row:not(.can_not_book)').removeClass('active');
+								CHOOSEN_DATE_STORE = '';
+								CHOOSEN_TIME = '';
+								CHOOSEN_PRICE = '';
+							}
+						},
+						complete : function() {
+
+						}
+					});
+					console.log(CHOOSEN_DATE);
+					console.log(CHOOSEN_TIME);
+					console.log(CHOOSEN_PRICE);
+					console.log(USER_SERVICE_ID);
+					console.log(USER_EMAIL);
+					console.log(SERVICE_TYPE_ID);
+				});
+				$('#time_booking div.row:not(.can_not_book)').each(function(index) {
+					if ($(this).attr('date-time-data') == CHOOSEN_TIME && CHOOSEN_DATE == CHOOSEN_DATE_STORE) {
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+					}
+				});
+			});
+			$('#not_allow_when_loading_time_booking').show();
+			$('#loading_time_booking').show();
+			$('#date_booking span').each(function(index) {
+				if ($(this).attr('value') == TODAY_YEAR + '-' + TODAY_MONTH + '-' + TODAY_OF_MONTH) {
+					CHOOSEN_DATE = $(this).attr('value');
+					var service_remain_default = false;
+					$(this).addClass('active');
+					// $('#btn_online_booking_zone').addClass('btn-choose').removeClass('btn-orange');
+					var time_html = '';
+					if ($(this).attr('day-data') == TODAY_OF_WEEK) {
+						var temp_2_array = [];
+						if ($(this).attr('day-data') == '1') {
+							temp_2_array = SUN_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '2') {
+							temp_2_array = MON_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '3') {
+							temp_2_array = TUE_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '4') {
+							temp_2_array = WED_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '5') {
+							temp_2_array = THU_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '6') {
+							temp_2_array = FRI_OPEN_CLOSE;
+						} else if ($(this).attr('day-data') == '7') {
+							temp_2_array = SAT_OPEN_CLOSE;
+						}
+						if (temp_2_array['status'] == '1') {
+							var open_hour_in_min = parseInt(temp_2_array['open']) * 60;
+							var current_hour_in_min = (TODAY_HOUR * 60) + TODAY_MINUTE;
+							while (current_hour_in_min > open_hour_in_min) {
+								open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+							}
+							var close_hour_in_min = parseInt(temp_2_array['close']) * 60;
+							open_hour_in_min = open_hour_in_min + LIMIT_TIME_BEFORE_SERVICE;
+							var am_pm = '';
+							var minute;
+							var hour;
+							while (close_hour_in_min > open_hour_in_min) {
+								service_remain_default = true;
+								if (open_hour_in_min <= 720) {
+									am_pm = 'am';
+								} else {
+									am_pm = 'pm';
+								}
+								if (open_hour_in_min % 60 < 10) {
+									minute = '0' + (open_hour_in_min % 60);
+								} else {
+									minute = open_hour_in_min % 60;
+								}
+								if ((open_hour_in_min - open_hour_in_min % 60) / 60 < 10) {
+									hour = '0' + ((open_hour_in_min - open_hour_in_min % 60) / 60);
+								} else {
+									hour = (open_hour_in_min - open_hour_in_min % 60) / 60;
+								}
+								$.ajax({
+									url : URL + 'index/checkBookingLimit',
+									type : 'post',
+									async : false,
+									// dataType : 'json',
+									data : {
+										user_limit_booking : USER_BOOKING_LIMIT,
+										choosen_date : CHOOSEN_DATE,
+										choosen_time : hour + ':' + minute,
+										user_service_id : USER_SERVICE_ID
+									},
+									success : function(response) {
+										if (response == 200) {
+											time_html += '<hr/>';
+											time_html += '<div class="row" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+											time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+											time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+											time_html += '</div>';
+										} else if (response == 0) {
+											time_html += '<hr/>';
+											time_html += '<div class="row can_not_book alert-danger" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+											time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+											time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+											time_html += '</div>';
+										}
+									},
+									complete : function() {
+
+									}
+								});
+								open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+								$('#btn_user_service_price').text($.number(USER_SERVICE_SALE_PRICE));
+							}
+						} else if (temp_2_array['status'] == '0') {
+							service_remain_default = true;
+							time_html += '<hr/>';
+							time_html += '<div class="row can_not_book">';
+							time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Dịch vụ không mở trong ngày này!<strong></div>';
+							time_html += '</div>';
+							time_html += '<hr/>';
+							$('#btn_user_service_price').text('');
+						}
+					}
+					if (time_html == '' && service_remain_default == false) {
+						time_html += '<hr/>';
+						time_html += '<div class="row can_not_book">';
+						time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Hết lịch hẹn trong ngày!<strong></div>';
+						time_html += '</div>';
+						time_html += '<hr/>';
+						$('#btn_user_service_price').text('');
+					}
+					$('#loading_time_booking').fadeOut(function() {
+						$('#not_allow_when_loading_time_booking').fadeOut();
+					});
+					$('#time_booking').html(time_html);
+					$('#time_booking div.row:not(.can_not_book)').on('click', function() {
+						CHOOSEN_TIME = $(this).attr('date-time-data');
+						CHOOSEN_PRICE = $(this).attr('price-data');
+						CHOOSEN_DATE_STORE = CHOOSEN_DATE;
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						$.ajax({
+							url : URL + 'index/checkBookingLimit',
+							type : 'post',
+							// dataType : 'json',
+							data : {
+								user_limit_booking : USER_BOOKING_LIMIT,
+								choosen_date : CHOOSEN_DATE,
+								choosen_time : CHOOSEN_TIME,
+								user_service_id : USER_SERVICE_ID
+							},
+							success : function(response) {
+								if (response == 200) {
+
+								} else {
+									alert('Dịch vụ đã quá số lượng, vui lòng chọn giờ khác!');
+									$('#time_booking div.row:not(.can_not_book)').removeClass('active');
+									CHOOSEN_DATE_STORE = '';
+									CHOOSEN_TIME = '';
+									CHOOSEN_PRICE = '';
+								}
+							},
+							complete : function() {
+
+							}
+						});
+						console.log(CHOOSEN_DATE);
+						console.log(CHOOSEN_TIME);
+						console.log(CHOOSEN_PRICE);
+						console.log(USER_SERVICE_ID);
+						console.log(USER_EMAIL);
+						console.log(SERVICE_TYPE_ID);
+					});
+				}
+			});
+			// initMap();
+			// $('.map #user_latlng').html('');
+			// initGoogleMap('user_latlng', USER_LAT, USER_LNG);
+			if (CHOOSEN_DATE_ACTIVE != '' && CHOOSEN_DATE_ACTIVE != undefined) {
+				var this_class;
+				$('#not_allow_when_loading_time_booking').show();
+				$('#loading_time_booking').show();
+				$('#date_booking span').each(function() {
+					var this_date_val_1 = formatDate($(this).attr('value'));
+					var this_date_val_2 = formatDate(CHOOSEN_DATE_ACTIVE);
+					if (this_date_val_1 == this_date_val_2) {
+						this_class = $(this).attr('class');
+						this_class = this_class.split(' ');
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						var time_html = '';
+						var service_remain = false;
+						$(this).addClass('active');
+						$(this).siblings().removeClass('active');
+						$('#time_booking').children().remove();
+						CHOOSEN_DATE = $(this).attr('value');
+						var temp_1_array = [];
+						switch($(this).attr('day-data')) {
+						case '2' :
+							temp_1_array = MON_OPEN_CLOSE;
+							break;
+						case '3' :
+							temp_1_array = TUE_OPEN_CLOSE;
+							break;
+						case '4' :
+							temp_1_array = WED_OPEN_CLOSE;
+							break;
+						case '5' :
+							temp_1_array = THU_OPEN_CLOSE;
+							break;
+						case '6' :
+							temp_1_array = FRI_OPEN_CLOSE;
+							break;
+						case '7' :
+							temp_1_array = SAT_OPEN_CLOSE;
+							break;
+						case '1' :
+							temp_1_array = SUN_OPEN_CLOSE;
+							break;
+						}
+						//console.log(temp_1_array['status']);
+						if (temp_1_array['status'] == '1') {
+							var current_hour_in_min = (TODAY_HOUR * 60) + TODAY_MINUTE;
+							var open_hour_in_min = parseInt(temp_1_array['open']) * 60;
+							if ($(this).attr('value') == TODAY_YEAR + '-' + TODAY_MONTH + '-' + TODAY_OF_MONTH) {
+								while (current_hour_in_min > open_hour_in_min) {
+									open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+								}
+								open_hour_in_min = open_hour_in_min + LIMIT_TIME_BEFORE_SERVICE;
+							}
+							var close_hour_in_min = parseInt(temp_1_array['close']) * 60;
+							var am_pm = '';
+							var minute;
+							var hour;
+							//console.log(close_hour_in_min);
+							//console.log(LIMIT_TIME_BEFORE_SERVICE);
+							while (close_hour_in_min > open_hour_in_min) {
+								service_remain = true;
+								if (open_hour_in_min <= 720) {
+									am_pm = 'am';
+								} else {
+									am_pm = 'pm';
+								}
+								if (open_hour_in_min % 60 < 10) {
+									minute = '0' + (open_hour_in_min % 60);
+								} else {
+									minute = open_hour_in_min % 60;
+								}
+								if ((open_hour_in_min - open_hour_in_min % 60) / 60 < 10) {
+									hour = '0' + ((open_hour_in_min - open_hour_in_min % 60) / 60);
+								} else {
+									hour = (open_hour_in_min - open_hour_in_min % 60) / 60;
+								}
+								$.ajax({
+									url : URL + 'index/checkBookingLimit',
+									type : 'post',
+									async : false,
+									// dataType : 'json',
+									data : {
+										user_limit_booking : USER_BOOKING_LIMIT,
+										choosen_date : CHOOSEN_DATE,
+										choosen_time : hour + ':' + minute,
+										user_service_id : USER_SERVICE_ID
+									},
+									success : function(response) {
+										if (response == 200) {
+											time_html += '<hr/>';
+											time_html += '<div class="row" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+											time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+											time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+											time_html += '</div>';
+										} else if (response == 0) {
+											time_html += '<hr/>';
+											time_html += '<div class="row can_not_book alert-danger" price-data="' + USER_SERVICE_SALE_PRICE + '" date-time-data="' + hour + ':' + minute + '">';
+											time_html += '<div class="col-md-offset-1 col-md-6"><strong>' + hour + ':' + minute + am_pm + '</strong></div>';
+											time_html += '<div class="col-md-5">' + $.number(USER_SERVICE_SALE_PRICE) + ' VNĐ</div>';
+											time_html += '</div>';
+										}
+									},
+									complete : function() {
+
+									}
+								});
+								open_hour_in_min = open_hour_in_min + parseInt(USER_SERVICE_DURATION);
+								$('#btn_user_service_price').text($.number(USER_SERVICE_SALE_PRICE));
+							}
+						} else if (temp_1_array['status'] == '0') {
+							service_remain = true;
+							time_html += '<hr/>';
+							time_html += '<div class="row can_not_book">';
+							time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Dịch vụ không mở trong ngày này!<strong></div>';
+							time_html += '</div>';
+							time_html += '<hr/>';
+							$('#btn_user_service_price').text('');
+						}
+						if (time_html == '' && service_remain == false) {
+							time_html += '<hr/>';
+							time_html += '<div class="row can_not_book">';
+							time_html += '<div class="col-md-offset-1 col-md-11 text-center"><strong>Hết lịch hẹn trong ngày!<strong></div>';
+							time_html += '</div>';
+							time_html += '<hr/>';
+							$('#btn_user_service_price').text('');
+						}
+						$('#loading_time_booking').fadeOut(function() {
+							$('#not_allow_when_loading_time_booking').fadeOut();
+						});
+						$('#time_booking').html(time_html);
+
+						$('#time_booking div.row:not(.can_not_book)').on('click', function() {
+							CHOOSEN_TIME = $(this).attr('date-time-data');
+							CHOOSEN_PRICE = $(this).attr('price-data');
+							CHOOSEN_DATE_STORE = CHOOSEN_DATE;
+							$(this).addClass('active');
+							$(this).siblings().removeClass('active');
+							$.ajax({
+								url : URL + 'index/checkBookingLimit',
+								type : 'post',
+								// dataType : 'json',
+								data : {
+									user_limit_booking : USER_BOOKING_LIMIT,
+									choosen_date : CHOOSEN_DATE,
+									choosen_time : CHOOSEN_TIME,
+									user_service_id : USER_SERVICE_ID
+								},
+								success : function(response) {
+									if (response == 200) {
+
+									} else {
+										alert('Dịch vụ đã quá số lượng, vui lòng chọn giờ khác!');
+										$('#time_booking div.row:not(.can_not_book)').removeClass('active');
+										CHOOSEN_DATE_STORE = '';
+										CHOOSEN_TIME = '';
+										CHOOSEN_PRICE = '';
+									}
+								},
+								complete : function() {
+
+								}
+							});
+							console.log(CHOOSEN_DATE);
+							console.log(CHOOSEN_TIME);
+							console.log(CHOOSEN_PRICE);
+							console.log(USER_SERVICE_ID);
+							console.log(USER_EMAIL);
+							console.log(SERVICE_TYPE_ID);
+						});
+						$('#time_booking div.row:not(.can_not_book)').each(function(index) {
+							if ($(this).attr('date-time-data') == CHOOSEN_TIME && CHOOSEN_DATE == CHOOSEN_DATE_STORE) {
+								$(this).addClass('active');
+								$(this).siblings().removeClass('active');
+							}
+						});
+					}
+				});
+				var week_order = this_class[0].split('_');
+				console.log(week_order);
+				for ( w = 0; w < (week_order[1] - 1); w++) {
+					clickNextWeek();
+				}
+			}
+		}
+	});
+}
+
+/*CHECK BOOKING LIMIT*/
+// function checkBookingLimit(){
+// $.ajax({
+// url : URL + 'index/checkBookingLimit',
+// type : 'post',
+// dataType : 'json',
+// data : {
+// user_limit_booking : USER_BOOKING_LIMIT,
+// choosen_date : CHOOSEN_DATE,
+// choosen_time : CHOOSEN_TIME
+// },
+// success : function(response){
+//
+// },
+//
+// });
+// }
+/*END CHECK BOOKING LIMIT*/
+/*-----------------------*/
+
+//FOR STATIC MAP BUT NOT GOOD
+function initMap() {
+	$("#user_latlng").attr("src", 'https://maps.googleapis.com/maps/api/staticmap?center=&zoom=15&size=450x150&markers=color:red|' + USER_LAT + ', ' + USER_LNG + '');
+}
+
+///////////////////////
+/*END LOAD SERVICE DETAIL*/
+/*-----------------------*/
+
+/*WEEK PAGE*/
+function clickNextWeek() {
+	if (WEEK_PAGE == (TOTAL_WEEK - 1)) {
+		$('#next_week').addClass('dis-arm');
+	}
+	if (WEEK_PAGE == TOTAL_WEEK) {
+		return false;
+	} else {
+		$('#last_week').removeClass('dis-arm');
+		WEEK_PAGE++;
+		for ( i = 1; i <= TOTAL_WEEK; i++) {
+			$('.week_' + i).hide();
+		}
+		$('.week_' + WEEK_PAGE).fadeIn();
+	}
+}
+
+function clickLastWeek() {
+	if (WEEK_PAGE == 2) {
+		$('#last_week').addClass('dis-arm');
+	}
+	if (WEEK_PAGE == 1) {
+		return false;
+	} else {
+		$('#next_week').removeClass('dis-arm');
+		WEEK_PAGE--;
+		for ( i = 1; i <= TOTAL_WEEK; i++) {
+			$('.week_' + i).hide();
+		}
+		$('.week_' + WEEK_PAGE).fadeIn();
+	}
+}
+
+/*END WEEK PAGE*/
+/*-----------------------*/
+
+/*LOAD LOCATION RATING*/
+function loadLocationStarRatingDetail() {
+	$.ajax({
+		url : URL + 'service/loadLocationStarRating',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			user_id : USER_ID_2
+		},
+		success : function(response) {
+			if (response.general_info[0] != null) {
+				var html = '';
+				var general_html = '';
+				var rating_value = parseFloat(response.general_info[0].star_review);
+				var head = parseInt(rating_value);
+				var tail = rating_value - head;
+				tail = Math.round(tail * 100) / 100;
+				var round_tail = tail * 10;
+				// console.log(rating_value);
+				// console.log(head);
+				// console.log(tail);
+				html += '<div class="col-md-3">';
+				html += '<span style="color: #FFCC00; font-size: 40px;">' + head + '.' + round_tail + '</span>';
+				html += '</div>';
+				html += '<div class="col-md-7">';
+				html += '<span><small>điểm đánh giá</small></span><br/>';
+				html += '<span style="color: #FFCC00"> ';
+				general_html += '<span style="color: #FFCC00">';
+				for (var i = 1; i <= head; i++) {
+					html += '<i class="fa fa-star"></i>';
+					general_html += '<i class="fa fa-star"></i>';
+				}
+				if (tail != 0) {
+					if (tail == 0.9) {
+						html += '<i class="fa fa-star"></i>';
+						general_html += '<i class="fa fa-star"></i>';
+					} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+						html += '<i class="fa fa-star-half-empty"></i>';
+						general_html += '<i class="fa fa-star-half-empty"></i>';
+					} else if (tail == 0.1) {
+						html += '<i class="fa fa fa-star-o"></i>';
+						general_html += '<i class="fa fa fa-star-o"></i>';
+					}
+					for (var j = head + 2; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+						general_html += '<i class="fa fa-star-o"></i>';
+					}
+				} else {
+					for (var j = head + 1; j <= 5; j++) {
+						html += '<i class="fa fa-star-o"></i>';
+						general_html += '<i class="fa fa-star-o"></i>';
+					}
+				}
+				html += '</span><br />';
+				general_html += '</span>';
+				html += '<span ><small>' + response.general_info[0].client_amount + ' Lượt đánh giá</small></span>';
+				general_html += '<span style="color: #FFFFFF;"> ' + response.general_info[0].client_amount + ' Lượt đánh giá</span>';
+				html += '</div>';
+				$('#user_review_overall_detail').html(html);
+				$('#general_rating_detail').html(general_html);
+			}
+			if (response.chart_info[0] != null) {
+				if (response.chart_info[0].client_amount == '0') {
+					$('#five_stars').attr('style', 'width: 0%');
+					$('#four_stars').attr('style', 'width: 0%');
+					$('#three_stars').attr('style', 'width: 0%');
+					$('#two_stars').attr('style', 'width: 0%');
+					$('#one_star').attr('style', 'width: 0%');
+				} else {
+					$('#five_stars').attr('style', 'width: ' + (parseInt(response.chart_info[0].five_stars) / parseInt(response.chart_info[0].client_amount) * 100) + '%');
+					$('#four_stars').attr('style', 'width: ' + (parseInt(response.chart_info[0].four_stars) / parseInt(response.chart_info[0].client_amount) * 100) + '%');
+					$('#three_stars').attr('style', 'width: ' + (parseInt(response.chart_info[0].three_stars) / parseInt(response.chart_info[0].client_amount) * 100) + '%');
+					$('#two_stars').attr('style', 'width: ' + (parseInt(response.chart_info[0].two_stars) / parseInt(response.chart_info[0].client_amount) * 100) + '%');
+					$('#one_star').attr('style', 'width: ' + (parseInt(response.chart_info[0].one_star) / parseInt(response.chart_info[0].client_amount) * 100) + '%');
+				}
+			}
+			if (response.data[0] != null) {
+				var html_2 = '';
+				// console.log(rating_value);
+				// console.log(head);
+				// console.log(tail);
+				$.each(response.data, function(key, value) {
+					var rating_value = parseFloat(value.star_review);
+					var head = parseInt(rating_value);
+					var tail = rating_value - head;
+					tail = Math.round(tail * 100) / 100;
+					// console.log(value.star_review);
+					html_2 += '<div class="row">';
+					html_2 += '<div class="col-md-6">';
+					html_2 += '<small class="pull-right">' + value.review_name + '</small></div>';
+					html_2 += '<div class="col-md-6">';
+					html_2 += '<span class="pull-right" style="color: #FFCC00"> ';
+					for (var i = 1; i <= head; i++) {
+						html_2 += '<i class="fa fa-star"></i>';
+					}
+					if (tail != 0) {
+						if (tail == 0.9) {
+							html_2 += '<i class="fa fa-star"></i>';
+						} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+							html_2 += '<i class="fa fa-star-half-empty"></i>';
+						} else if (tail == 0.1) {
+							html_2 += '<i class="fa fa fa-star-o"></i>';
+						}
+						for (var j = head + 2; j <= 5; j++) {
+							html_2 += '<i class="fa fa-star-o"></i>';
+						}
+					} else {
+						for (var j = head + 1; j <= 5; j++) {
+							html_2 += '<i class="fa fa-star-o"></i>';
+						}
+					}
+					html_2 += '</span>';
+					html_2 += '</div>';
+					html_2 += '</div>';
+				});
+				//console.log(html_2);
+				$('#user_review_properties_detail').html(html_2);
+			}
+		},
+		complete : function() {
+			$('#disallow-star-place').hide();
+			$('#waiting_for_star_rating').fadeOut();
+		}
+	});
+}
+
+/*END LOAD LOCATION RATING*/
+/*-----------------------*/
+
+/*LOAD SERVICE RATING*/
+function loadServiceStarRatingDetail() {
+	$.ajax({
+		url : URL + 'service/loadServiceStarRating',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			user_id : USER_ID_2
+		},
+		success : function(response) {
+			var html = '';
+			var count_hidden = 0;
+			if (response.group_data[0] != null) {
+				$.each(response.group_data[0], function(key, value) {
+					count_hidden++;
+					if (count_hidden > 10) {
+						html += '<div style="display: none" class="col-md-12 see_more_rating_service">';
+					} else {
+						html += '<div class="col-md-12">';
+					}
+					html += '<span><b>' + key + '</b></span>';
+					$.each(value, function(i, item) {
+						count_hidden++;
+						var rating_value = parseFloat(item.star_review);
+						var head = parseInt(rating_value);
+						var tail = rating_value - head;
+						tail = Math.round(tail * 100) / 100;
+						if (count_hidden > 10) {
+							html += '<div style="display: none" class="row see_more_rating_service">';
+						} else {
+							html += '<div class="row">';
+						}
+						html += '<div class="col-md-6">';
+						html += '<small style="cursor: help" title="' + item.user_service_name + '">' + shorten(item.user_service_name, 30) + '</small>';
+						html += '</div>';
+						html += '<div class="col-md-6">';
+						html += '<span style="color: #FFCC00">';
+						for (var i = 1; i <= head; i++) {
+							html += '<i class="fa fa-star"></i>';
+						}
+						if (tail != 0) {
+							if (tail == 0.9) {
+								html += '<i class="fa fa-star"></i>';
+							} else if (tail == 0.2 || tail == 0.3 || tail == 0.4 || tail == 0.5 || tail == 0.6 || tail == 0.7 || tail == 0.8) {
+								html += '<i class="fa fa-star-half-empty"></i>';
+							} else if (tail == 0.1) {
+								html += '<i class="fa fa fa-star-o"></i>';
+							}
+							for (var j = head + 2; j <= 5; j++) {
+								html += '<i class="fa fa-star-o"></i>';
+							}
+						} else {
+							for (var j = head + 1; j <= 5; j++) {
+								html += '<i class="fa fa-star-o"></i>';
+							}
+						}
+						html += '</span>';
+						html += '</div>';
+						html += '</div>';
+					});
+					html += '<br />';
+					html += '</div>';
+				});
+				if (count_hidden > 10) {
+					html += '<div class="col-md-12">';
+					html += '<span><a onclick=showMore("see_more_rating_service","see_more_text_detail") style="cursor: pointer;"><span class="see_more_text_detail">Xem thêm</span> </a></span>';
+					html += '</div>';
+				}
+				$('#group_service_rating').html(html);
+			}
+		}
+	});
+}
+
+/*END LOAD SERVICE RATING*/
+/*-----------------------*/
+
+/*LOAD REVIEW*/
+function loadReviewDetail() {
+	$('div#disallow_detail').show();
+	$('#waiting_for_review_load_detail').fadeIn();
+	$.ajax({
+		url : URL + 'service/loadReview',
+		type : 'post',
+		dataType : 'json',
+		data : {
+			review_user_id : USER_ID_2,
+			review_result : REVIEW_RESULT
+		},
+		beforeSend : function() {
+
+		},
+		success : function(response) {
+			var html = '<div style="display : none;" id="disallow_detail"></div>';
+			html += '<div style="display : none;" id="waiting_for_review_load_detail" class="text-center">' + '<i style="color: #FDBD0E" class="fa fa-2x fa-spin fa-refresh"></i>' + '</div>';
+			if (response.data[0] != null) {
+				$.each(response.data, function(key, value) {
+					html += '<div class="media review_count_detail" >';
+					html += '<a class="pull-left" href="#"> <img width="40" height="40" class="media-object img-circle" src="' + URL + value.client_avatar+'" alt="avatar"> </a>';
+					html += '<div class="media-body">';
+					var client_join_date = value.client_join_date.substring(0, 10);
+					html += '<h5 class="media-heading"><strong>' + value.client_username + '</strong><span class="rating" style="color:#FFCC00;">'+value.user_review_overall+'</span><small class="pull-right"><i>tham gia ' + formatDate(client_join_date) + '&nbsp</i></small></h5>';
+					var date_review = new Date(value.user_review_date);
+					var current_date = new Date(value.review_current_date);
+					var user_date_review;
+					if (date_review.getDate() == (current_date.getDate() - 1) && date_review.getMonth() == current_date.getMonth() && date_review.getFullYear() == current_date.getFullYear()) {
+						user_date_review = 'Hôm qua';
+					} else {
+						user_date_review = formatDate(value.user_review_date);
+					}
+					if (value.user_review_date == value.review_current_date) {
+						user_date_review = 'Hôm nay';
+					}
+					html += '<small style="font-size: 75%;color: #999"><i>Đăng lúc ' + value.user_review_time + ' - ' + user_date_review + '</i></small>';
+					if (value.user_review_content.length > 90) {
+						html += '<p class="text_after">' + shorten(value.user_review_content, 90) + ' <span><a class="see_more_review" style="cursor : pointer;"> Xem thêm </a></span></p>';
+						html += '<p style="display : none;" class="text_before">' + value.user_review_content + '</p>';
+					} else {
+						html += '<p class="text_after">' + value.user_review_content + '</p>';
+					}
+					html += "<div id='review-replies-container-" + value.client_id + "'>";
+					/* imtoantran load user's reply*/
+					html+="<div class='show-more-replies'>";
+					html+="<button class='btn btn-xs btn-brown btn-more-replies' data-class='"+value.client_id+"' onclick='expand(this)'>";
+					html+="<i class='fa fa-angle-down'></i>";
+					html+="</button>";
+					html+="</div>";
+					if(value.content){
+						var i = value.content.length;
+						$.each(value.content, function(index, val) {
+							/* iterate through array or object */
+							hidden = '';
+							if(i>2){
+								hidden = "reply-more-"+value.client_id+" hidden";
+							}
+							html +="<div class='reply-item "+hidden+"'>"
+							html +="<b>"+val.name+": </b>"+val.content;
+							html +="<p>";
+							html +="<i class='fa fa-clock-o text-orange small'></i> ";
+							html +="<i><small> " + val.timecreated + "</small></i>";
+							if(val.status == 'auto' && response.client_id != null) {
+								html +="<a href='javascript:void();' data-id='"+val.id+"' onclick='reportSpam(this)'><i class='small'> Báo xấu</i></a>";
+							}
+							html +="</p>";
+							html +="</div>";
+							i--;
+						});
+					}
+					html+="</div>";
+					html+='<div class="" id="reply-colls-'+value.client_id+'">'
+					html+="<input placeholder='Hãy viết bình luận của bạn...' onkeypress='javascript:checkContent;' class='form-control reply-input' id='reply-content-"+value.client_id+"' data-review-id = '" + value.client_id + "'>"
+					html+='</div> ';
+					/* imtoantran load user's reply*/
+					html += '</div>';
+					html += '</div>';
+				});
+			}
+			if (parseInt(response.number_result) > RESULT_PER_SHOW_MORE) {
+				html += '<div onclick="showMoreReviewDetail()" id="see_more_review_all_detail" align="center"><span style="display : none;" class="fa fa-spin fa-refresh" id="waiting_for_show_review_detail"></span><span id="text_show_review_detail"> Xem các đánh giá cũ hơn </span></div>';
+			}
+			$('#waiting_for_review_load_detail').fadeOut(function() {
+				$('#review_field_detail').html(html);
+			});
+		},
+		complete : function() {
+			// setTimeout(function(){
+			// loadReview();
+			// },60000*2);
+			$('#review_field_detail').delegate('.see_more_review', 'click', function() {
+				$(this).parent().parent().hide();
+				$(this).parent().parent().siblings('.text_before').show();
+			});
+			/* imtoantran load review replies on home page */
+			$("#review_field_detail").undelegate('.reply-input', 'keypress');
+			$("#review_field_detail").delegate('.reply-input', 'keypress', function(e) {
+				checkContent(e);
+			});
+			$("#review_field_detail").delegate(".collapse", "show.bs.collapse", function(e) {
+				// body...
+				id = $(this).attr("id").replace("reply-colls-");
+				$(".show-reply-input button").hide();
+				// $(".show-reply-input button").text("Ẩn đi");
+			});
+			$("#review_field_detail").delegate(".collapse", "hide.bs.collapse", function(e) {
+				// body...
+				id = $(this).attr("id").replace("reply-colls-");
+				$(".show-reply-input button").show();
+				// $(".show-reply-input button").text("Trả lời");
+			});
+
+			/* imtoantran load review replies on home page */
+		}
+	});
+}
+
+/*END LOAD REVIEW*/
+/*-----------------------*/
+
+/*SHOW MORE REVIEW*/
+function showMoreReviewDetail() {
+	$('#text_show_review_detail').fadeOut(function() {
+		$('#waiting_for_show_review_detail').fadeIn(function() {
+			REVIEW_RESULT++;
+			var html = '';
+			var number_result;
+			$.ajax({
+				url : URL + 'service/loadReview',
+				type : 'post',
+				dataType : 'json',
+				data : {
+					review_user_id : USER_ID_2,
+					review_result : REVIEW_RESULT
+				},
+				success : function(response) {
+					number_result = response.number_result;
+					if (response.data[0] != null) {
+						$.each(response.data, function(key, value) {
+							html += '<div class="media review_count_detail" >';
+							html += '<a class="pull-left" href="#"> <img width="55" height="55" class="media-object" src="' + URL + 'public/assets/img/tp-hcm-thanh-dai-cong-truong-thi-cong-metro-1408499845_490x294.jpg" alt="avatar"> </a>';
+							html += '<div class="media-body">';
+							var client_join_date = value.client_join_date.substring(0, 10);
+							html += '<h5 class="media-heading"><strong>' + value.client_username + '</strong><small class="pull-right"><i>tham gia ' + formatDate(client_join_date) + '&nbsp</i></small></h5>';
+							var date_review = new Date(value.user_review_date);
+							var current_date = new Date(value.review_current_date);
+							var user_date_review;
+							if (date_review.getDate() == (current_date.getDate() - 1) && date_review.getMonth() == current_date.getMonth() && date_review.getFullYear() == current_date.getFullYear()) {
+								user_date_review = 'Hôm qua';
+							} else {
+								user_date_review = formatDate(value.user_review_date);
+							}
+							if (value.user_review_date == value.review_current_date) {
+								user_date_review = 'Hôm nay';
+							}
+							html += '<small style="font-size: 75%;color: #999"><i>Đăng lúc ' + value.user_review_time + ' - ' + user_date_review + '</i></small>';
+							if (value.user_review_content.length > 270) {
+								html += '<p class="text_after">' + shorten(value.user_review_content, 270) + ' <span><a class="see_more_review" style="cursor : pointer;"> Xem thêm </a></span></p>';
+								html += '<p style="display : none;" class="text_before">' + value.user_review_content + '</p>';
+							} else {
+								html += '<p class="text_after">' + value.user_review_content + '</p>';
+							}
+							html += '</div>';
+							html += '</div>';
+						});
+					}
+
+				},
+				complete : function() {
+					$('#waiting_for_show_review_detail').fadeOut(function() {
+						$('#text_show_review_detail').show();
+						$('#review_field_detail .media:last').after(html);
+						if ($('.review_count_detail').length == number_result) {
+							$('#see_more_review_all_detail').hide();
+						}
+					});
+				}
+			});
+		});
+	});
+}
+
+/*END SHOW MORE REVIEW*/
+/*-----------------------*/
+
+/*LOGIN*/
+function enterEvent(event) {
+	var keycode = (event.keyCode ? event.keyCode : event.which);
+	if (keycode == '13') {
+		login();
+	}
+}
+
+function login() {
+	var email_login = $('#email_login').val();
+	var pass_login = $('#pass_login').val();
+	var login_flg;
+	var user_name;
+	if (email_login != '' && pass_login != '') {
+		$('#footer_login').children('span').remove();
+		$('#footer_login').prepend('<i class="fa fa-refresh fa-spin"></i>');
+		$.ajax({
+			url : URL + 'clientlogin/clientLogin',
+			type : 'post',
+			dataType : 'json',
+			data : {
+				email : email_login,
+				pass : pass_login
+			},
+			success : function(response) {
+				/**
+				 * Yêu cầu login để xác nhận email
+				 * @author: Trong Loi
+				 * @date: 19-12-2014
+				 */
+				if (response['request_login'] == 1) {
+					window.open(response['url'], "_self");
+					return false;
+				}
+
+				if (response[0] == null) {
+					login_flg = 0;
+				} else {
+					login_flg = 1;
+					user_name = response[0].client_username;
+				}
+			},
+			complete : function() {
+				if (login_flg == 0) {
+					$('#footer_login').children('i').remove();
+					$('#footer_login').prepend('<span class="text-danger"><small><i> Đăng nhập thất bại!</small></i></span>');
+				} else if (login_flg == 1) {
+					$('#footer_login').children('i').remove();
+					$('#login_modal').modal('hide');
+					//window.location = URL;
+					$('#login_group').children().remove();
+					// $('#login_group').append('<div class="col-sm-12 remove-padding" style="margin-bottom: 10px;">' + '<div class="dropdown">' + '<a id="dropdown_profile" data-toggle="dropdown" class="btn btn-warning btn-block dropdown-toggle" style="border-radius: 4px;">' + 'Xin chào bạn: <i class="fa fa-user"></i> ' + user_name + ' <span class="caret"></span>' + '</a>' + '<ul class="dropdown-menu pull-right" role="menu" aria-labelledby="dropdown_profile">' + '<li role="presentation"><a role="menuitem" tabindex="-1" href="' + URL + 'clientsetting"><i class="fa fa-wrench"></i> Quản lý tài khoản</a></li>' + '<li role="presentation" class="divider"></li>' + '<li role="presentation"><a role="menuitem" tabindex="-1" onclick="javascript:logout()" style="cursor: pointer;"><i class="fa fa-power-off"></i> Thoát</a></li>' + '</ul>' + '</div>' + '</div>');
+					// var http_path = window.location.href.replace('http:', '');
+					// var https_path = window.location.href.replace('https:', '');
+					// if (http_path != URL && https_path != URL) {
+					// window.location = URL;
+					// }
+					window.location.reload();
+				}
+			}
+		});
+	} else {
+		$('#footer_login').children('span').remove();
+		$('#footer_login').prepend('<span class="text-danger"><small><i> Hãy nhập email và mật khẩu!</small></i></span>');
+	}
+}
+
+function logout() {
+	$.ajax({
+		url : URL + 'clientlogin/clientLogout',
+		complete : function() {
+			$('#booking_amount b').text('0');
+			$('#login_group').children().remove();
+			$('#login_group').append('<div class="col-sm-5 remove-padding">' + '<button id="login_btn" class="btn btn-block login-btn" data-toggle="modal" data-target="#login_modal" type="button">Đăng nhập</button>' + '</div>' + '<div class="col-sm-2"></div>' + '<div class="col-sm-5 remove-padding">' + '<button class="btn btn-block login-face-btn" type="button">Login Face</button>' + '</div>');
+			// var http_path = window.location.href.replace('http:', '');
+			// var https_path = window.location.href.replace('https:', '');
+			// if (http_path != URL && https_path != URL) {
+			// window.location = URL;
+			// }
+			window.location.reload();
+		}
+	});
+}
+
+/*END LOGIN*/
+/*-----------------------*/
+
+/*JUMP TO TAB*/
+function jumbToTab(tab) {
+	$('#' + tab).siblings().hide();
+	$('#' + tab).fadeIn();
+	$('#btn_' + tab).addClass('btn-choose').removeClass('btn-orange');
+	$('#btn_' + tab).parent().siblings().children().addClass('btn-orange').removeClass('btn-choose');
+}
+
+/*END JUMP TO TAB*/
+/*-----------------------*/
+
+/*RESET TAB*/
+function resetTab(tab) {
+	$('#' + tab).siblings().hide();
+	$('#' + tab).fadeIn();
+	$('#btn_' + tab).addClass('btn-choose').removeClass('btn-orange');
+	$('#btn_' + tab).parent().siblings().children().addClass('btn-orange').removeClass('btn-choose');
+}
+
+/*END JRESET TAB*/
+/*-----------------------*/
+
+/*GET ONLINE BOOKING OR EVOUCHER INFOMATION*/
+function getBookingInfo() {
+	if (USER_SERVICE_ID == '' || CHOOSEN_DATE == '' || CHOOSEN_DATE_STORE == '' || CHOOSEN_TIME == '' || CHOOSEN_PRICE == '') {
+		alert('Bạn chưa chọn dịch vụ, vui lòng chọn!');
+	} else {
+		$('#waiting_for_booking_save_b').fadeIn();
+		// console.log(CHOOSEN_DATE);
+		// console.log(CHOOSEN_TIME);
+		// console.log(CHOOSEN_PRICE);
+		// console.log(USER_SERVICE_ID);
+		$('button.booking_button').attr('disabled', true);
+		$.ajax({
+			url : URL + 'index/getBookingInfo',
+			type : 'post',
+			//dataType : 'json',
+			data : {
+				user_service_id : USER_SERVICE_ID,
+				user_id : USER_ID_2,
+				booking_detail_date : CHOOSEN_DATE,
+				booking_detail_time : CHOOSEN_TIME,
+				choosen_price : CHOOSEN_PRICE,
+				user_business_name : USER_BUSINESS_NAME,
+				user_service_name : USER_SERVICE_NAME,
+				booking_quantity : 1,
+				user_email : USER_EMAIL,
+				service_type_id : SERVICE_TYPE_ID,
+				user_service_duration : USER_SERVICE_DURATION
+			},
+			success : function(response) {
+				//console.log(response);
+				$('#booking_amount b').text(response);
+			},
+			complete : function() {
+				$('#waiting_for_booking_save_b').fadeOut(function() {
+					cfirm = confirm('Đặt hẹn thành công!\nBạn có thanh toán luôn?');
+					if (cfirm == true) {
+						$('#service_detail').modal('hide');
+						shoppingCartDetail();
+					} else {
+
+					}
+					$('button.booking_button').attr('disabled', false);
+				});
+			}
+		});
+
+	}
+}
+
+function geteVoucherInfo() {
+	if (USER_SERVICE_ID == '' || EVOUCHER_DUE_DATE == '' || USER_SERVICE_SALE_PRICE == '') {
+		alert('Có sự cố với dịch vụ, vui lòng chọn lại!');
+	} else {
+		$('#waiting_for_booking_save_e').fadeIn();
+		$('button.booking_button').attr('disabled', true);
+		$.ajax({
+			url : URL + 'index/geteVoucherInfo',
+			type : 'post',
+			//dataType : 'json',
+			data : {
+				user_service_id : USER_SERVICE_ID,
+				user_id : USER_ID_2,
+				eVoucher_due_date : EVOUCHER_DUE_DATE,
+				choosen_price : USER_SERVICE_SALE_PRICE,
+				user_business_name : USER_BUSINESS_NAME,
+				user_service_name : USER_SERVICE_NAME,
+				booking_quantity : $('#e_quantity').val(),
+				user_email : USER_EMAIL,
+				service_type_id : SERVICE_TYPE_ID
+			},
+			success : function(response) {
+				//console.log(response);
+				$('#booking_amount b').text(response);
+			},
+			complete : function() {
+				$('#waiting_for_booking_save_e').fadeOut(function() {
+					cfirm = confirm('Đặt hẹn thành công!\nBạn có muốn thanh toán luôn?');
+					if (cfirm == true) {
+						$('#service_detail').modal('hide');
+						shoppingCartDetail();
+					} else {
+
+					}
+					$('button.booking_button').attr('disabled', false);
+				});
+			}
+		});
+	}
+}
+
+/*END GET ONLINE BOOKING INFOMATION*/
+/*-----------------------*/
+
+/*LOAD SHOPPING CART*/
+function shoppingCartDetail() {
+	$('#waiting_cart_detail').fadeIn();
+	$.ajax({
+		url : URL + 'index/shoppingCartDetail',
+		type : 'post',
+		dataType : 'json',
+		success : function(response) {
+			var html = '';
+			if (response.booking != '' || response.eVoucher != '' || response.gift) {
+				html = '<tr>';
+				html += '<th  style="border: none">DỊCH VỤ</th>';
+				html += '<th  style="border: none">NGÀY - GIỜ</th>';
+				html += '<th  style="border: none">GIÁ</th>';
+				html += '<th  style="border: none">SỐ LƯỢNG</th>';
+				html += '<th  style="border: none">TỔNG TIỀN</th>';
+				html += '</tr>';
+				$('#update_cart').attr('disabled', false);
+				$('#confirm_cart').attr('disabled', false);
+				$('#cart_amount').text(response.booking.length + response.eVoucher.length);
+				var total_money = 0;
+				$.each(response.booking, function(index, item) {
+					var time_booking = item.booking_detail_time.split(':');
+					var total_minutes = parseInt(time_booking[0]) * 60 + parseInt(time_booking[1]);
+					var setAMPM = 'AM';
+					if (total_minutes > (12 * 60)) {
+						setAMPM = 'PM';
+					}
+					html += '<tr>';
+					html += '<td width="30%">' + item.user_service_name.toUpperCase() + ' - <b>' + item.user_business_name + '</b></td>';
+					html += '<td width="20%">' + formatDate(item.booking_detail_date) + ' - ' + item.booking_detail_time + setAMPM + '</td>';
+					html += '<td width="18%">' + $.number(item.choosen_price) + ' VNĐ</td>';
+					if (IS_PAYMENT_PAGE == '1') {
+						html += '<td class="" width="12%">' + item.booking_quantity + '</td>';
+					} else {
+						html += '<td width="12%"><input onkeypress="inputNumbers(event)" maxlength="1" type="text" class="form-control quantity appointment_quantity" value="' + item.booking_quantity + '"/></td>';
+					}
+					html += '<td width="18%">' + $.number(parseInt(item.choosen_price) * parseInt(item.booking_quantity)) + ' VNĐ</td>';
+					if (IS_PAYMENT_PAGE == '1') {
+						html += '<td width="2%"></td>';
+					} else {
+						html += '<td width="2%"><i class="fa fa-times pointer text-danger remove_cart"></i></td>';
+					}
+					html += '</tr>';
+					total_money = total_money + parseInt(item.choosen_price) * parseInt(item.booking_quantity);
+				});
+				$.each(response.eVoucher, function(index, item) {
+					html += '<tr>';
+					html += '<td width="30%">' + item.user_service_name.toUpperCase() + ' - <b>' + item.user_business_name + '</b></td>';
+					html += '<td width="20%"><i class="text-success"><b>e-Voucher</b></i> - Ngày hết hạn : ' + formatDate(item.eVoucher_due_date) + '</td>';
+					html += '<td width="18%">' + $.number(item.choosen_price) + ' VNĐ</td>';
+					if (IS_PAYMENT_PAGE == '1') {
+						html += '<td class="" width="12%">' + item.booking_quantity + '</td>';
+					} else {
+						html += '<td width="12%"><input onkeypress="inputNumbers(event)" maxlength="1" type="text" class="form-control quantity eVoucher_quantity" value="' + item.booking_quantity + '"/></td>';
+					}
+					html += '<td width="18%">' + $.number(parseInt(item.choosen_price) * parseInt(item.booking_quantity)) + ' VNĐ</td>';
+					if (IS_PAYMENT_PAGE == '1') {
+						html += '<td width="2%"></td>';
+					} else {
+						html += '<td width="2%"><i class="fa fa-times pointer text-danger remove_cart"></i></td>';
+					}
+					html += '</tr>';
+					total_money = total_money + parseInt(item.choosen_price) * parseInt(item.booking_quantity);
+
+				});
+				$.each(response.gift, function(index, item) {					
+					html += '<tr class="gift_cart_item">';
+					html += '<td width="30%"><b class="text-info">Gift Voucher</b></td>';
+					html += '<td width="20%"><b class="text-info">Ngày gửi mã:</b> ' + item.gift_voucher_date + '</td>';
+					html += '<td width="18%">' + $.number(item.gift_voucher_price) + ' VNĐ</td>';
+					html += '<td class="" width="12%">N/A</td>';
+					html += '<td width="18%">' + $.number(parseInt(item.gift_voucher_price)) + ' VNĐ</td>';
+					if (IS_PAYMENT_PAGE == '1') {
+						html += '<td width="2%"></td>';
+					} else {
+						html += '<td width="2%"><i class="fa fa-times pointer text-danger remove_gift_cart"></i></td>';
+					}
+					html += '</tr>';
+					total_money = total_money + parseInt(item.gift_voucher_price);
+				});
+				total_money = formartCurrentcy(total_money);
+				$('#total_cart').text(total_money);
+
+			} else {
+				$('#update_cart').attr('disabled', true);
+				$('#confirm_cart').attr('disabled', true);
+				$('#total_cart').text('0');
+				$('#cart_amount').text('0');
+				html = '<tr>';
+				html += '<th  style="border: none">DỊCH VỤ</th>';
+				html += '<th  style="border: none">NGÀY - GIỜ</th>';
+				html += '<th  style="border: none">GIÁ</th>';
+				html += '<th  style="border: none">SỐ LƯỢNG</th>';
+				html += '<th  style="border: none">TỔNG TIỀN</th>';
+				html += '</tr>';
+				html += '<tr><td class="text-center" colspan="5"><h4><i class="fa fa-exclamation-circle"></i> Giỏ hàng của bạn đang rỗng! <i class="fa fa-frown-o"></i></h4></td></tr>';
+			}
+			$('table#table_shopping_cart').html(html);
+		},
+		complete : function() {
+			$('#waiting_cart_detail').fadeOut(function() {
+				APPOINTMENT_QUANTITY_LIST_BEFORE = getQuantityNumber('appointment_quantity');
+				EVOUCHER_QUANTITY_LIST_BEFORE = getQuantityNumber('eVoucher_quantity');
+				$('#Shopping_cart_info').modal('show');
+				$('.remove_cart').on('click', function() {
+					$(this).parent().siblings().find('.quantity').val(0);
+					saveQuantityNumber();
+				});
+			});
+			$('.remove_gift_cart').on('click', function(){
+				$('.gift_cart_item').remove();
+				removeGiftCart();
+			});
+		}
+	});
+}
+function removeGiftCart(){
+	$.ajax({
+		url : URL + 'giftvoucher/removeGiftCart',
+		type : 'post',
+		success : function(response) {
+			//console.log(response);
+			$('#booking_amount b').text(response);
+			if(response == 0){
+				html = '<tr>';
+				html += '<th  style="border: none">DỊCH VỤ</th>';
+				html += '<th  style="border: none">NGÀY - GIỜ</th>';
+				html += '<th  style="border: none">GIÁ</th>';
+				html += '<th  style="border: none">SỐ LƯỢNG</th>';
+				html += '<th  style="border: none">TỔNG TIỀN</th>';
+				html += '</tr>';
+				html += '<tr><td class="text-center" colspan="5"><h4><i class="fa fa-exclamation-circle"></i> Giỏ hàng của bạn đang rỗng! <i class="fa fa-frown-o"></i></h4></td></tr>';
+				$('table#table_shopping_cart').html(html);
+			}
+		},
+		complete : function() {
+			shoppingCartDetail();
+		}
+	});
+}
+/*END LOAD SHOPPING CART*/
+/*-----------------------*/
+
+/*GET QUANTITY*/
+function getQuantityNumber(cls) {
+	var quantity_list = '';
+	$('.' + cls).each(function(index) {
+		if ($(this).val() == '') {
+			quantity_list += '0,';
+		} else {
+			quantity_list += $(this).val() + ',';
+		}
+	});
+	return quantity_list;
+}
+
+/*END GET QUANTITY*/
+/*-----------------------*/
+
+/*SAVE QUANTITY*/
+function saveQuantityNumber() {
+	var appointment_quantity_list_after = getQuantityNumber('appointment_quantity');
+	var eVoucher_quantity_list_after = getQuantityNumber('eVoucher_quantity');
+	// console.log(QUANTITY_LIST_BEFORE);
+	// console.log(quantity_list_after);
+	if (APPOINTMENT_QUANTITY_LIST_BEFORE != appointment_quantity_list_after || EVOUCHER_QUANTITY_LIST_BEFORE != eVoucher_quantity_list_after) {
+		$('#waiting_for_update_cart').fadeIn();
+		$.ajax({
+			url : URL + 'index/updateShoppingCart',
+			type : 'post',
+			data : {
+				appointment_quantity_list : appointment_quantity_list_after,
+				eVoucher_quantity_list : eVoucher_quantity_list_after,
+			},
+			success : function(response) {
+				//console.log(response);
+				$('#booking_amount b').text(response);
+			},
+			complete : function() {
+				$('#waiting_for_update_cart').fadeOut(function() {
+					shoppingCartDetail();
+				});
+			}
+		});
+	}
+}
+
+/*END SAVE QUANTITY*/
+/*-----------------------*/
+
+/*CHECK LOGIN PROCESSING PAYMENT*/
+function checkIsLoginPayment() {
+	$.ajax({
+		url : URL + 'payment/checkIsLoginPayment',
+		type : 'post',
+		success : function(response) {
+			if (response == 200) {
+				jumpToOtherPage(URL + 'payment');
+			} else {
+				$('#login_modal').modal('show');
+			}
+		}
+	});
+
+}
+
+/*END CHECK LOGIN PROCESSING PAYMENT*/
+/*----------------------------------*/
+
+/*SET TIME IDLE*/
+function setTimeIdle() {
+	$.ajax({
+		url : URL + 'index/setTimeIdle',
+		type : 'get'
+	});
+}
+
+/*END SET TIME IDLE*/
+/*----------------------------------*/
+
+/*SEND CREATE PLACE MAIL*/
+function sendCreatePlaceMail() {
+	$('#error_message_create_place').hide();
+	$('#waiting_for_create_place').fadeIn(function() {
+		var e_mail = /^(([^<>()[\]\\.,;:\s@\"]+(\.[^<>()[\]\\.,;:\s@\"]+)*)|(\".+\"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+		var create_place_email = $('#create_place_email').val();
+		var check = e_mail.test(create_place_email);
+		var create_place_name = $('#create_place_name').val();
+		var create_place_phone = $('#create_place_phone').val();
+		var create_place_address = $('#create_place_address').val();
+		var create_place_com_name = $('#create_place_com_name').val();
+		var create_place_city = $('#create_place_city').val();
+		var create_place_district = $('#create_place_district').val();
+		if (create_place_city == '' || create_place_district == '' || create_place_name == '' || create_place_email == '' || create_place_phone == '' || create_place_address == '' || create_place_com_name == '') {
+			$('#error_message_create_place').text('Nhập đầy đủ thông tin ');
+			$('#error_message_create_place').fadeIn(function() {
+				$('#waiting_for_create_place').fadeOut();
+			});
+		} else {
+			if (check == true) {
+				$.ajax({
+					url : URL + 'index/sendCreatePlaceMail',
+					type : 'post',
+					data : {
+						create_place_email : $('#create_place_email').val(),
+						create_place_name : $('#create_place_name').val(),
+						create_place_phone : $('#create_place_phone').val(),
+						create_place_address : $('#create_place_address').val(),
+						create_place_city : $('#create_place_city').val(),
+						create_place_city_text : $('#create_place_city option:selected').text(),
+						create_place_district : $('#create_place_district').val(),
+						create_place_com_name : $('#create_place_com_name').val()
+					},
+					success : function(response) {
+						if (response == 200) {
+							$('#waiting_for_create_place').fadeOut(function() {
+								alert('Gửi mail tạo địa điểm thành công!');
+								$('#create_place_modal').modal('hide');
+							});
+						} else {
+							if (response == 800) {
+								$('#error_message_create_place').text('Email đã đăng ký, chọn email khác !');
+								$('#error_message_create_place').fadeIn(function() {
+									$('#waiting_for_create_place').fadeOut();
+								});
+							} else {
+								$('#waiting_for_create_place').fadeOut(function() {
+									alert('Gửi mail tạo địa điểm thất bại, thử lại!');
+								});
+							}
+						}
+					}
+				});
+			} else {
+				$('#error_message_create_place').text('Email không hợp lệ !');
+				$('#error_message_create_place').fadeIn(function() {
+					$('#waiting_for_create_place').fadeOut();
+				});
+			}
+		}
+	});
+}
+
+function clearCreatePlaceModal() {
+	setTimeIdle();
+	$('#create_place_email').val('');
+	$('#create_place_name').val('');
+	$('#create_place_phone').val('');
+	$('#create_place_address').val('');
+	$('#create_place_com_name').val('');
+	$('#error_message_create_place').hide();
+}
+
+/*END SEND CREATE PLACE MAIL*/
+/*----------------------------------*/
+
+/*EXPAND MAP*/
+function expandMap() {
+	if ($('#show_more_map').text() == 'Xem bản đồ lớn') {
+		$('.map').animate({
+			height : 460
+		});
+		$('.map #user_latlng').animate({
+			height : 450
+		}, function() {
+			var map;
+			initGoogleMap('user_latlng', USER_LAT, USER_LNG, 0);
+		});
+		$('#show_more_map').text('Thu nhỏ bản đồ');
+	} else if ($('#show_more_map').text() == 'Thu nhỏ bản đồ') {
+		$('.map').animate({
+			height : 140
+		});
+		$('.map #user_latlng').animate({
+			height : 130
+		}, function() {
+			var map;
+			initGoogleMap('user_latlng', USER_LAT, USER_LNG, 0);
+		});
+		$('#show_more_map').text('Xem bản đồ lớn');
+	}
+
+}
+
+/*END EXPAND MAP/
+ /*----------------------------------*/
+
+function formartCurrentcy(strMoney) {
+	strMoney += '';
+	var x = strMoney.split(',');
+	var x1 = x[0];
+	var x2 = x.length > 1 ? ',' + x[1] : '';
+	var rgx = /(\d+)(\d{3})/;
+	while (rgx.test(x1)) {
+		x1 = x1.replace(rgx, '$1' + ',' + '$2');
+	}
+	return x1 + x2;
+}
+
+/* imtoantran expand element */
+function expand(e) {
+	id = $(e).attr("data-class");
+	if ($(e).find("i").attr('class') == 'fa fa-angle-down') {
+		$(e).find("i").attr('class', 'fa fa-angle-up');
+	} else {
+		$(e).find("i").attr('class', 'fa fa-angle-down');
+	}
+	$(".reply-more-" + id).toggleClass('hidden');
+}
+
+/* imtoantran expand element */
+
+
+/* imtoantran save comment */
+function saveComment (e) {
+	var tag = e;
+	review_id = $(e).attr("data-review-id");
+	content = e.value;
+	if(content == '' || content == 'undefined'){
+		alert("Bạn chưa nhập nội dung");
+		// $("#reply-colls-" + review_id).collapse("hide");
+		return true;
+	}
+	$.ajax({
+		url: URL + 'service/saveComment',
+		type: 'POST',
+		dataType: 'JSON',
+		data: {user_id: UID, review_id:review_id, content:content},
+	})
+		.done(function(response) {
+			if(response.error){
+				if(confirm(response.error)){
+					$("#login_modal").modal("show");
+				}
+				return false;
+			}
+
+			html ="<div class='new-comment reply-item'>"
+			html +="<b>Bạn: </b>"+content;
+			html +="<p><i class='fa fa-clock-o text-orange'></i> <i><small> Vui lòng chờ duyệt</small></i></p>";
+			html +="</div>";
+			$(tag).parent().prev().append(html);
+		})
+		.fail(function() {
+
+		})
+		.always(function() {
+			$(tag).val('');
+			$("#reply-colls-" + review_id).collapse("hide");
+		});
+
+}
+function reportSpam (e) {
+	// body...
+	$.ajax({
+		url : URL + 'service/reportSpam',
+		type: 'POST',
+		dataType: 'JSON',
+		data: {id: $(e).attr("data-id")},
+	})
+		.done(function() {
+			$(e).fadeOut('slow');
+		})
+		.fail(function() {
+
+		})
+		.always(function() {
+
+		});
+
+	return false;
+}
+var checkContent = function (e) {
+	// body...
+	if(e.which == 13){
+		saveComment(e.target);
+	}
+}
+
+/* imtoantran save comment */

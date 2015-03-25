@@ -1,0 +1,20 @@
+b, strong{
+	font-weight: bold;
+}
+
+h3{
+	font-size: 24px;
+}
+.add-place{
+	font-size: 24px;
+}
+.title-admincp{
+	font-size: 24px;
+	margin-bottom: 5px;
+}
+tbody tr td{
+	cursor: pointer;
+}
+#user_unpublished{
+	width: 20px;
+}

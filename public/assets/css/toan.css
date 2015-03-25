@@ -1,0 +1,88 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : Dec 15, 2014, 12:15:57 PM
+    Author     : imtoantran
+    */
+
+    #result_container .new-item{
+        width:50px;
+        height: 50x;
+    }
+    #result_container .new-item i{
+        width:50px;
+        height: 50px;
+    }
+    #result_container .new-item>i:first-child{
+        font-size: 60px;
+        opacity: .7;
+    }
+    #result_container .new-item i:last-child{
+        line-height: 55px;
+    }
+    /**** new location ***/
+    .new_location_items{
+        /*cursor: pointer;*/
+        /*box-shadow: 0 0 1px 1px rgba(12,11,1,.1);*/
+    }
+    .new_location_items:hover img{
+        opacity: 0.5;
+    }
+    .new_location_items .info-content p{
+        height: 0px;
+        opacity: 0;
+    }
+    .new_location_items:hover .info-content p{
+        display: block;    
+        height: 40px;
+        color: #fff;
+        opacity: 1;
+    }
+    .new_location_items:hover .info-content{
+        background-color: rgba(0,0,0,.6) !important;
+        /*box-shadow: 0 0 8px 1px rgba(11,11,11,.2);*/
+    }
+    .new_location_items:hover .info-content .name{
+        color: rgba(255,255,255,.9) !important;
+        text-shadow: none;
+    }
+    .new_location_items .info-content .name{
+        /*         text-shadow: 0px 0px 1px rgba(0,0,0,1); */
+        color:#000 !important;
+    }
+
+    .new_location_items .info-content{
+        background-color: rgba(222,222,222,.5) !important;
+        border: 1px solid rgba(221,221,221,.4);
+    }
+    .new_location_items *{
+     -webkit-transition: all 0.3s ease-in-out;
+     -moz-transition: all 0.3s ease-in-out;
+     -o-transition: all 0.3s ease-in-out;
+     -ms-transition: all 0.3s ease-in-out;
+     transition: all .3s ease-in-out;
+ }
+ /* toantran resize max font size to 13 */
+ body,.price,.form-control{
+    font-size: 13px;
+}
+/* toantran homepage hover link color */
+/* #service-list .service-similar:hover { */
+/*a:hover{
+    color:rgba(2551,161,0,.9) !important;
+    text-shadow: 0 0 1px rgba(122,122,122,.5);
+    }*/
+    /* fix carousel oapcity */
+    .carousel-control{
+        opacity: .2 !important;
+    }
+    .carousel-control:hover{
+        opacity: 1 !important;
+    }
+
+    .show-more-replies{
+    text-align: right !important;   
+}

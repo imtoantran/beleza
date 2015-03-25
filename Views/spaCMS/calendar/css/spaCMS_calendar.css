@@ -1,0 +1,167 @@
+#script-warning {
+	display: none;
+	background: #eee;
+	border-bottom: 1px solid #ddd;
+	padding: 0 10px;
+	line-height: 40px;
+	text-align: center;
+	font-weight: bold;
+	font-size: 12px;
+	color: red;
+}
+
+#loading {
+	display: none;
+	position: absolute;
+	top: 10px;
+	right: 10px;
+}
+
+#calendar {
+	/*max-width: 900px;*/
+	margin: 10px auto;
+	padding: 0 10px;
+}
+
+td.fc-axis {
+	width: 53px !important;
+}
+
+#calendar-holder .form-content {
+	top: 35px !important;
+	bottom: 0px !important;
+}
+
+.fc-center {
+	font-size: 20px;
+	font-weight: bold;
+}
+
+.fc-day-header {
+	font-size: 15px;
+	font-weight: bold;
+}
+
+.bg-red {
+	background-color: red;
+}
+
+.confirmed {
+	background: transparent url('checkmark-16.gif') no-repeat right;
+}
+
+.e-appointment {
+	background-color: #CE5B5B;
+}
+
+.e-booking {
+	background-color: #5B81CE;
+}
+
+.e-booking-request-change {
+	background-color: #98A600;
+}
+
+a.fc-event {
+	padding: 5px;
+}
+
+a.fc-event:hover {
+	text-decoration: none;
+}
+
+#addAppointment_modal .icons-user2, #addAppointment_modal .icons-email, #addAppointment_modal .icons-phone {
+	position: relative;
+	top: 16px;
+	left: 5px;
+}
+
+#addAppointment_modal input[name=appointment_client_email], #addAppointment_modal input[name=appointment_client_phone] {
+	padding-left: 20px;
+	width: 195px;
+}
+
+#addAppointment_modal input[name=appointment_client_name] {
+	width: 195px;
+}
+
+#editConfirmedAppointment_form .appointment_date {
+	width: 95px;
+	padding-left: 5px;
+}
+
+.top-search .search-results .is_confirm {
+	font-size: 10px;
+    position: absolute;
+    right: 10px;
+    top: 10px;
+    color: #30BF30;
+}
+
+.top-search .search-results .is_done {
+	font-size: 10px;
+    position: absolute;
+    right: 10px;
+    top: 30px;
+    color: #0000FF;
+}
+
+.highlight {
+	font-weight: 700;
+	color: #000000;
+}
+
+.search_a_client_name {
+	color: #888888;
+    position: absolute;
+    right: 43px;
+    top: 5px;
+}
+
+#results_search_a_client_name ul {
+	background-color: #fff;
+    border: 1px solid #bbb;
+    box-shadow: 0 1px 3px #ccc;
+    height: auto;
+    padding: 5px;
+    position: absolute;
+    top: 22px;
+    width: 195px;
+    z-index: 1;
+}
+
+#results_search_a_client_name li.ui-menu-item {
+	border-bottom: 1px solid #ccc;
+    cursor: pointer;
+    font-size: 12px;
+    padding-bottom: 5px;
+    padding-top: 5px;
+}
+
+.datepicker{
+	z-index:1151 !important;
+}
+
+.calendar-note .past-day {
+	color: #DDD;
+}
+
+.calendar-note .to-day {
+	color: #FCF8E3;
+}
+
+.calendar-note .future-day {
+	color: #FFFFFF;
+}
+
+.calendar-note .event-appointment {
+	color: #CE5B5B;
+}
+
+.calendar-note .event-booking {
+	color: #5B81CE;
+}
+
+.calendar-note .event-request-change {
+	color: #A1AE04;
+}

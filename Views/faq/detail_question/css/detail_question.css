@@ -1,0 +1,127 @@
+#faq-1 {
+    background-color: #000;
+    padding: 15px 0px;
+    
+}
+
+#faq-1 .faq-1-title a{
+    color: #FFCC00;
+    font-size: 22px;
+}
+
+#faq-1 .faq-1-description {
+    color: #E0DEDE;
+}
+
+#top-answer .top-answer-title {
+	border-bottom: 2px solid #CCC; 
+	margin-bottom:15px;
+}
+
+#top-answer .top-answer-title h4 {
+	padding-left: 45px;
+}
+
+.answer {
+	margin-bottom: 10px;
+}
+
+.answer .answer-content .avatar{
+	margin-right: 10px; 
+	margin-bottom: 10px;
+}
+
+.answer .answer-content .answer-content-container{
+	width: 85%;
+}
+
+.qanda-comments .answer-response .avatar{
+	margin-right: 10px; 
+	margin-bottom: 10px;
+}
+
+.qanda-comments .answer-response .answer-response-content {
+	width: 85%;
+}
+
+.user-actions {
+	border-bottom: 1px dotted #ccc;
+    border-top: 1px dotted #ccc;
+    padding: 10px 0;
+}
+
+.btnAct_like {
+	cursor: pointer;
+}
+
+.answer-response {
+	border-bottom: 1px dotted #ccc;
+    margin-bottom: 15px;
+}
+
+.related-offer {
+	margin-bottom: 30px;
+    border: 2px solid #ccc;
+    /*padding: 10px 0;*/
+    position: relative;
+}
+
+.related-offer .standalone-name {
+    border-bottom: 1px dotted #000;
+    padding-bottom: 5px;
+    color: #000;
+}
+
+.related-offer .offer-location {
+	color: #999999;
+}
+
+.related-offer .product-details {
+	/*background-color: #ccc;*/
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.related-offer .product-image {
+	background-color: #FC0;;
+    padding-bottom: 10px;
+    padding-top: 10px;
+}
+
+.related-offer .product-image .price {
+	font-size: 16px
+}
+
+.related-offer .discounted {
+	background-color: #f6f5de;
+    border: 4px solid #FC0;
+    border-radius: 35px;
+    color: #b9ca02;
+    font-family: DINWeb-Medium,Arial,Helvetica,sans-serif;
+    font-size: 24px;
+    font-style: normal;
+    font-weight: normal;
+    height: 60px;
+    position: absolute;
+    right: -18px;
+    text-align: center;
+    top: -16px;
+    width: 60px;
+    z-index: 10;
+}
+
+.related-offer .discounted .discount {
+	color: #2c3d44;
+    font-size: 20px;
+    font-weight: 600;
+    line-height: 51px;
+    white-space: nowrap;
+}
+
+.loading {
+    display: none;
+}
+
+#service_related .price {
+    color: #000;
+}
