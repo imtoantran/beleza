@@ -501,21 +501,23 @@ SQL;
 			// }
 
 			$params = array(
-				'{{CLIENT_NAME}}' => $data_sendMail['data_client_name'],
-				'{{SPA_NAME}}' => Session::get('user_business_name'),
-				'{{SERVICE_NAME}}' => $data_sendMail['data_us_name'],
-				'{{PRICE}}' => number_format($data_sendMail['data_price']),
-				'{{DATE}}' => $data_sendMail['data_date'],
-				'{{START_TIME}}' => substr($data_sendMail['data_time_start'], 0, 5),
-				'{{SERVICE_DURATION}}' => $data_sendMail['data_us_duration'] . ' phút',
-				'{{BOOKING_CODE}}' => $data_sendMail['data_booking_id'],
-				'{{CREDIT_POINT}}' => $credit_point_plus
+				'CLIENT_NAME' => $data_sendMail['data_client_name'],
+				'SPA_NAME' => Session::get('user_business_name'),
+				'SERVICE_NAME' => $data_sendMail['data_us_name'],
+				'PRICE' => number_format($data_sendMail['data_price']),
+				'DATE' => $data_sendMail['data_date'],
+				'START_TIME' => substr($data_sendMail['data_time_start'], 0, 5),
+				'SERVICE_DURATION' => $data_sendMail['data_us_duration'] . ' phút',
+				'BOOKING_CODE' => $data_sendMail['data_booking_id'],
+				'CREDIT_POINT' => $credit_point_plus
 			);
 
 			$email = new email_template();        
-	        /*         * ************************* */
-	        //if (!$mail->Send()) {
-	        if (!$email->send($data_client['client_email'], $params,'spaOrderCanceled')) {
+			/**
+			 * @imtoanran
+			 * @TODO Need email template
+			 */
+	        if (!$email->send($data_client['client_email'], $params,'clientOrderCanceled')) {
 	            echo "Mailer Error: " . $email->ErrorInfo;
 	        } else {
 	            // cộng credit point cho khách hàng
@@ -962,8 +964,8 @@ SQL;
 			// }
 
 			$params = array(
-				'TEN_KH' => $data_sendMail['data_client_name'],
-				'TEN_SPA' => Session::get('user_business_name'),
+				'CLIENT_NAME' => $data_sendMail['data_client_name'],
+				'SPA_NAME' => Session::get('user_business_name'),
 				'TEN_DICH_VU' => $data_sendMail['data_us_name'],
 				'GIA' => $data_sendMail['data_price'],
 				'NGAY' => date("d/m/Y", strtotime($data_sendMail['data_date'])),
