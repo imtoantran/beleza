@@ -93,7 +93,6 @@ class bookinghistory extends Controller {
 				header('location:' . URL );
 			}
 		} else {
-			print json_encode(2);
 			header('location:' . URL . 'bookinghistory');
 		}
 	}

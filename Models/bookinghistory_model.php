@@ -153,9 +153,10 @@ SQL;
 				'Bạn đã xác nhận lịch hẹn.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stop */
 		} else {
 			header('location:' . URL );
 		}
@@ -201,9 +202,10 @@ SQL;
 				'Bạn đã yêu cầu đổi lịch hẹn.<br>Bạn có thể đổi lịch hẹn trong lịch sử book của bạn.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stot */
 		} else {
 			header('location:' . URL . 'error');
 		}
@@ -229,9 +231,10 @@ SQL;
 
 		// Nếu khách hàng đồng ý bằng nút chấp nhận Hủy
 		if(!isset($_GET['isConfirm'])) {
-			$confirm_tpl_file = OTHER_LIBS . 'template/verify/verify_service_response/cancel_booking/index.html';
+			$confirm_tpl_file = OTHER_LIBS . 'template/verify/verify_service_response/cancel_booking/index.php';
 			$confirm_msg_tmpl = file_get_contents($confirm_tpl_file);
 			$confirm_msg_tmpl = str_replace("{{URL}}", self::curPageURL() . "&isConfirm=true", $confirm_msg_tmpl);
+			$confirm_msg_tmpl = str_replace("{{ABORT_URL}}", URL."bookinghistory",$confirm_msg_tmpl);
 			echo $confirm_msg_tmpl;
 			return false;
 		}
@@ -246,8 +249,7 @@ SQL;
 
 		if($result) {
 			// Gửi mail
-			$params = array(
-			);
+			$params = ["SPA_NAME"=>$data_sendMail['data_user_business_name']];
 
 			$email = new email_template();        
 	        /*         * ************************* */
@@ -269,9 +271,10 @@ SQL;
 				'Bạn đã yêu cầu hủy lịch hẹn.<br>Bạn được cộng <strong>' . $credit_point . '</strong> credit point vào tài khoản.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stop */
 		} else {
 			header('location:' . URL . 'error');
 		}
@@ -501,16 +504,15 @@ SQL;
 		);
 
 		$result = $this->db->update("booking_detail", $data, "booking_detail_id = $booking_detail_id");
-		
 		$data_sendMail_new = self::get_data_send_mail($booking_detail_id);
 
 		if($result) {
 			$params = array(
-				'{{SPA_NAME}}' => $data_sendMail_new["data_user_business_name"],
-				'{{CLIENT_NAME}}' => $data_sendMail_new["data_client_name"],
-				'{{SERVICE_NAME}}' => $data_sendMail_new["data_us_name"],
-				'{{NEW_DATE}}' => $data_sendMail_new["data_date"],
-				'{{NEW_START_TIME}}' => $data_sendMail_new["data_time_start"]
+				'SPA_NAME' => $data_sendMail_new["data_user_business_name"],
+				'CLIENT_NAME' => $data_sendMail_new["data_client_name"],
+				'SERVICE_NAME' => $data_sendMail_new["data_us_name"],
+				'NEW_DATE' => $data_sendMail_new["data_date"],
+				'NEW_START_TIME' => $data_sendMail_new["data_time_start"]
 			);
 
 			$email = new email_template();        
