@@ -175,8 +175,10 @@ class payment extends Controller {
 	function checkIsLoginPayment() {
 		Session::initIdle();
 		if (isset($_SESSION['client_id'])) {
+			$_SESSION['popup_payment'] = 0;
 			echo 200;
 		} else {
+			$_SESSION['popup_payment'] = 1;
 			echo 0;
 		}
 	}

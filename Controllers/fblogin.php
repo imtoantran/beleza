@@ -62,6 +62,7 @@ class fblogin extends Controller {
 		//3.Initialize application, create helper object and get fb sess
 		FacebookSession::setDefaultApplication($app_id, $app_secret);
 		$helper = new FacebookRedirectLoginHelper($redirect_url);
+
 		echo $helper -> getLoginUrl(array('scope' => $required_scope));
 	}
 
@@ -78,12 +79,27 @@ class fblogin extends Controller {
 		$helper = new FacebookRedirectLoginHelper($redirect_url);
 		$sess = $helper -> getSessionFromRedirect();
 		//4. if fb sess exists echo name
+
+
+
+
+
+//				$this->save_image('http://graph.facebook.com/1561806550774371/picture?type=large', '/public/assets/img/avatar/123.jpg' );
+
+//				$data['client_avatar'] = Hash::create('md5', $data['client_pass'], HASH_PASSWORD_KEY);
+
+
+
+
+
 		if (isset($sess)) {
 			//create request object,execute and capture response
 			$request = new FacebookRequest($sess, 'GET', '/me');
 			// from response get graph object
 			$response = $request -> execute();
 			$graph = $response -> getGraphObject(GraphUser::className());
+//			var_dump($graph);exit;
+
 			// use graph object methods to get user details
 			$check_exist_mail = $this -> model -> checkFBExistMail($graph -> getProperty('email'));
 			if ($check_exist_mail != '0') {
@@ -102,6 +118,14 @@ class fblogin extends Controller {
 				}
 				$data['client_pass'] = bin2hex(openssl_random_pseudo_bytes(3));
 				$data['client_pass'] = Hash::create('md5', $data['client_pass'], HASH_PASSWORD_KEY);
+				if(!file_exists('/public/assets/img/avatar/'.$graph -> getProperty('id').'.jpg')){
+					if($this->save_image($graph -> getProperty('id'))){
+						$data['client_avatar'] = 'public/assets/img/avatar/'.$graph -> getProperty('id').'.jpg';
+					}else{
+						$data['client_avatar'] = 'public/assets/img/default.png';
+					}
+				}
+
 				$this -> model -> insertClientFB($data);
 				/* imtoantran */
 				 	header('Location: ' .URL. Session::get('return_url'));
@@ -116,6 +140,23 @@ class fblogin extends Controller {
 			}
 		}
 	}
+
+	//luuhoabk - save avatar login facebook
+	function save_image($idFacebook)
+	{ //Download images from remote server
+		$img_file='http://graph.facebook.com/'.$idFacebook.'/picture?type=large';
+		$img_file=file_get_contents($img_file);
+		$file_loc=$_SERVER['DOCUMENT_ROOT'].'/public/assets/img/avatar/'.$idFacebook.'.jpg';
+		$file_handler=fopen($file_loc,'w');
+		$result = true;
+		if(fwrite($file_handler,$img_file)==false){
+			$result = false;
+		}
+		fclose($file_handler);
+
+		return $result;
+	}
+
 
 }
 ?>
