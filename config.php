@@ -2,19 +2,17 @@
 
 // Config database
 define('DB_TYPE', 'mysql');
-//define('DB_HOST', 'localhost');
-//define('DB_NAME', 'dbwahanda');
-//define('DB_USER', 'root');
-//define('DB_PASS', '');
-// define('DB_TYPE', 'mysql');
-// define('DB_HOST', 'localhost');
-// define('DB_NAME', 'beleza_host');
-// define('DB_USER', 'root');
-// define('DB_PASS', '');
-define('DB_HOST', '107.167.182.195');
-define('DB_NAME', 'beleza_01');
-define('DB_USER', 'beleza_team');
-define('DB_PASS', 'fYwFhHqe43PP7Ge8');
+if($_SERVER['HTTP_HOST'] == 'beleza.com'){
+    define('DB_HOST', 'localhost');
+    define('DB_NAME', 'beleza_01');
+    define('DB_USER', 'root');
+    define('DB_PASS', '');
+}else {
+    define('DB_HOST', '107.167.182.195');
+    define('DB_NAME', 'beleza_01');
+    define('DB_USER', 'beleza_team');
+    define('DB_PASS', 'fYwFhHqe43PP7Ge8');
+}
 
 // The sitewide hashkey, do not change this because its used for passwords!
 // This is for other hash keys... Not sure yet

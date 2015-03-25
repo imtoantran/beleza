@@ -1,9 +1,12 @@
-console.log(window.id);
+//CKEDITOR.config.allowedContent='[*]{*}(*)';
 CKEDITOR.replace(
         'emailcontent',
     {
-        allowedContent:true, 
-        filter:false,
+        //allowedContent:'*',
+        //allowedContent:true,
+        disallowedContent : '[data-*]',
+        extraAllowedContent:'*{*}(*)[*]',
+        filter:false
     });
 $(".save").click(function (event) {
     content = CKEDITOR.instances.emailcontent.getData();
