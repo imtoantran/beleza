@@ -1,18 +1,18 @@
 $(document).ready(function() {
 	$('#client_email').val('');
-	$('#client_username').val('');
-	$("#user_des, #pass_des, #postcode_des").tooltip({// Định dạng các id hiện tooltip
-		placement : 'right',
-		html : true,
-		container : 'body',
-		delay : 0
-	});
+	////$('#client_username').val('');
+	//$("#user_des, #pass_des, #postcode_des").tooltip({// Định dạng các id hiện tooltip
+	//	placement : 'right',
+	//	html : true,
+	//	container : 'body',
+	//	delay : 0
+	//});
 	$("#register_form").validate({
 		errorElement : "span", // Định dạng cho thẻ HTML hiện thông báo lỗi
 		rules : {
 			rePassword : {
 				equalTo : "#password" // So sánh trường repassword với trường có id là password
-			},
+			}
 		}
 	});
 	$('#register_form').on('focus', 'input.error', function() {
@@ -66,37 +66,37 @@ $(document).ready(function() {
 			$("#submit_reg").bind('click', eventhandler);
 		}
 	});
-	$('#client_username').blur(function() {
-		var client_username = ($(this).val());
-		if ($('#client_username').val() !== '') {
-			$('#username_check').children('span').remove();
-			$('#username_check').append(' <i class="fa fa-refresh fa-spin"></i>');
-			$.ajax({
-				url : URL + 'clientsignup/checkExist',
-				type : 'post',
-				dataType : 'json',
-				data : {
-					username : client_username
-				},
-				success : function(response) {
-					if (response[0].count == 0) {
-						$('#username_check').children('i').remove();						
-						$('#username_check').append('<span class="text-success"><small><i> Tên đăng nhập chưa được sử dụng!</small></i></span>');
-						$("#submit_reg").unbind('click', eventhandler);
-					} else {
-						$('#username_check').children('i').remove();
-						$('#username_check').append('<span class="text-danger"><small><i> Tên đăng nhập đã tồn tại!</small></i></span>');
-						$("#submit_reg").bind('click', eventhandler);
-					}
-				},
-				complete : function() {
-
-				}
-			});
-		} else {
-			$('#username_check').children('span').remove();
-		}
-	});
+	//$('#client_username').blur(function() {
+	//	var client_username = ($(this).val());
+	//	if ($('#client_username').val() !== '') {
+	//		$('#username_check').children('span').remove();
+	//		$('#username_check').append(' <i class="fa fa-refresh fa-spin"></i>');
+	//		$.ajax({
+	//			url : URL + 'clientsignup/checkExist',
+	//			type : 'post',
+	//			dataType : 'json',
+	//			data : {
+	//				username : client_username
+	//			},
+	//			success : function(response) {
+	//				if (response[0].count == 0) {
+	//					$('#username_check').children('i').remove();
+	//					$('#username_check').append('<span class="text-success"><small><i> Tên đăng nhập chưa được sử dụng!</small></i></span>');
+	//					$("#submit_reg").unbind('click', eventhandler);
+	//				} else {
+	//					$('#username_check').children('i').remove();
+	//					$('#username_check').append('<span class="text-danger"><small><i> Tên đăng nhập đã tồn tại!</small></i></span>');
+	//					$("#submit_reg").bind('click', eventhandler);
+	//				}
+	//			},
+	//			complete : function() {
+    //
+	//			}
+	//		});
+	//	} else {
+	//		$('#username_check').children('span').remove();
+	//	}
+	//});
 });
-function hasEmail() {
-}
+//function hasEmail() {
+//}

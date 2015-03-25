@@ -92,6 +92,7 @@ class FacebookRedirectLoginHelper
     $version = ($version ?: FacebookRequest::GRAPH_API_VERSION);
     $this->state = $this->random(16);
     $this->storeState($this->state);
+
     $params = array(
       'client_id' => $this->appId,
       'redirect_uri' => $this->redirectUrl,
@@ -99,6 +100,7 @@ class FacebookRedirectLoginHelper
       'sdk' => 'php-sdk-' . FacebookRequest::VERSION,
       'scope' => implode(',', $scope)
     );
+
     return 'https://www.facebook.com/' . $version . '/dialog/oauth?' .
       http_build_query($params, null, '&');
   }

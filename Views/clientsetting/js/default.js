@@ -98,7 +98,7 @@ function loadUserDetail() {
 					$('p#' + key).prepend(value);
 				}
 			});
-			$('.fileinput-preview').html('<img src="' + URL + response[0]['client_avatar'] + '" />');
+			$('.fileinput-preview').html('<img src="' + URL + response[0]['client_avatar'] + '" style="width:100%; height: 100%;"/>');
 		},
 		complete : function() {
 			setTimeout(function(){
