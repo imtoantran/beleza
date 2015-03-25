@@ -68,6 +68,11 @@ $(document).ready(function() {
 	$('#news').click(function() {
 		jumpToOtherPage(URL + 'pageBuilding');
 	});
+
+	console.log($('#Shopping_cart_info').css('display'));
+	if($('#popup-payment').attr('data-popup') == 1){
+		shoppingCartDetail();
+	}
 	// $('#create_place_modal').on('shown.bs.modal', function () {
 		// $('#district_field').html('<option value="" selected>Quận...</option>');
 		// $('#create_place_district').html('<option value="" selected>Quận...</option>');
@@ -2489,7 +2494,10 @@ function checkIsLoginPayment() {
 			if (response == 200) {
 				jumpToOtherPage(URL + 'payment');
 			} else {
+				// if not login
+
 				$('#login_modal').modal('show');
+
 			}
 		}
 	});

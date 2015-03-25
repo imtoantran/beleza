@@ -171,7 +171,9 @@
 		</div>
 	</div>
 </div>
+<div id="popup-payment" style="display: none;" data-popup="<?php if(isset($_SESSION['popup_payment'])){echo $_SESSION['popup_payment']; unset($_SESSION['popup_payment']); } else {echo 0;}?>"></div>
 <script>
 	var REVIEW_RESULT = 0;
 	var RESULT_PER_SHOW_MORE = "<?php echo RESULT_PER_SHOW_MORE; ?>";
+
 </script>
