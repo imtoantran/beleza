@@ -175,8 +175,10 @@ class payment extends Controller {
 	function checkIsLoginPayment() {
 		Session::initIdle();
 		if (isset($_SESSION['client_id'])) {
+			$_SESSION['popup_payment'] = 0;
 			echo 200;
 		} else {
+			$_SESSION['popup_payment'] = 1;
 			echo 0;
 		}
 	}
@@ -319,7 +321,6 @@ class payment extends Controller {
 		}
 		if($total_money <= $_SESSION['client_creditpoint']*MONEY_PER_POINT){
 			$_SESSION['has_credit_point'] = 2;
-			//echo $total_money . ':' . $_SESSION['client_creditpoint']*MONEY_PER_POINT;
 			$order_code = $this -> model -> createBookingId();
 			$result = $this -> model -> processPayment($total_money, $order_code);
 			// =0 is insert false
@@ -331,7 +332,6 @@ class payment extends Controller {
 			// echo 'No';
 			
 		}else if($total_money > $_SESSION['client_creditpoint']*MONEY_PER_POINT){
-			//echo $total_money . ':' . $_SESSION['client_creditpoint']*MONEY_PER_POINT;
 			$_SESSION['has_credit_point'] = 1;
 			echo $this -> getTotalMoney();
 		}

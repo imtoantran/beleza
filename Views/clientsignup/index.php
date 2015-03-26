@@ -54,14 +54,14 @@
 								<input class="form-control required" type="text" id="client_name" name="client_name">
 							</div>
 						</div>	
-						<div class="form-group">
-							<p id="username_check" class="col-sm-12">
-								TÊN ĐĂNG NHẬP <b title='Bạn sẽ được biết đến trên cộng đồng Wahanda qua tên đăng nhập, ít nhất 4 ký tự, số hoặc "-".' class="fa fa-question-circle text-muted" id="user_des"></b>
-							</p>
-							<div class="col-sm-12">
-								<input minlength="4" autocomplete="off" class="form-control required" type="text" id="client_username" name="client_username">
-							</div>
-						</div>
+<!--						<div class="form-group">-->
+<!--							<p id="username_check" class="col-sm-12">-->
+<!--								TÊN ĐĂNG NHẬP <b title='Bạn sẽ được biết đến trên cộng đồng Wahanda qua tên đăng nhập, ít nhất 4 ký tự, số hoặc "-".' class="fa fa-question-circle text-muted" id="user_des"></b>-->
+<!--							</p>-->
+<!--							<div class="col-sm-12">-->
+<!--								<input minlength="4" autocomplete="off" class="form-control required" type="text" id="client_username" name="client_username">-->
+<!--							</div>-->
+<!--						</div>-->
 						<div class="form-group">
 							<p class="col-sm-6">
 								ĐIỆN THOẠI
@@ -89,14 +89,6 @@
 							</p>
 							<div class="col-sm-12">
 								<input autocomplete="off" class="form-control required" minlength="6" type="password" id="client_pass" name="client_pass">
-							</div>
-						</div>
-						<div class="form-group">
-							<p class="col-sm-6">
-								POST CODE <b title="Cho chúng tôi biết bạn đang ở đâu và chúng tôi sẽ giúp bạn tìm những địa điểm tuyệt vời gần đó." class="fa fa-question-circle text-muted" id="postcode_des"></b>
-							</p>
-							<div class="col-sm-12">
-								<input class="form-control required" type="text" id="client_postcode" name="client_postcode">
 							</div>
 						</div>
 						<div class="form-group">
@@ -132,7 +124,7 @@
 							<div class="col-sm-12">
 								<label>
 									<i> Bằng việc gửi form này, bạn đồng ý với 
-										<a href="https://www.wahanda.com/info/terms-of-use/" class="text-orange-black" target="_blank">
+										<a href=<?php echo URL;?>" class="text-orange-black" target="_blank">
 											<strong> Điều khoản và Điều kiện </strong>
 										</a> của chúng tôi 
 									</i>

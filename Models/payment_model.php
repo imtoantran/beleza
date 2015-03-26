@@ -136,7 +136,7 @@ SQL;
                                 <span><b>Số lượng:</b> '. $value['booking_quantity']. ' </span><br>
                                 <span><b>Giá:</b> '. number_format($value['choosen_price'],"0",",","."). ' VNĐ </span><br>
                                 </div>';
-                        $gift_point = $gift_point + $value['booking_quantity'];
+//                        $gift_point = $gift_point + $value['booking_quantity'];
                     }
                 }
 
@@ -184,7 +184,7 @@ SQL;
 
                         }
    
-                        $gift_point = $gift_point + $value['booking_quantity'];
+//                        $gift_point = $gift_point + $value['booking_quantity'];
                     }
                 }
 				// gift voucher
@@ -246,8 +246,9 @@ SQL;
 				}
 				if(isset($_SESSION['has_credit_point'])){
 					if($_SESSION['has_credit_point'] == 1){
-						$total_money_minus = $total_money - ($_SESSION['client_creditpoint']*MONEY_PER_POINT);
-						$total_point_minus = $total_money_minus/MONEY_PER_POINT;
+//						$total_money_minus = $total_money - ($_SESSION['client_creditpoint'] * MONEY_PER_POINT);
+						$total_point_minus = 0;
+
 						$sql = <<<SQL
 							UPDATE client
 							SET client_creditpoint = {$total_point_minus}
@@ -274,6 +275,7 @@ SQL;
                 exit;
             }
 
+            $gift_point = ($total_money / PAYMENT_GIFT_POINT);
 
             $gift_point = $gift_point + $_SESSION['client_giftpoint'];
             $sql = <<<SQL

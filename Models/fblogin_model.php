@@ -60,6 +60,7 @@ INSERT INTO `client`(
 , `client_creditpoint`
 , `client_giftpoint`
 , `client_is_active`
+, `client_avatar`
 ) VALUES (
 '{$data['client_name']}'
 ,'{$data['client_email']}'
@@ -71,6 +72,7 @@ INSERT INTO `client`(
 ,0
 ,0
 ,1
+,'{$data['client_avatar']}'
 )
 SQL;
 		$insert = $this -> db -> prepare($sql);

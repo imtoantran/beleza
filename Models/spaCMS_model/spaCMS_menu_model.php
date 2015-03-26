@@ -249,7 +249,9 @@ SQL;
 			}
 			$data["$key"] = $value;
 		}
-
+		if(!isset($data['user_service_sale_price']) || $data['user_service_sale_price'] = 0 || !is_numeric($data['user_service_sale_price'])){
+			$data['user_service_sale_price'] = $data['user_service_full_price'];
+		}
 		if( $this->db->insert('user_service', $data) ){
 			echo 'success';
 		} else {

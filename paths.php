@@ -3,14 +3,16 @@
 define('VERSION', '1.0');
 
 // Project name folder
-define('PJ_NAME', 'Project_Wahanda_Alternative');
+define('PJ_NAME', 'beleza');
 
 // DIRECTORY SEPARATOR Linux and Windows
 define('DS', DIRECTORY_SEPARATOR);
 
-// Always provide a TRAILING SLASH (/) AFTER A PATH
-define('URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . PJ_NAME . '/');
-//   define('URL', '//' . $_SERVER['HTTP_HOST'] . '/');
+
+if($_SERVER['HTTP_HOST'] == "beleza.com")
+    define('URL', '//' . $_SERVER['HTTP_HOST'] . '/');
+else
+    define('URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . PJ_NAME . '/');
 
 define('LIBS', 'Libs/');
 

@@ -844,42 +844,49 @@ var Answer = function() {
 
 	var xhrUpdate_confirm_answer = function() {
 		var btnAct_confirm = $('.btnAct_confirm_answer');
+		var t
 		btnAct_confirm.on("click", function(){
+			//console.log($(this).closest('tbody').find('tr').length);
 	        var _self = $(this);
-			
-			var data_id = _self.attr('data_id');
+
+            var data_id = _self.attr('data_id');
 
 	        var data_update = {
 	        	'data_id' : data_id
 	        };
-	
+
 	        var isSuccess = false;
 	        var loading = _self.find('.loading');
 	        var done = _self.find('.done');
-	        
+
 	        jConfirm('Duyệt câu trả lời?', 'Duyệt câu trả lời này?', function(e_msg){
 	            if(e_msg == true){
 	                loading.fadeIn();
 	                done.hide();
-	
+
 	                var url = URL + "admincp_community/xhrUpdate_confirm_answer";
 	                $.post(url, data_update, function(result){
 	                    if (result == 'success') {
-	                    	// Do it...
+							var tbody= _self.closest('tbody');
+							_self.closest('tr').remove();
+
+							if(tbody.find('tr').length <=0){
+								tbody.append('<tr class="odd"><td valign="top" colspan="6" class="dataTables_empty">Không có dữ liệu nào cả.</td></tr>');
+							}
 	                        isSuccess = true;
 	                    }
 	                })
 	                .done(function(){
 	                    loading.hide();
 	                    done.show();
-	
+
 	                    if(isSuccess){
 	                    	// Do it...
-	
+
 	                    } else {
 	                        jAlert("Update error!");
 	                    }
-	                }); 
+	                });
 	            }
 	        });
 	    });

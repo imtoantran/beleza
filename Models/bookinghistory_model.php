@@ -153,9 +153,10 @@ SQL;
 				'Bạn đã xác nhận lịch hẹn.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stop */
 		} else {
 			header('location:' . URL );
 		}
@@ -201,9 +202,10 @@ SQL;
 				'Bạn đã yêu cầu đổi lịch hẹn.<br>Bạn có thể đổi lịch hẹn trong lịch sử book của bạn.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stot */
 		} else {
 			header('location:' . URL . 'error');
 		}
@@ -219,19 +221,28 @@ SQL;
 		$data_sendMail = self::get_data_send_mail($booking_detail_id);
 
 		// Điểm credit point cộng cho khách hàng
-		$credit_point = intval($data_sendMail['data_price'])/MONEY_PER_POINT;
+		$credit_point =floor($data_sendMail['data_price'] / MONEY_PER_POINT);
 		$client_id = $data_sendMail['data_client_id'];// id khách hàng
 		// Cập nhật credit point cho khách hàng
-		if(!self::add_credit_point($client_id, $credit_point)){
-			die('add client credit point error!');
-			exit;
+
+		if(isset($_GET['isConfirm'])) {
+			if(!self::add_credit_point($client_id, $credit_point)){
+				die('add client credit point error!');
+				exit;
+			}
+			// chua xac dinh duoc gift point tra ve da thanh toan bang credit_point hay la tien mat
+//			if(!self::update_giftpoint($client_id, ($credit_point * MONEY_PER_POINT) / PAYMENT_GIFT_POINT)){
+//				die('update gift point error!');
+//				exit;
+//			}
 		}
 
 		// Nếu khách hàng đồng ý bằng nút chấp nhận Hủy
 		if(!isset($_GET['isConfirm'])) {
-			$confirm_tpl_file = OTHER_LIBS . 'template/verify/verify_service_response/cancel_booking/index.html';
+			$confirm_tpl_file = OTHER_LIBS . 'template/verify/verify_service_response/cancel_booking/index.php';
 			$confirm_msg_tmpl = file_get_contents($confirm_tpl_file);
 			$confirm_msg_tmpl = str_replace("{{URL}}", self::curPageURL() . "&isConfirm=true", $confirm_msg_tmpl);
+			$confirm_msg_tmpl = str_replace("{{ABORT_URL}}", URL."bookinghistory",$confirm_msg_tmpl);
 			echo $confirm_msg_tmpl;
 			return false;
 		}
@@ -246,8 +257,7 @@ SQL;
 
 		if($result) {
 			// Gửi mail
-			$params = array(
-			);
+			$params = ["SPA_NAME"=>$data_sendMail['data_user_business_name']];
 
 			$email = new email_template();        
 	        /*         * ************************* */
@@ -269,9 +279,10 @@ SQL;
 				'Bạn đã yêu cầu hủy lịch hẹn.<br>Bạn được cộng <strong>' . $credit_point . '</strong> credit point vào tài khoản.'
 			);
 			$verify_msg_tmpl = str_replace($verify_index, $verify_value, $verify_msg_tmpl);
-			echo $verify_msg_tmpl;
-
+			/* imtoantran fix wrong header output order start */
 			header("refresh:5;url=" . URL . "bookinghistory");
+			echo $verify_msg_tmpl;
+			/* imtoantran fix wrong header output order stop */
 		} else {
 			header('location:' . URL . 'error');
 		}
@@ -501,16 +512,15 @@ SQL;
 		);
 
 		$result = $this->db->update("booking_detail", $data, "booking_detail_id = $booking_detail_id");
-		
 		$data_sendMail_new = self::get_data_send_mail($booking_detail_id);
 
 		if($result) {
 			$params = array(
-				'{{SPA_NAME}}' => $data_sendMail_new["data_user_business_name"],
-				'{{CLIENT_NAME}}' => $data_sendMail_new["data_client_name"],
-				'{{SERVICE_NAME}}' => $data_sendMail_new["data_us_name"],
-				'{{NEW_DATE}}' => $data_sendMail_new["data_date"],
-				'{{NEW_START_TIME}}' => $data_sendMail_new["data_time_start"]
+				'SPA_NAME' => $data_sendMail_new["data_user_business_name"],
+				'CLIENT_NAME' => $data_sendMail_new["data_client_name"],
+				'SERVICE_NAME' => $data_sendMail_new["data_us_name"],
+				'NEW_DATE' => $data_sendMail_new["data_date"],
+				'NEW_START_TIME' => $data_sendMail_new["data_time_start"]
 			);
 
 			$email = new email_template();        
@@ -547,12 +557,39 @@ SQL;
 		$result = $this->db->update("client", $data_update, "client_id = $client_id");
 
 		if($result){
+			$_SESSION['client_creditpoint'] = $update_creditpoint;
+
 			return true;
 		}
 
 		return false;
 	}
 
+	public function update_giftpoint($client_id, $gift_point) {
+		$aQuery = <<<SQL
+		SELECT client_giftpoint
+		FROM client
+		WHERE client_id = {$client_id}
+SQL;
+		$data = $this->db->select($aQuery);
+
+		$current_giftpoint = $data[0]['client_giftpoint'];
+
+		$update_giftpoint = $current_giftpoint - $gift_point;
+
+		$data_update = array(
+			'client_giftpoint' => $update_giftpoint
+		);
+
+		$result = $this->db->update("client", $data_update, "client_id = $client_id");
+
+		if($result){
+			$_SESSION['client_giftpoint'] = $update_giftpoint;
+			return true;
+		}
+
+		return false;
+	}
 
 	//////////////////////////// CHỨC NĂNG ////////////////////////
 	function curPageURL() {
