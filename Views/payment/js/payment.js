@@ -311,6 +311,7 @@ function loadPaymentDetail() {
 		type : 'post',
 		dataType : 'json',
 		success : function(response) {
+			console.log(response);
 			var html = '';
 			html = '<tr>';
 			html += '<th  style="border: none">DỊCH VỤ</th>';

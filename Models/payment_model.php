@@ -248,6 +248,7 @@ SQL;
 					if($_SESSION['has_credit_point'] == 1){
 						$total_money_minus = $total_money - ($_SESSION['client_creditpoint']*MONEY_PER_POINT);
 						$total_point_minus = $total_money_minus/MONEY_PER_POINT;
+
 						$sql = <<<SQL
 							UPDATE client
 							SET client_creditpoint = {$total_point_minus}
