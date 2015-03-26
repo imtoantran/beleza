@@ -369,6 +369,7 @@ function loadPaymentDetail() {
 				html += '<tr>';
 				html += '<td style="border-top: none" colspan="5" id="total_all_money"><b id="old_price" class="pull-right text-danger">TỔNG CỘNG: ' + $.number(total_money) + ' VNĐ </b></td>';
 				html += '</tr>';
+
 				if(response.client_info[0].client_creditpoint != '0'){
 					html += '<tr>';
 	                html += '<td style="border-top: none" colspan="5"><button id="minus_price" onclick="checkCreditPointAmount()" class="btn btn-orange pull-right">$ Bạn có: ' + response.client_info[0].client_creditpoint + ' credit point. Trừ vào giỏ hàng</button></td>';

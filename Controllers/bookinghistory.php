@@ -113,7 +113,7 @@ class bookinghistory extends Controller {
 		$client_response = $this->model->check_client_response($booking_detail_id);
 
 		if(!$client_response) {
-			if( Session::get('client_id') == $client_id && Session::get('client_email') == $client_email ) {
+			if( Session::get('client_id') == $client_id && Session::get('client_email') == $client_email) {
 				$this->model->cancel_appointment($booking_detail_id);
 			} else {
 				// Nếu chưa đăng nhập. Yêu cầu khách đăng nhập

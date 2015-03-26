@@ -578,7 +578,28 @@ SQL;
 			$insert = $this -> db -> prepare($sql);
 			$insert -> execute($insert_array);
 			if ($insert) {
-				echo 200;
+				//update gift point
+
+				$client_id = $data['client_id'];
+				$aQuery = <<<SQL
+		SELECT client_giftpoint
+		FROM client
+		WHERE client_id = {$client_id}
+SQL;
+				$data = $this->db->select($aQuery);
+				$current_giftpoint = $data[0]['client_giftpoint'];
+				$update_giftpoint = $current_giftpoint + REVIEW_GIFT_POINT;
+				$data_update = array(
+					'client_giftpoint' => $update_giftpoint
+				);
+
+				$update_giftpoint=$this->db->update("client", $data_update, "client_id = $client_id");
+				if($update_giftpoint){
+					echo 200;
+				} else{
+					echo -1;
+				}
+
 			} else {
 				echo -1;
 			}

@@ -458,6 +458,28 @@ SQL;
 		$result = $this->db->update('faq', $data, "faq_id = $data_id");
 
 		if($result) {
+			$aQuery = <<<SQL
+		SELECT
+			faq_client_id
+		FROM
+			faq
+		WHERE
+			faq_id = {$data_id}
+SQL;
+			$data = $this->db->select($aQuery);
+
+			$client_id = $data[0]['faq_client_id'];
+			$gifQuery = <<<SQL
+		SELECT client_giftpoint
+		FROM client
+		WHERE client_id = {$client_id}
+SQL;
+			$data = $this->db->select($gifQuery);
+			$current_giftpoint = $data[0]['client_giftpoint'];
+			$update_giftpoint = $current_giftpoint + CONFIRM_ANSWER_GIFT_POINT;
+			$data_update = array( 'client_giftpoint' => $update_giftpoint );
+
+			$this->db->update("client", $data_update, "client_id = $client_id");
 			echo 'success';
 		} else {
 			echo 'error';

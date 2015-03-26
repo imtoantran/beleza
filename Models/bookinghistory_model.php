@@ -221,12 +221,20 @@ SQL;
 		$data_sendMail = self::get_data_send_mail($booking_detail_id);
 
 		// Điểm credit point cộng cho khách hàng
-		$credit_point = intval($data_sendMail['data_price'])/MONEY_PER_POINT;
+		$credit_point =floor($data_sendMail['data_price'] / MONEY_PER_POINT);
 		$client_id = $data_sendMail['data_client_id'];// id khách hàng
 		// Cập nhật credit point cho khách hàng
-		if(!self::add_credit_point($client_id, $credit_point)){
-			die('add client credit point error!');
-			exit;
+
+		if(isset($_GET['isConfirm'])) {
+			if(!self::add_credit_point($client_id, $credit_point)){
+				die('add client credit point error!');
+				exit;
+			}
+			// chua xac dinh duoc gift point tra ve da thanh toan bang credit_point hay la tien mat
+//			if(!self::update_giftpoint($client_id, ($credit_point * MONEY_PER_POINT) / PAYMENT_GIFT_POINT)){
+//				die('update gift point error!');
+//				exit;
+//			}
 		}
 
 		// Nếu khách hàng đồng ý bằng nút chấp nhận Hủy
@@ -549,12 +557,39 @@ SQL;
 		$result = $this->db->update("client", $data_update, "client_id = $client_id");
 
 		if($result){
+			$_SESSION['client_creditpoint'] = $update_creditpoint;
+
 			return true;
 		}
 
 		return false;
 	}
 
+	public function update_giftpoint($client_id, $gift_point) {
+		$aQuery = <<<SQL
+		SELECT client_giftpoint
+		FROM client
+		WHERE client_id = {$client_id}
+SQL;
+		$data = $this->db->select($aQuery);
+
+		$current_giftpoint = $data[0]['client_giftpoint'];
+
+		$update_giftpoint = $current_giftpoint - $gift_point;
+
+		$data_update = array(
+			'client_giftpoint' => $update_giftpoint
+		);
+
+		$result = $this->db->update("client", $data_update, "client_id = $client_id");
+
+		if($result){
+			$_SESSION['client_giftpoint'] = $update_giftpoint;
+			return true;
+		}
+
+		return false;
+	}
 
 	//////////////////////////// CHỨC NĂNG ////////////////////////
 	function curPageURL() {
