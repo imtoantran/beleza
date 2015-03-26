@@ -2,28 +2,28 @@
     <div class="sidebar">
         <div class="venue-info">
             <h3 class="title-admincp">Quản lý đánh giá</h3>
-            <button class="button button-primary redeem loadreview active" type="button" data-controller='/admincp_review/loadReviewList'>
+            <button class="button button-primary redeem loadreview active" type="button" data-controller='admincp_review/loadReviewList'>
                 <div class="button-inner">
                     <div class="button-icon glyphicon glyphicon-th-list"></div>
                     <div id="edit_loading" class="button-icon fa fa-spin fa-refresh s-loading"></div>
                     Tất cả đánh giá
                 </div>
             </button>
-            <button class="button button-primary redeem loadreview" type="button" data-controller='/admincp_review/newReview'>
+            <button class="button button-primary redeem loadreview" type="button" data-controller='admincp_review/newReview'>
                 <div class="button-inner">
                     <div class="button-icon glyphicon glyphicon-plus-sign"></div>
                     <div id="edit_loading" class="button-icon fa fa-spin fa-refresh s-loading"></div>
                     Đánh giá mới
                 </div>
             </button>
-            <button class="button button-primary redeem loadreview" type="button" data-controller='/admincp_review/unverifiedReview'>
+            <button class="button button-primary redeem loadreview" type="button" data-controller='admincp_review/unverifiedReview'>
                 <div class="button-inner">
                     <div class="button-icon glyphicon glyphicon-unchecked"></div>
                     <div id="edit_loading" class="button-icon fa fa-spin fa-refresh s-loading"></div>
                     Chưa duyệt
                 </div>
             </button>
-            <button class="button button-primary redeem loadreview" type="button" data-controller='/admincp_review/verifiedReview'>
+            <button class="button button-primary redeem loadreview" type="button" data-controller='admincp_review/verifiedReview'>
                 <div class="button-inner">
                     <div class="button-icon glyphicon glyphicon-check"></div>
                     <div id="edit_loading" class="button-icon fa fa-spin fa-refresh s-loading"></div>
