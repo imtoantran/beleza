@@ -65,12 +65,17 @@ define('TRAN_CURRENCY', 21000);
 // App secret App id FB login
 define('APP_ID', '1493640520925101');
 define('APP_SECRET', '85ac9c022c43d20111f816e95b47fc50');
+
 // Money per point
-define('MONEY_PER_POINT', 10000);
+define('MONEY_PER_POINT', 1000);
 // Review gift point
-define('REVIEW_GIFT_POINT', 0.5);
+define('REVIEW_GIFT_POINT', 5);
+
+// Answer gift point
+define('CONFIRM_ANSWER_GIFT_POINT', 5);
+
 // Payment gift point
-define('PAYMENT_GIFT_POINT', 1);
+define('PAYMENT_GIFT_POINT', 1000);
 
 define('TIME_AUTO_CONFIRM', 60);
 define('TIME_BEFORE_SERVICE', 180);
