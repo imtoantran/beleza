@@ -470,12 +470,6 @@ function loadTopServiceList() {
 		type : 'post',
 		dataType : 'json',
 		success : function(response) {
-			//console.log(response);
-			// console.log(CHOOSEN_DATE);
-			// console.log(CHOOSEN_TIME);
-			// console.log(CHOOSEN_PRICE);
-			// console.log(USER_SERVICE_ID);
-
 			var html = '';
 			$.each(response, function(key, value) {
 				var rating_value = parseFloat(value.star_review);
