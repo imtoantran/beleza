@@ -4,7 +4,7 @@ $(document).ready(function () {
         $(_).find(".glyphicon").fadeOut("fast",function(){$(_).find(".s-loading").fadeIn();});
 
         $.ajax({
-            url: $(this).data("controller"),
+            url: URL + $(this).data("controller"),
             type: 'post',
             dataType: 'json',
             success: function (response) {
