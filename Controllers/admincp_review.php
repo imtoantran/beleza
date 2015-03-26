@@ -21,21 +21,26 @@ class admincp_review extends Controller {
 		$this -> model -> loadReviewList();
 	}
 
-	// public function addReviewDetail() {
-		// Auth::handleAdminLogin();
-		// $this -> view -> style = array(URL . 'Views/admincp/review/css/review.css');
-		// $this -> view -> script = array(URL . 'Views/admincp/review/js/review.js');
-		// $this -> view -> render_admincp('review/add');
-	// }
+	/* imtoantran new review start */
+	public function newReview(){
+		Auth::handleAdminLogin();
+		echo json_encode($this->model->loadReviews(-1));
+	}
+	/* imtoantran new review stop */
 
-	// public function saveReview() {
-		// Auth::handleAdminLogin();
-		// if (isset($_POST['review_id']) && isset($_POST['review_name'])) {
-			// $data['review_id'] = $_POST['review_id'];
-			// $data['review_name'] = $_POST['review_name'];
-			// $this -> model -> saveReview($data);
-		// }
-	// }
+	/* imtoantran new review start */
+	public function unverifiedReview(){
+		Auth::handleAdminLogin();
+		echo json_encode($this->model->loadReviews(0));
+	}
+	/* imtoantran new review stop */
+
+	/* imtoantran verified review start */
+	public function verifiedReview(){
+		Auth::handleAdminLogin();
+		echo json_encode($this->model->loadReviews(1));
+	}
+	/* imtoantran verified review stop */
 
 	public function editReviewDetail($review_id) {
 		Auth::handleAdminLogin();

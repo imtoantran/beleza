@@ -1,22 +1,27 @@
 <?php
+
 /**
  *
  */
-class admincp_review_model extends Model {
+class admincp_review_model extends Model
+{
 
-	function __construct() {
-		parent::__construct();
-	}
+    function __construct()
+    {
+        parent::__construct();
+    }
 
-	public function loadReviewList() {
-		/* imtoantran edit to load rating star to admincp start */
-		$sql = <<<SQL
+
+    public function loadReviewList()
+    {
+        /* imtoantran edit to load rating star to admincp start */
+        $sql = <<<SQL
 SELECT client_name
 , date_format(user_review.user_review_date,'%d/%m/%Y')
 , REPEAT(' <i class="fa fa-star text-danger"></i>',user_review.user_review_overall) as 'user_review_overall'
 , user_business_name
 , concat(substring(user_review_content,1,100),'...') as 'user_review_content'
-, concat('<i class="fa ',IF(user_review_status=0,'fa-times text-danger','fa-check text-success'),'"></i><span style="display: none">',user_review_status,'</span>') as 'user_review_status'
+, concat('<i class="fa ',IF(user_review_status=0,'fa-times text-danger',IF(user_review_status=1,'fa-check text-success','fa-plus-circle text-primary')),'"></i><span style="display: none">',user_review_status,'</span>') as 'user_review_status'
 , user_review.client_id
 , user_review.user_id
 FROM user_review, user, client
@@ -27,66 +32,60 @@ AND client_is_active = 1
 AND user_review_content != ''
 ORDER BY client_name ASC
 SQL;
-		/* imtoantran edit to load rating star to admincp end */
-		$select = $this -> db -> select($sql,[],PDO::FETCH_NUM);
-		if ($select) {
-			 echo json_encode($select);
-			/*
-			 * imtoantran removed - i dislike it :v
-			$sOutput = '[';
-			foreach ($select as $row) {
-				$sOutput .= "[";
-				$sOutput .= '"' . str_replace('"', '\"', $row['client_name']) . '",';
-				$sOutput .= '"' . str_replace('"', '\"', $row['client_username']) . '",';
-				$join_date = explode(' ', $row['client_join_date']);
-				$join_date_day = date('d/m/Y', strtotime($join_date[0]));
-				$sOutput .= '"' . str_replace('"', '\"', $join_date_day . ' ' . $join_date[1]) . '",';
-				$sOutput .= '"' . str_replace('"', '\"', $row['user_business_name']) . '",';
-				$sOutput .= '"' . str_replace('"', '\"', preg_replace(array('/\n/', '/\r\n/'), '<br/>', $row['user_review_content'])) . '",';
-				$approve = '';
-				if($row['user_review_status'] == 0){
-					$approve = '<i class="fa fa-times text-danger"></i><span style="display: none">0</span>';
-				}else{
-					$approve = '<i class="fa fa-check text-success"></i><span style="display: none">1</span>';
-				}
-				$sOutput .= '"' . str_replace('"', '\"', $approve) . '",';
-				$sOutput .= '"' . str_replace('"', '\"', $row['client_id']) . '",';
-				$sOutput .= '"' . str_replace('"', '\"', $row['user_id']) . '"';
-				$sOutput .= "],";
-			}
+        /* imtoantran edit to load rating star to admincp end */
+        $select = $this->db->select($sql, [], PDO::FETCH_NUM);
+        if ($select) {
+            echo json_encode($select);
+        }
+    }
 
-			$sOutput = substr_replace($sOutput, "", -1);
-			$sOutput .= ']';
-			echo $sOutput;
-		} else {
-			echo "[]";
-			*/
-		}
-	}
+    /* imtoantran load review start */
+    public function loadReviews($status)
+    {
+        if($status == -1){
+            $sql = <<<SQL
+UPDATE  user_review
+SET user_review_status = 0
+WHERE user_review_status = {$status}
+AND datediff(CURDATE(),user_review_date) > 0
+SQL;
+            $this->db->exec($sql);
+        }
+        /* imtoantran edit to load rating star to admincp start */
+        $sql = <<<SQL
+SELECT client_name
+, date_format(user_review.user_review_date,'%d/%m/%Y')
+, REPEAT(' <i class="fa fa-star text-danger"></i>',user_review.user_review_overall) as 'user_review_overall'
+, user_business_name
+, concat(substring(user_review_content,1,100),'...') as 'user_review_content'
+, concat('<i class="fa ',IF(user_review_status=0,'fa-times text-danger',IF(user_review_status=1,'fa-check text-success','fa-plus-circle text-primary')),'"></i><span style="display: none">',user_review_status,'</span>') as 'user_review_status'
+, user_review.client_id
+, user_review.user_id
+FROM user_review, user, client
+WHERE user_review.user_id = user.user_id
+AND user_review.client_id = client.client_id
+AND user_delete_flg = 0
+AND client_is_active = 1
+AND user_review_content != ''
+AND user_review_status = {$status}
+ORDER BY client_name ASC
+SQL;
+        /* imtoantran edit to load new rating star to admincp end */
+        $select = $this->db->select($sql, [], PDO::FETCH_NUM);
+        if ($select) {
+            return $select;
+        }
+        return [];
+    }
 
-	// public function saveReview($data) {
-		// $sql = <<<SQL
-// INSERT INTO DISTRICT
-// values(
-// {$data['district_id']}
-// , '{$data['district_name']}'
-// , 0
-// )
-// SQL;
-		// $insert = $this -> db -> prepare($sql);
-		// $insert -> execute();
-		// if ($insert -> rowCount() > 0) {
-			// echo 200;
-		// } else {
-			// echo 0;
-		// }
-	// }
+    /* imtoantran load review stop */
 
-	public function loadReviewDetailEdit($review_id) {
-		$temp = explode(',', $review_id);
-		$client_id = $temp[0];
-		$user_id = $temp[1];
-		$sql = <<<SQL
+    public function loadReviewDetailEdit($review_id)
+    {
+        $temp = explode(',', $review_id);
+        $client_id = $temp[0];
+        $user_id = $temp[1];
+        $sql = <<<SQL
 SELECT client_name
 , client_username
 , client_join_date
@@ -105,77 +104,79 @@ AND user_review.user_id = {$user_id}
 AND user_review_content != ''
 ORDER BY client_name ASC
 SQL;
-		$select = $this -> db -> select($sql);
-		if ($select) {
-			echo json_encode($select);
-		} else {
-			echo '[]';
-		}
-	}
+        $select = $this->db->select($sql);
+        if ($select) {
+            echo json_encode($select);
+        } else {
+            echo '[]';
+        }
+    }
 
-	public function editReview($data) {
-		$temp = explode(',', $data['review_id']);
-		$client_id = $temp[0];
-		$user_id = $temp[1];
-		$sql = <<<SQL
+    public function editReview($data)
+    {
+        $temp = explode(',', $data['review_id']);
+        $client_id = $temp[0];
+        $user_id = $temp[1];
+        $sql = <<<SQL
 UPDATE user_review
 SET user_review_status = 1
 WHERE user_review.client_id = {$client_id}
 AND user_review.user_id = {$user_id}
 SQL;
-		$update = $this -> db -> prepare($sql);
-		$update -> execute();
-		if ($update -> rowCount() > 0) {
-			$sql = <<<SQL
+        $update = $this->db->prepare($sql);
+        $update->execute();
+        if ($update->rowCount() > 0) {
+            $sql = <<<SQL
 SELECT client_giftpoint
 FROM client
 WHERE client_id = {$client_id}
 SQL;
-			$select = $this -> db ->select($sql);
-			$giftpoint = $select[0]['client_giftpoint'] + REVIEW_GIFT_POINT;
-			$sql = <<<SQL
+            $select = $this->db->select($sql);
+            $giftpoint = $select[0]['client_giftpoint'] + REVIEW_GIFT_POINT;
+            $sql = <<<SQL
 UPDATE client
 SET client_giftpoint = {$giftpoint}
 WHERE client_id = {$client_id}
 SQL;
-			$update_1 = $this -> db -> prepare($sql);
-			$update_1 -> execute();
-			if($update_1 -> rowCount() > 0){
-				echo 200;
-			}else{
-				echo 0;
-			}
-			
-		} else {
-			echo 0;
-		}
-	}
-	
-	public function deleteReview($review_id) {
-		$temp = explode(',', $review_id);
-		$client_id = $temp[0];
-		$user_id = $temp[1];
-		$sql = <<<SQL
+            $update_1 = $this->db->prepare($sql);
+            $update_1->execute();
+            if ($update_1->rowCount() > 0) {
+                echo 200;
+            } else {
+                echo 0;
+            }
+
+        } else {
+            echo 0;
+        }
+    }
+
+    public function deleteReview($review_id)
+    {
+        $temp = explode(',', $review_id);
+        $client_id = $temp[0];
+        $user_id = $temp[1];
+        $sql = <<<SQL
 UPDATE user_review
 SET user_review_content = ''
 WHERE user_review.client_id = {$client_id}
 AND user_review.user_id = {$user_id}
 SQL;
-		$update = $this -> db -> prepare($sql);
-		$update -> execute();
-		if ($update -> rowCount() > 0) {
-			echo 200;
-		} else {
-			echo 0;
-		}
-	}
+        $update = $this->db->prepare($sql);
+        $update->execute();
+        if ($update->rowCount() > 0) {
+            echo 200;
+        } else {
+            echo 0;
+        }
+    }
 
-	/* imtoantran replies management */
-	public function loadReplies()
-	{
-		# code...
-		$params = $_POST;
-		$sql = "SELECT rr.id,IFNULL(u.user_business_name,c.client_name),rr.content,DATE_FORMAT(rr.timecreated,'%d/%m/%Y vào lúc %H:%i phút'),o.`value`
+    /* imtoantran replies management */
+    public function loadReplies()
+    {
+        # code...
+        $params = $_POST;
+        $sql = "SELECT rr.id,IFNULL(u.user_business_name,c.client_name),rr.content,DATE_FORMAT(rr.timecreated,'%d/%m/%Y vào lúc %H:%i phút'),o.`value`
 		FROM review_replies rr
 		LEFT JOIN `user` u
 		ON u.user_id = rr.author_id and rr.user_type = 'user'
@@ -186,15 +187,16 @@ SQL;
 		WHERE rr.status = '{$params['status']}'
 		GROUP BY rr.id
 		ORDER BY timecreated DESC";
-		$result = $this->db->select($sql,[],PDO::FETCH_NUM);
-		return $result;
-	}
+        $result = $this->db->select($sql, [], PDO::FETCH_NUM);
+        return $result;
+    }
 
-	public function loadUserReplies($review_id){
-		$temp = explode(',', $review_id);
-		$client_id = $temp[0];
-		$user_id = $temp[1];
-		$sql = <<<SQL
+    public function loadUserReplies($review_id)
+    {
+        $temp = explode(',', $review_id);
+        $client_id = $temp[0];
+        $user_id = $temp[1];
+        $sql = <<<SQL
 SELECT rr.id,rr.content,date_format(rr.timecreated,'%d-%m-%Y') as timecreated,IFNULL(u.user_business_name,c.client_name) as 'name',o.value as 'status',rr.status as status_code
 FROM review_replies rr
 LEFT JOIN user u ON u.user_id = rr.author_id and rr.user_type = 'user'
@@ -205,35 +207,37 @@ AND rr.user_id = {$user_id}
 AND rr.content != ''
 ORDER BY timecreated ASC
 SQL;
-		$replies = $this -> db -> select($sql);
-		return $replies;
-	}
+        $replies = $this->db->select($sql);
+        return $replies;
+    }
 
-	public function updateReply()
-	{
-		$params = $_POST;
+    public function updateReply()
+    {
+        $params = $_POST;
 
-		$this->db->update("review_replies",["status"=>$params["status"]],"id={$params['id']}");
-		$sql = "SELECT rr.id,rr.status,o.value as status_text FROM review_replies rr JOIN options o ON o.name = rr.status  WHERE rr.id ={$params['id']}";
-		$data = $this->db->select($sql);
-		return $data[0];
-	}
-	/* imtoantran replies management */
-	public function saveOption()
-	{
-		# code...
-		$value = $_POST['value'];		
-		$v = 'unverified';
-		$message = "Đã tắt tự động duyệt!";
-		if(isset($value)){
-			if($value=='true'){
-				$v = 'auto';
-				$message = "Đã bật tự động duyệt!";
-			}
-		}
-		$data = ['status'=>$v];
-		$this->db->update("options", ['value'=>$v], " `name` like 'default_status' ");
-		return ["message"=>$message];
-	}
+        $this->db->update("review_replies", ["status" => $params["status"]], "id={$params['id']}");
+        $sql = "SELECT rr.id,rr.status,o.value as status_text FROM review_replies rr JOIN options o ON o.name = rr.status  WHERE rr.id ={$params['id']}";
+        $data = $this->db->select($sql);
+        return $data[0];
+    }
+
+    /* imtoantran replies management */
+    public function saveOption()
+    {
+        # code...
+        $value = $_POST['value'];
+        $v = 'unverified';
+        $message = "Đã tắt tự động duyệt!";
+        if (isset($value)) {
+            if ($value == 'true') {
+                $v = 'auto';
+                $message = "Đã bật tự động duyệt!";
+            }
+        }
+        $data = ['status' => $v];
+        $this->db->update("options", ['value' => $v], " `name` like 'default_status' ");
+        return ["message" => $message];
+    }
 }
+
 ?>
