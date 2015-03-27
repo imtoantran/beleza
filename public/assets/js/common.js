@@ -120,7 +120,7 @@ function initGoogleMap(map_id, lat, long, has_directions_service){
 		panControl : false,
 		zoomControl : true,
 		zoomControlOptions : {
-			style : google.maps.ZoomControlStyle.SMALL,
+			style : google.maps.ZoomControlStyle.SMALL
 			// position : google.maps.ControlPosition.LEFT_CENTER
 		},
 		mapTypeControl : false,
@@ -156,7 +156,7 @@ function initGoogleMap(map_id, lat, long, has_directions_service){
         var curr_pos = new google.maps.LatLng(XLOC, YLOC);
 	    infoWindow_2.setOptions({
 	        content: "<div align='center' style='width: 130px'><small><b>" + USER_BUSINESS_NAME + "</b></small></div>",
-	        position: curr_pos,
+	        position: curr_pos
 	    });
 	    infoWindow_2.open(map); 
         directionsService.route(request, function (response, status) {         
@@ -176,7 +176,7 @@ function initGoogleMap(map_id, lat, long, has_directions_service){
 	}else{
 		var marker = new google.maps.Marker({
 			position : new google.maps.LatLng(lat, long),
-			map : map,
+			map : map
 		});
 		$('#distance_map').text('...');
 		$('#duration_map').text('...');

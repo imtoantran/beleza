@@ -2,16 +2,16 @@
 
 // Config database
 define('DB_TYPE', 'mysql');
-if($_SERVER['HTTP_HOST'] == 'beleza.com'){
-    define('DB_HOST', 'localhost');
-    define('DB_NAME', 'beleza_01');
-    define('DB_USER', 'root');
-    define('DB_PASS', '');
+if($_SERVER['HTTP_HOST'] == 'beleza.com' || $_SERVER['HTTP_HOST'] == 'beleza.net'){
+ define('DB_HOST', 'localhost');
+ define('DB_NAME', 'beleza_01');
+ define('DB_USER', 'root');
+ define('DB_PASS', '');
 }else {
-    define('DB_HOST', '107.167.182.195');
-    define('DB_NAME', 'beleza_01');
-    define('DB_USER', 'beleza_team');
-    define('DB_PASS', 'fYwFhHqe43PP7Ge8');
+ define('DB_HOST', '107.167.182.195');
+ define('DB_NAME', 'beleza_01');
+ define('DB_USER', 'beleza_team');
+ define('DB_PASS', 'fYwFhHqe43PP7Ge8');
 }
 
 // The sitewide hashkey, do not change this because its used for passwords!
@@ -53,8 +53,8 @@ define('COUNTRYCODE', 'US');
 
 // Admin email
 //define('ADMIN_MAIL', 'vietnt134@gmail.com');
-// define('ADMIN_MAIL', 'luuhoabk.developer@gmail.com');
-define('ADMIN_MAIL', 'buivominhnhat@gmail.com');
+ define('ADMIN_MAIL', 'luuhoabk.developer@gmail.com');
+//define('ADMIN_MAIL', 'buivominhnhat@gmail.com');
 
 // Mail server info
 define('SMTP_MAIL', 'smtp.zoho.com');
@@ -65,6 +65,9 @@ define('TRAN_CURRENCY', 21000);
 // App secret App id FB login
 define('APP_ID', '1493640520925101');
 define('APP_SECRET', '85ac9c022c43d20111f816e95b47fc50');
+
+//define('APP_ID', '868992506498482');
+//define('APP_SECRET', 'b216f60705ee94cb3da576f56a32db65');
 
 // Money per point
 define('MONEY_PER_POINT', 1000);

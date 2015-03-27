@@ -9,8 +9,8 @@ define('PJ_NAME', 'beleza');
 define('DS', DIRECTORY_SEPARATOR);
 
 
-if($_SERVER['HTTP_HOST'] == "beleza.com")
-    define('URL', '//' . $_SERVER['HTTP_HOST'] . '/');
+if($_SERVER['HTTP_HOST'] == "beleza.com" || $_SERVER['HTTP_HOST'] == "beleza.net" )
+    define('URL', 'http://' . $_SERVER['HTTP_HOST'] . '/');
 else
     define('URL', 'http://' . $_SERVER['HTTP_HOST'] . '/' . PJ_NAME . '/');
 

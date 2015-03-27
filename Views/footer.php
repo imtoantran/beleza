@@ -465,6 +465,11 @@
                                                                                     <span>ĐẶT <i id="waiting_for_booking_save_b" style="display: none;" class="fa fa-refresh fa-spin"></i></span>
                                                                                 </button>
                                                                             </div>
+                                                                            <div class="col-md-12">
+                                                                                <button style="height: 48px;box-shadow: 0 0 6px #9A9797; color: #fff;" class="btn btn-block btn-black btn-wishlist">
+                                                                                   <span class="fa fa-thumbs-o-up" style="font-size: 15px;"> </span> Thêm vào danh sách yêu thích
+                                                                                </button>
+                                                                            </div>
                                                                         </div>
                                                                     </div>
                                                                     <div id="evoucher_booking_zone" style="display: none;">

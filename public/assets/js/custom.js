@@ -69,16 +69,10 @@ $(document).ready(function() {
 		jumpToOtherPage(URL + 'pageBuilding');
 	});
 
-	console.log($('#Shopping_cart_info').css('display'));
 	if($('#popup-payment').attr('data-popup') == 1){
 		shoppingCartDetail();
 	}
-	// $('#create_place_modal').on('shown.bs.modal', function () {
-		// $('#district_field').html('<option value="" selected>Quận...</option>');
-		// $('#create_place_district').html('<option value="" selected>Quận...</option>');
-		// $('#city_field').html('<option value="" selected>Thành Phố...</option>');
-		// $('#create_place_city').html('<option value="" selected>Thành Phố...</option>');
-	// })
+
 	/*END LINK TO OTHER PAGE*/
 });
 /*LOAD MENU - DATABASE*/
@@ -180,6 +174,42 @@ function loadMenu() {
 	$('a.nolink').on('click', function(e) {
 		e.preventDefault();
 	});
+
+
+	/*-----------luuhoabk - Add Wishlist-----------*/
+	$('.btn-wishlist').on('click',function(){
+		if(CLIENT_ID == ""){alert('Bạn phải đăng nhập để sử dụng chức năng này.'); return;}
+		var self = $(this);
+		self.find('span').removeClass('fa-thumbs-o-up').addClass('fa-spin fa-spinner');
+		$.ajax({
+			url : URL + 'index/addWishlist',
+			type : 'post',
+			//dataType : 'json',
+			data : {
+				service_id : USER_SERVICE_ID,
+				client_id : CLIENT_ID
+			},
+			success : function(response) {
+				//console.log(response);
+				switch(response){
+					case '200':
+						alert('Lưu yêu thích thành công');
+						break;
+					case '-2':
+						alert('Dịch vụ đã được bạn lưu trước đó rồi.');
+						break;
+					case '0':
+						alert('Thêm yêu thích thất bại, Xin vui lòng thử lại.');
+						break;
+					default: break;
+				}
+			},
+			complete: function(){
+				self.find('span').removeClass('fa-spin fa-spinner').addClass('fa-thumbs-o-up');
+			}
+		});
+	});
+	/*---------END luuhoabk - Add Wishlist--------------*/
 }
 
 function hasChildTag(parent, level) {
@@ -716,6 +746,10 @@ function loadServiceDetail(user_service_id) {
 	// console.log(USER_SERVICE_ID);
 	// resetTab('online_booking_zone');
 
+	//$('#service_detail').on('shown.bs.modal', function() {
+	//	var map;
+	//	initGoogleMap('user_latlng', USER_LAT, USER_LNG, 0);
+	//});
 	$.ajax({
 		url : URL + 'index/loadServiceDetail',
 		type : 'post',
@@ -730,7 +764,6 @@ function loadServiceDetail(user_service_id) {
 				//console.log(response);
 				USER_ID_2 = parseInt(response[0].user_id);
 				UID = USER_ID_2;
-				//console.log(USER_ID);
 				var user_open_hour_1 = '';
 				var user_open_hour_2 = '';
 				var separate_count = 0;
@@ -1158,6 +1191,7 @@ function loadServiceDetail(user_service_id) {
 					break;
 				}
 				//console.log(temp_1_array['status']);
+
 				if (temp_1_array['status'] == '1') {
 					var current_hour_in_min = (TODAY_HOUR * 60) + TODAY_MINUTE;
 					var open_hour_in_min = parseInt(temp_1_array['open']) * 60;
@@ -2195,6 +2229,13 @@ function resetTab(tab) {
 /*END JRESET TAB*/
 /*-----------------------*/
 
+
+
+
+
+
+
+
 /*GET ONLINE BOOKING OR EVOUCHER INFOMATION*/
 function getBookingInfo() {
 	if (USER_SERVICE_ID == '' || CHOOSEN_DATE == '' || CHOOSEN_DATE_STORE == '' || CHOOSEN_TIME == '' || CHOOSEN_PRICE == '') {
@@ -2590,6 +2631,7 @@ function clearCreatePlaceModal() {
 
 /*EXPAND MAP*/
 function expandMap() {
+
 	if ($('#show_more_map').text() == 'Xem bản đồ lớn') {
 		$('.map').animate({
 			height : 460
