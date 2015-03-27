@@ -122,34 +122,46 @@ SQL;
 SQL;
         $select = $this->db->select($query);
         $return['user_service'] = $select;
+
+
         $query = <<<SQL
-			SELECT service_type_id, service_type_name
-			FROM service_type
+			SELECT *
+			FROM group_service
+			WHERE group_service_user_id = {$user_id}
+
 SQL;
         $select = $this->db->select($query);
         foreach ($select as $key => $value) {
             $sql = <<<SQL
 				SELECT 
-				user.user_id
-				,user_service.user_service_id
-				,user_service.user_service_name
-				,user_service.user_service_full_price
-				,user_service.user_service_sale_price
-				,user_service.user_service_duration
-				FROM user_service, user, group_service, service, service_type
-				WHERE user.user_id = group_service.group_service_user_id
-				AND user_service.user_service_group_id = group_service.group_service_id
-				AND user_service.user_service_service_id = service.service_id
-				AND service.service_service_type_id = service_type.service_type_id
-				AND user.user_id = {$user_id}
+				u.user_id
 
-				AND service_type.service_type_id = {$value["service_type_id"]}
-				AND user_service.user_service_delete_flg = 0;
-				ORDER BY user_service.user_service_id DESC
+				,us.user_service_id
+				,us.user_service_name
+				,us.user_service_full_price
+				,us.user_service_sale_price
+				,us.user_service_duration
+				FROM
+				    user u,
+				    service s,
+				    service_type st,
+                    user_service us,
+                    group_service gs
+
+				WHERE u.user_id                = gs.group_service_user_id
+				AND us.user_service_group_id   = gs.group_service_id
+				AND us.user_service_service_id = s.service_id
+				AND s.service_service_type_id  = st.service_type_id
+				AND us.user_service_group_id = {$value['group_service_id']}
+
+				AND u.user_id                 = {$user_id}
+				AND us.user_service_delete_flg = 0;
+
+				ORDER BY us.user_service_id DESC
 
 SQL;
             $select_one = $this->db->select($sql);
-            $return[$value['service_type_name']] = $select_one;
+            $return[$value['group_service_name']] = $select_one;
         }
 
 

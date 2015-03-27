@@ -203,6 +203,7 @@ function loadLocationDetail() {
             }
             var html = '';
             var title = 1;
+            console.log(response);
             $.each(response, function (key, value) {
                 if (key != 'user') {
                     if (value[0] != null) {
