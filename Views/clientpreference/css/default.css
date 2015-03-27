@@ -1,0 +1,9 @@
+input.tag-data{
+    display: none;
+}
+.tag-data input{border: none !important;}
+.tag-data .select2-choices{
+    width:100% !important;
+    border: none;
+}
+.tag-data{width:100%}
