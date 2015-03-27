@@ -116,6 +116,9 @@
                                         <i class="fa fa-history"></i> Lịch sử đặt hẹn
                                     </a>
                                 </li>
+                                <li role="presentation" class="divider" style="border: 1px"></li>
+                                <li role="presentation"><a role="menuitem" tabindex="-1" href="<?php echo URL . 'clientwishlist'; ?>"><i class="fa fa-heart"></i> Danh sách yêu thích</a></li>
+                                <li role="presentation" class="divider" style="border: 1px"></li>
                                 <li role="presentation">
                                     <a role="menuitem" tabindex="-1" href="<?php echo URL . 'bookmark'; ?>">
                                         <i class="fa fa-map-marker"></i> Bookmark của tôi

@@ -284,5 +284,25 @@ class Index extends Controller {
 		}
 	}
 
+	public function addWishlist(){
+		if(isset($_POST['service_id']) && isset($_POST['client_id'])){
+			$data['option_id'] = $_POST['service_id'];
+			$data['client_id'] = $_POST['client_id'];
+
+			if($this->model->isWishlist($data)){
+				echo -2; // liked service
+			}else{
+				if($this->model->addWishlist($data)){
+					echo 200;
+				}else{
+					echo 0;
+				}
+			}
+		}else{
+			echo -1;
+		}
+	}
+
+
 }
 ?>

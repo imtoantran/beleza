@@ -528,6 +528,55 @@ SQL;
         }
     }
 
+
+	public function isWishlist($data){
+		$sql = <<<SQL
+		SELECT *
+FROM client_option
+WHERE client_id = {$data['client_id']}
+AND option_id = {$data['option_id']}
+AND option_type = 'service'
+SQL;
+		$select = $this -> db -> select($sql);
+		return count($select);
+	}
+
+	public function addWishlist($data){
+		$sql = <<<SQL
+INSERT INTO client_option(
+client_id
+, option_id
+, option_type
+, created_at
+)
+VALUES(
+{$data['client_id']}
+, {$data['option_id']}
+, 'service'
+, CURRENT_TIMESTAMP
+
+)
+SQL;
+		$insert = $this -> db -> prepare($sql);
+		$insert -> execute();
+		if ($insert -> rowCount() > 0) {
+			return 1;
+		} else {
+			echo 0;
+		}
+}
+
+	public function getTotalUserOption($option_id, $option_type){
+		$sql = <<<SQL
+		SELECT *
+FROM client_option
+WHERE option_id = {$option_id}
+AND option_type = '{$option_type}'
+SQL;
+		$select = $this -> db -> select($sql);
+		return count($select);
+	}
+
 }
 
 ?>
