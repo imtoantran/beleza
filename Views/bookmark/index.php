@@ -2,7 +2,7 @@
 <div class="container">
 	<div class="row">
 		<div class="col-md-12">
-			<h3 class="text-center"><i class="fa fa-lg fa-history"></i> Danh sách bookmark</h3>
+			<h3 class="text-center"><i class="fa fa-lg fa-map-marker"></i> Danh sách bookmark</h3>
 			<table id="booking_history_table" class="table table-bordered dataTable table-hover" width="100%" cellspacing="0">
 				<thead style="background-color: rgb(253, 189, 14);">
 					<tr>

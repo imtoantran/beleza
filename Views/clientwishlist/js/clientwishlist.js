@@ -41,24 +41,27 @@ var loadClientWishlist = function() {
 
 			cb_table.find('.btn-delete-wishlist').on('click', function(e){
 				e.stopPropagation();
-				var self = $(this);
-				var service_id = self.attr('data-service-id');
-				$.ajax({
-					url: URL + 'clientwishlist/deleteItemWishlist',
-					type : 'post',
-					data : {service_id: service_id},
-					success : function(respon){
-						if(respon){
-							var parent_body = self.closest('tbody');
-							self.closest('tr').remove();
-							if(parent_body.find('tr').length <= 0){
-								parent_body.append('<td valign="top" style="padding: 8px;" colspan="6" class="dataTables_empty">Không có dịch vụ nào được yêu thích.</td>');
+				var cf = confirm("Bạn có muốn xóa dịch vụ này ra khỏi danh sách yêu thích không?");
+				if(cf){
+					var self = $(this);
+					var service_id = self.attr('data-service-id');
+					$.ajax({
+						url: URL + 'clientwishlist/deleteItemWishlist',
+						type : 'post',
+						data : {service_id: service_id},
+						success : function(respon){
+							if(respon){
+								var parent_body = self.closest('tbody');
+								self.closest('tr').remove();
+								if(parent_body.find('tr').length <= 0){
+									parent_body.append('<td valign="top" style="padding: 8px;" colspan="6" class="dataTables_empty">Không có dịch vụ nào được yêu thích.</td>');
+								}
+							}else{
+								alert('Xóa dịch vụ thất bại, Xin vui lòng thử lại.')
 							}
-						}else{
-							alert('Xóa dịch vụ thất bại, Xin vui lòng thử lại.')
 						}
-					}
-				})
+					});
+				}
 			});
 
 

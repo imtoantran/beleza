@@ -1014,7 +1014,7 @@ SQL;
 
     public function isBookmarked($user_id)
     {
-        if ($_SESSION['client_id']) {
+        if(isset($_SESSION['client_id'])) {
             $sql = <<<SQL
 SELECT count(id) isBookmarked
 FROM bookmark
