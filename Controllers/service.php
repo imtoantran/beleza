@@ -22,6 +22,7 @@ class service extends Controller {
 		$this -> view -> style = array(URL . 'Views/service/css/service.css');
 		$this -> view -> script = array(URL . 'Views/service/js/service.js', URL . 'Views/service/js/consult.js', URL . 'Views/service/js/promotion.js', 'https://maps.googleapis.com/maps/api/js?key=AIzaSyBUxUNFuJ09fVcA24HZcEq0gwxs37ESDo4&language=vi-VI');
 		$this -> view -> user_id = $user_id;
+		$this -> view -> isBookmarked = $this->model->isBookmarked($user_id);
 		if (isset($_SESSION['client_id'])) {
 			$this -> view -> client_id = $_SESSION['client_id'];
 		} else {
@@ -222,5 +223,15 @@ class service extends Controller {
 		print json_encode($this->model->reportSpam());
 	}
 	/* imtoantran report spam */
+
+	/* imtoantran bookmark place start */
+	public function bookmark(){
+		Session::init();
+		header('Content-Type: application/json');
+		if(isset($_SESSION['client_id'])){
+			echo json_encode($this->model->bookmark());
+		}
+	}
+	/* imtoantran bookmark place stop */
 }
 ?>
