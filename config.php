@@ -2,19 +2,17 @@
 
 // Config database
 define('DB_TYPE', 'mysql');
-//define('DB_HOST', 'localhost');
-//define('DB_NAME', 'dbwahanda');
-//define('DB_USER', 'root');
-//define('DB_PASS', '');
-// define('DB_TYPE', 'mysql');
+if($_SERVER['HTTP_HOST'] == 'beleza.com' || $_SERVER['HTTP_HOST'] == 'beleza.net'){
  define('DB_HOST', 'localhost');
  define('DB_NAME', 'beleza_01');
  define('DB_USER', 'root');
  define('DB_PASS', '');
-//define('DB_HOST', '107.167.182.195');
-//define('DB_NAME', 'beleza_01');
-//define('DB_USER', 'beleza_team');
-//define('DB_PASS', 'fYwFhHqe43PP7Ge8');
+}else {
+ define('DB_HOST', '107.167.182.195');
+ define('DB_NAME', 'beleza_01');
+ define('DB_USER', 'beleza_team');
+ define('DB_PASS', 'fYwFhHqe43PP7Ge8');
+}
 
 // The sitewide hashkey, do not change this because its used for passwords!
 // This is for other hash keys... Not sure yet
@@ -65,11 +63,11 @@ define('PASS_MAIL', '12345678');
 // 1 USD = ? VNĐ
 define('TRAN_CURRENCY', 21000);
 // App secret App id FB login
-//define('APP_ID', '1493640520925101');
-//define('APP_SECRET', '85ac9c022c43d20111f816e95b47fc50');
+define('APP_ID', '1493640520925101');
+define('APP_SECRET', '85ac9c022c43d20111f816e95b47fc50');
 
-define('APP_ID', '868992506498482');
-define('APP_SECRET', 'b216f60705ee94cb3da576f56a32db65');
+//define('APP_ID', '868992506498482');
+//define('APP_SECRET', 'b216f60705ee94cb3da576f56a32db65');
 
 // Money per point
 define('MONEY_PER_POINT', 1000);
