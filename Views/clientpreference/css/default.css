@@ -1,0 +1,16 @@
+input.tag-data{
+    display: none;
+}
+.tag-data input{border: none !important;}
+.tag-data .select2-choices{
+    width:100% !important;
+    border: none;
+}
+.tag-data{width:100%}
+.select2-container-multi .select2-choices{background-image: none;!important;}
+.select2-container-multi .select2-choices .select2-search-choice{line-height: 22px;}
+.select2-search-choice-close{top:8px;}
+#save-tag{
+	position: absolute;
+	right: 15px;
+}

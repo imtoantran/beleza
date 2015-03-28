@@ -32,6 +32,8 @@
 
     <link rel="stylesheet" href="<?php echo ASSETS ?>plugins/data-tables/DT_bootstrap.css" type="text/css"/>
 
+    <link rel="stylesheet" href="<?php echo ASSETS ?>plugins/select2/select2.css" type="text/css" />
+
     <!-- CSS STYLE-->
     <link rel="stylesheet" type="text/css" href="<?php echo ASSETS ?>plugins/rs-plugin/css/style.css" media="screen"/>
 
