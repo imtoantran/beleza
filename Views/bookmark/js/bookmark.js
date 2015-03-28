@@ -5,6 +5,13 @@ $(document).ready(function() {
 			"orderable": false,
 			"targets": 0
 		}],
+		            "oLanguage": {
+                "sZeroRecords": "Không có dữ liệu nào cả.",
+                "sSearch": "Tìm kiếm: ",
+                "sLengthMenu": "Hiển thị &nbsp;&nbsp; _MENU_ &nbsp;&nbsp; dòng.",
+                "sInfo": "Hiển thị _START_ đến _END_ của _TOTAL_ dòng.",
+                "sInfoEmpty": "Hiển thị 0 đến 0 của 0 dòng."
+            },
 		"order": [[ 1, 'asc' ]]
 	});
 

@@ -24,6 +24,7 @@ SELECT client_name
 , concat('<i class="fa ',IF(user_review_status=0,'fa-times text-danger',IF(user_review_status=1,'fa-check text-success','fa-plus-circle text-primary')),'"></i><span style="display: none">',user_review_status,'</span>') as 'user_review_status'
 , user_review.client_id
 , user_review.user_id
+, user_review.user_review_date created_date
 FROM user_review, user, client
 WHERE user_review.user_id = user.user_id
 AND user_review.client_id = client.client_id

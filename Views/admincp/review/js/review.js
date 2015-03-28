@@ -32,6 +32,16 @@ $(document).ready(function () {
     if (IS_INDEX == 1 && IS_ADD == 0 && IS_EDIT == 0) {
         $(".loadreview:first").trigger("click");
         oTable = $('#review_list').dataTable({
+            "order": [1,"desc"],
+            "columnDefs": [ 
+            { 
+                "orderData": [ 8 ],"targets": 1 
+            },
+            {
+                "targets": [ 6,7,8 ],
+                "visible": false
+            },            
+            ],
             "oLanguage": {
                 "sZeroRecords": "Không có dữ liệu nào cả.",
                 "sSearch": "Tìm kiếm: ",

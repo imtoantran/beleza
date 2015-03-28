@@ -42,7 +42,10 @@
                     <th style="width: 120px;"><b>Điểm</b></th>
                     <th style="width: 18%;"><b>Đánh Giá Trên Địa Điểm</b></th>
                     <th><b>Nội Dung</b></th>
-                    <th style="width: 9%;"><b>Trạng thái</b></th>
+                    <th style="width: 10%;"><b>Trạng thái</b></th>
+                    <th style="width: 9%;"></th>
+                    <th style="width: 9%;"></th>
+                    <th style="width: 9%;"></th>
                 </tr>
                 </thead>
 
