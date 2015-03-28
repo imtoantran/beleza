@@ -11,20 +11,6 @@
 
 
 			<div class="text-center text-black title-info-user"> <i id="gear" class="fa fa-gear"></i>&nbsp;QUẢN LÝ TÀI KHOẢN</i> </div>
-			<div role="tabpanel">
-
-				<!-- Nav tabs -->
-				<ul class="nav nav-tabs" role="tablist">
-					<li role="presentation" class="active"><a href="#general" aria-controls="general" role="tab" data-toggle="tab"><i class="fa fa-pencil"></i> Chung</a></li>
-					<li role="presentation"><a href="#preference" aria-controls="preference" role="tab" data-toggle="tab"><i class="fa fa-tag"></i> Preference</a></li>
-				</ul>
-
-				<!-- Tab panes -->
-				<div class="tab-content">
-					<div role="tabpanel" class="tab-pane" id="preference">
-
-					</div>
-					<div role="tabpanel" class="tab-pane active" id="general">
 						<div class="row">
 							<div class="col-md-offset-3 col-md-3"><p class="text-orange bold">HÌNH ĐẠI DIỆN :</p></div>
 							<div class="col-md-6">
@@ -148,10 +134,7 @@
 								</form>
 							</div>
 						</div>
-						<br />
-					</div>
-				</div>
-
+						<br />				
 			</div>
 
 

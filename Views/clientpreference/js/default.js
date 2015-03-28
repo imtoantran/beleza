@@ -25,10 +25,29 @@ $(document).ready(function() {
 				results: data_select
 			}
 		});
+		
+		$.ajax({
+			url: URL+'clientpreference/getTag',
+			type: 'POST',
+			dataType: 'JSON',
+		})
+		.done(function(response) {
+			if(response.success)
+				$('.tag-data').select2("data",response.content);
+		})
+		.fail(function() {
+			console.log("error");
+		})
+		.always(function() {
+			console.log("complete");
+			$('#save-tag').attr("disabled",false).find(".fa-spin").fadeOut("slow");
+		});
+		
 	}});
-	$("[data-action=save]").on("click",function(e){
+	$("#save-tag").on("click",function(e){
 		var _ = this;
 		$(_).attr("disabled",true);
+		$(_).find(".fa-spin").fadeIn("slow");
 		$.ajax({
 			url:URL+$(_).data("controller"),
 			data:{data:JSON.stringify($(".tag-data").select2("data"))},
@@ -37,7 +56,7 @@ $(document).ready(function() {
 			success:function(response){
 
 			},
-			complete:function(){$(_).attr("disabled",false);}
+			complete:function(){$(_).attr("disabled",false);$(_).find(".fa-spin").fadeOut("slow");}
 		})
 	});
 });

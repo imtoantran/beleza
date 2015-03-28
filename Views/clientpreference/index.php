@@ -6,20 +6,20 @@
 
 <div class="container">
 	<div class="row">
-		<div class="col-md-offset-2 col-md-8 account-manager">
+		<div class="col-md-offset-1 col-md-10 account-manager">
 			<div class="text-center text-black title-info-user">
 				<i id="gear" class="fa fa-gear"></i> Preference
 			</div>
 			<div class="row">
 				<div class="col-xs-2 col-sm-2 col-md-2 col-lg-2">
-					<label class=""> Tag quan tâm:</label>
+					<label class="">Tag quan tâm:</label>
 				</div>
 				<div class="col-xs-9 col-sm-9 col-md-9 col-lg-9">
 					<input class="tag-data" name="tag-data" data-tags="true" data-placeholder="Dịch vụ quan tâm"/>
 				</div>
-				<div class="col-xs-1 col-sm-1 col-md-1 col-lg-1">
-					<button class="btn btn-xs btn-primary" data-action="save" data-controller="clientpreference/updateTag">Lưu</button>
-				</div>
+				<button class="btn btn-xs btn-primary" id="save-tag" data-action="save" disabled="true" data-controller="clientpreference/updateTag">
+				<i class='fa fa-spin fa-refresh'></i> Lưu
+				</button>
 			</div>
 		</div>
 	</div>

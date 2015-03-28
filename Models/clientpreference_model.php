@@ -23,10 +23,10 @@ class clientpreference_model extends Model {
 			$sql = "select client_service_tag from client where client_id = '".$_SESSION['client_id']."'";
 			$select = $this->db->select($sql);
 			if($select){
-				return $select[0];
+				return ["success"=>true,"content"=>json_decode($select[0]['client_service_tag'])];
 			}
 		}
-		return [];
+		return ["success"=>false];
 	}
 }
 ?>

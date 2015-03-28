@@ -22,7 +22,15 @@ class clientpreference extends Controller {
 	public function updateTag(){
 		Session::initIdle();
 		Auth::handleClientLogin();
+		header("Content-type:application/json");
 		echo json_encode($this->model->updateTag());
+	}
+	public function getTag()
+	{
+		Session::initIdle();
+		Auth::handleClientLogin();		
+		header("Content-type:application/json");
+		echo json_encode($this->model->getTag());
 	}
 }
 
