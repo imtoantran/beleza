@@ -124,6 +124,12 @@
                                     </a>
                                 </li>
                                 <li role="presentation" class="divider" style="border: 1px"></li>
+                                <li role="presentation">
+                                    <a role="menuitem" tabindex="-1" href="<?php echo URL . 'clientpreference'; ?>">
+                                        <i class="fa fa-tags"></i> Preference
+                                    </a>
+                                </li>
+                                <li role="presentation" class="divider" style="border: 1px"></li>
                                 <li role="presentation"><a role="menuitem" tabindex="-1" onclick="logout()"
                                                            style="cursor: pointer;"><i class="fa fa-power-off"></i>
                                         Thoát</a></li>
